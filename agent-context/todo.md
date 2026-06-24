@@ -263,9 +263,9 @@ Acceptance notes:
 
 ### GPTS-S4-T2 Add Provider Conformance Tests
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete
+Feature branch: main
+Session log: agent-context/session-log/main.md
 Depends on: globalpayto-sdk:GPTS-S2-T3, globalpayto-sdk:GPTS-S2-T4
 
 Add conformance tests for PayToDapp provider callback behavior and provider intent responses.

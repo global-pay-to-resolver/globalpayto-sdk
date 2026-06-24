@@ -168,3 +168,12 @@ head: e1a4562
 summary: Completed GPTS-S4-T1 by expanding protocol contract validation tests to cover every public status response shape, forbidden route-registration payment fields, action URL requirements, provider payload address leakage, and Cubid comms notification limits.
 validation: Ran pnpm --filter @globalpayto/protocol test, typecheck, and build; protocol tests now cover 25 passing workspace test cases during the filtered run.
 follow-ups: Continue SDK Sprint 4 with PayToDapp provider conformance tests for callback auth, replay, malformed payloads, and provider error behavior.
+
+---
+
+agent: Codex
+branch: main
+head: 90432f6
+summary: Completed GPTS-S4-T2 by adding PayToDapp provider conformance tests for valid callback handling, Cubid alias-only callbacks, auth freshness and replay expectations, provider error status rejection, malformed provider payload rejection, callback/response matching, and GlobalPayTo intent-envelope containment.
+validation: Ran pnpm --filter @globalpayto/provider-sdk test, typecheck, and build; provider conformance added seven passing cases and the filtered run covered 32 passing workspace tests.
+follow-ups: Continue SDK Sprint 4 with package build and publish workflow scaffolding.
