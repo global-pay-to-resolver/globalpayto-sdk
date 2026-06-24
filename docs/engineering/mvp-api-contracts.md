@@ -266,7 +266,10 @@ Expected provider response:
       "chain": "base",
       "network": "mainnet",
       "asset": "USDC",
-      "recipientAddress": "0xabc...",
+      "destination": {
+        "kind": "blockchain_address",
+        "recipientAddress": "0xabc..."
+      },
       "amount": "25.00",
       "reference": "smartrust:st_pi_456",
       "expiresAt": "2026-06-24T20:00:00Z"
@@ -318,7 +321,10 @@ Rules:
         "chain": "base",
         "network": "mainnet",
         "asset": "USDC",
-        "recipientAddress": "0xabc...",
+        "destination": {
+          "kind": "blockchain_address",
+          "recipientAddress": "0xabc..."
+        },
         "amount": "25.00",
         "reference": "smartrust:st_pi_456",
         "expiresAt": "2026-06-24T20:00:00Z"
@@ -346,7 +352,7 @@ Required `provider_json.payload` keys:
 - `chain`
 - `network`
 - `asset`
-- `recipientAddress`
+- `destination`
 - `amount`
 - `reference`
 - `expiresAt`
@@ -356,7 +362,9 @@ Matching rules:
 - `chain`, `network`, and `asset` must match the selected route/path.
 - `amount` must match `intent.amount.value`.
 - `expiresAt` must not exceed the GlobalPayTo intent expiry.
-- `recipientAddress` is the provider-selected destination for this intent and must not appear in route registration.
+- `destination.kind` is `blockchain_address` in the MVP.
+- `destination.recipientAddress` is the provider-selected destination for this intent and must not appear in route registration.
+- Top-level `recipientAddress`, `address`, and `account` fields are rejected so integrators do not confuse route registration with provider-selected destinations.
 - Providers may add extension fields, but SDK validators must preserve unknown extension fields without allowing them to replace required keys.
 
 ## Cubid Comms Notification Events

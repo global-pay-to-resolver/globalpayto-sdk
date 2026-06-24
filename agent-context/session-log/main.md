@@ -114,3 +114,12 @@ head: 7012b29
 summary: Completed GPTS-S2-T4 by adding @globalpayto/testing fixtures and mocks for resolver responses, Cubid validation, PayToDapp callbacks, provider responses, forbidden route-registration fields, and the MVP payment_intent_created notification event.
 validation: Ran pnpm typecheck, pnpm test, and pnpm build across the SDK workspace; all four packages passed.
 follow-ups: Backend Sprint 2 can now use the SDK protocol contracts as the dependency gate for Postgres design and implementation.
+
+---
+
+agent: Codex
+branch: main
+head: e04f921
+summary: Repaired the public provider payload contract before Sprint 3 so SDK schemas, fixtures, generated types, tests, and engineering docs use a typed destination object instead of top-level recipientAddress.
+validation: Ran pnpm generate, pnpm typecheck, pnpm test, and pnpm build; protocol tests now reject old top-level provider recipientAddress payloads.
+follow-ups: Continue SDK Sprint 3 with runnable PayingDapp and PayToDapp examples on the corrected payload contract.

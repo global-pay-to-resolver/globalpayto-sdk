@@ -158,11 +158,30 @@ export const GlobalpaytoIntentSchema = {
         "chain",
         "network",
         "asset",
-        "recipientAddress",
+        "destination",
         "amount",
         "reference",
         "expiresAt"
       ],
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "recipientAddress"
+            ]
+          },
+          {
+            "required": [
+              "address"
+            ]
+          },
+          {
+            "required": [
+              "account"
+            ]
+          }
+        ]
+      },
       "properties": {
         "providerIntentId": {
           "type": "string",
@@ -180,9 +199,22 @@ export const GlobalpaytoIntentSchema = {
           "type": "string",
           "minLength": 1
         },
-        "recipientAddress": {
-          "type": "string",
-          "minLength": 1
+        "destination": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "recipientAddress"
+          ],
+          "properties": {
+            "kind": {
+              "const": "blockchain_address"
+            },
+            "recipientAddress": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
         },
         "amount": {
           "type": "string",
@@ -446,11 +478,30 @@ export const ProviderResponseSchema = {
         "chain",
         "network",
         "asset",
-        "recipientAddress",
+        "destination",
         "amount",
         "reference",
         "expiresAt"
       ],
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "recipientAddress"
+            ]
+          },
+          {
+            "required": [
+              "address"
+            ]
+          },
+          {
+            "required": [
+              "account"
+            ]
+          }
+        ]
+      },
       "properties": {
         "providerIntentId": {
           "type": "string",
@@ -468,9 +519,22 @@ export const ProviderResponseSchema = {
           "type": "string",
           "minLength": 1
         },
-        "recipientAddress": {
-          "type": "string",
-          "minLength": 1
+        "destination": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "recipientAddress"
+          ],
+          "properties": {
+            "kind": {
+              "const": "blockchain_address"
+            },
+            "recipientAddress": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
         },
         "amount": {
           "type": "string",
@@ -823,11 +887,30 @@ export const ResolveResponseSchema = {
         "chain",
         "network",
         "asset",
-        "recipientAddress",
+        "destination",
         "amount",
         "reference",
         "expiresAt"
       ],
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "recipientAddress"
+            ]
+          },
+          {
+            "required": [
+              "address"
+            ]
+          },
+          {
+            "required": [
+              "account"
+            ]
+          }
+        ]
+      },
       "properties": {
         "providerIntentId": {
           "type": "string",
@@ -845,9 +928,22 @@ export const ResolveResponseSchema = {
           "type": "string",
           "minLength": 1
         },
-        "recipientAddress": {
-          "type": "string",
-          "minLength": 1
+        "destination": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "recipientAddress"
+          ],
+          "properties": {
+            "kind": {
+              "const": "blockchain_address"
+            },
+            "recipientAddress": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
         },
         "amount": {
           "type": "string",

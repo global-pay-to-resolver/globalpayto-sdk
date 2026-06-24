@@ -78,7 +78,22 @@ describe("@globalpayto/protocol", () => {
           ...validProviderResponse.paymentInstruction,
           payload: {
             ...validProviderResponse.paymentInstruction.payload,
-            recipientAddress: undefined,
+            destination: undefined,
+          },
+        },
+      }),
+    ).toThrow();
+  });
+
+  it("rejects old top-level provider recipient addresses", () => {
+    expect(() =>
+      validateProviderResponse({
+        ...validProviderResponse,
+        paymentInstruction: {
+          ...validProviderResponse.paymentInstruction,
+          payload: {
+            ...validProviderResponse.paymentInstruction.payload,
+            recipientAddress: "0xabc123",
           },
         },
       }),

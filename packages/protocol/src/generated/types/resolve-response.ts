@@ -57,7 +57,10 @@ export interface ProviderPayload {
   chain: string;
   network: string;
   asset: string;
-  recipientAddress: string;
+  destination: {
+    kind: "blockchain_address";
+    recipientAddress: string;
+  };
   amount: string;
   reference: string;
   expiresAt: string;

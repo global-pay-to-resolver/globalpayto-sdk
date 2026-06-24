@@ -110,13 +110,28 @@
     "providerPayload": {
       "type": "object",
       "additionalProperties": true,
-      "required": ["providerIntentId", "chain", "network", "asset", "recipientAddress", "amount", "reference", "expiresAt"],
+      "required": ["providerIntentId", "chain", "network", "asset", "destination", "amount", "reference", "expiresAt"],
+      "not": {
+        "anyOf": [
+          { "required": ["recipientAddress"] },
+          { "required": ["address"] },
+          { "required": ["account"] }
+        ]
+      },
       "properties": {
         "providerIntentId": { "type": "string", "minLength": 1 },
         "chain": { "type": "string", "minLength": 1 },
         "network": { "type": "string", "minLength": 1 },
         "asset": { "type": "string", "minLength": 1 },
-        "recipientAddress": { "type": "string", "minLength": 1 },
+        "destination": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "recipientAddress"],
+          "properties": {
+            "kind": { "const": "blockchain_address" },
+            "recipientAddress": { "type": "string", "minLength": 1 }
+          }
+        },
         "amount": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$" },
         "reference": { "type": "string", "minLength": 1 },
         "expiresAt": { "type": "string", "format": "date-time" }

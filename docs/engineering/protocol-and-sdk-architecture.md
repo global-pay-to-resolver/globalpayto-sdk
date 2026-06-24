@@ -182,7 +182,10 @@ Resolved response shape:
         "chain": "base",
         "network": "mainnet",
         "asset": "USDC",
-        "recipientAddress": "0xabc...",
+        "destination": {
+          "kind": "blockchain_address",
+          "recipientAddress": "0xabc..."
+        },
         "amount": "25.00",
         "reference": "smartrust:st_pi_456",
         "expiresAt": "2026-06-24T20:00:00Z"
@@ -197,7 +200,7 @@ Resolved response shape:
 }
 ```
 
-The protocol validates the GlobalPayTo envelope and the required `provider_json.payload` keys defined in `mvp-api-contracts.md`, including `providerIntentId`, `chain`, `network`, `asset`, `recipientAddress`, `amount`, `reference`, and `expiresAt`. It does not render external protocol formats in the MVP.
+The protocol validates the GlobalPayTo envelope and the required `provider_json.payload` keys defined in `mvp-api-contracts.md`, including `providerIntentId`, `chain`, `network`, `asset`, `destination`, `amount`, `reference`, and `expiresAt`. MVP provider destinations use `destination.kind = "blockchain_address"` with a nested `recipientAddress`; top-level address fields are rejected. The protocol does not render external protocol formats in the MVP.
 
 ## Status Values
 

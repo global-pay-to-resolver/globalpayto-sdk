@@ -91,7 +91,10 @@ export const validProviderResponse: ProviderResponse = {
       chain: "base",
       network: "mainnet",
       asset: "USDC",
-      recipientAddress: "0xabc123",
+      destination: {
+        kind: "blockchain_address",
+        recipientAddress: "0xabc123",
+      },
       amount: "25.00",
       reference: "smartrust:st_pi_456",
       expiresAt: "2026-06-24T20:00:00Z",
