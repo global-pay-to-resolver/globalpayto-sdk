@@ -96,9 +96,9 @@ Acceptance notes:
 
 ### GPTS-S1-T7 Finalize Cubid Comms Notification Event Contracts
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete  
+Feature branch: main  
+Session log: agent-context/session-log/main.md  
 Depends on: globalpayto-sdk:GPTS-S1-T1, globalpayto-sdk:GPTS-S1-T5
 
 Define public Cubid comms event payload types for user-visible resolver notifications such as payment intent created, payment received, and user action required.

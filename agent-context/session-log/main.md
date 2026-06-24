@@ -60,3 +60,12 @@ head: d73727f
 summary: Completed GPTS-S1-T6 by finalizing MVP contract versioning and compatibility rules.
 validation: Confirmed schema names for globalpayto.intent.v1 and globalpayto.notification.v1 and documented pre-release and post-release compatibility expectations.
 follow-ups: Finish SDK Sprint 1 with Cubid comms notification event contracts.
+
+---
+
+agent: Codex
+branch: main
+head: 85efcc2
+summary: Completed GPTS-S1-T7 by finalizing public Cubid comms notification event contracts.
+validation: Confirmed notification payloads use globalpayto.notification.v1 and omit wallet graphs, unrelated PayToDapps, route preferences, raw identifiers, and private diagnostics.
+follow-ups: SDK Sprint 2 can implement protocol schemas and package exports from the finalized Sprint 1 contracts.
