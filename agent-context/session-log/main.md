@@ -87,3 +87,12 @@ head: a3629cd
 summary: Completed GPTS-S2-T1 by adding the runnable PNPM TypeScript workspace and @globalpayto/protocol package with JSON Schema source files, generated TypeScript exports, Ajv validators, protocol fixtures, and validation tests.
 validation: Ran pnpm --filter @globalpayto/protocol typecheck, test, and build; protocol tests covered valid fixtures plus forbidden address fields, missing network, malformed action URLs, bad provider payloads, and unsupported notification events.
 follow-ups: Continue SDK Sprint 2 with PayingDapp helper implementation on top of the generated protocol types and validators.
+
+---
+
+agent: Codex
+branch: main
+head: 8c5080e
+summary: Completed GPTS-S2-T2 by adding @globalpayto/sdk PayingDapp helpers for resolve request construction, response parsing, status narrowing, action URL access, and Cubid comms notification guards.
+validation: Ran pnpm --filter @globalpayto/sdk typecheck, test, and build; helper tests covered request validation, resolved/action-required narrowing, action URL access, and notification parsing.
+follow-ups: Continue SDK Sprint 2 with PayToDapp provider helper implementation.
