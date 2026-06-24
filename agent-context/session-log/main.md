@@ -123,3 +123,12 @@ head: e04f921
 summary: Repaired the public provider payload contract before Sprint 3 so SDK schemas, fixtures, generated types, tests, and engineering docs use a typed destination object instead of top-level recipientAddress.
 validation: Ran pnpm generate, pnpm typecheck, pnpm test, and pnpm build; protocol tests now reject old top-level provider recipientAddress payloads.
 follow-ups: Continue SDK Sprint 3 with runnable PayingDapp and PayToDapp examples on the corrected payload contract.
+
+---
+
+agent: Codex
+branch: main
+head: 2820496
+summary: Completed GPTS-S3-T1 by adding a runnable PayingDapp basic example that builds a resolve request, uses public SDK/testing helpers, and handles resolved, no-route, route-selection, and provider-unavailable outcomes.
+validation: Ran pnpm example:paying-dapp, pnpm typecheck, pnpm test, and pnpm build; the example printed the resolved intent destination plus action URLs and retry guidance for non-resolved states.
+follow-ups: Continue SDK Sprint 3 with the PayToDapp Modality B route-registration and provider-callback example.

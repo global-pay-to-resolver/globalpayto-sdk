@@ -6,9 +6,9 @@ This document tracks MVP implementation work for the public developer-facing pro
 
 ### GPTS-S1-T1 Finalize Public API Status Model
 
-Status: Complete  
-Feature branch: main  
-Session log: agent-context/session-log/main.md  
+Status: Complete
+Feature branch: main
+Session log: agent-context/session-log/main.md
 Depends on: TBD
 
 Define the public resolver status set, status meanings, and integrator-facing handling guidance for `resolved`, `no_route`, `user_action_required`, `authorization_required`, `unsupported_path`, `provider_unavailable`, `provider_error`, `expired_authorization`, `revoked_authorization`, `invalid_identifier`, and `invalid_request`.
@@ -21,9 +21,9 @@ Acceptance notes:
 
 ### GPTS-S1-T2 Finalize Route Registration Contract
 
-Status: Complete  
-Feature branch: main  
-Session log: agent-context/session-log/main.md  
+Status: Complete
+Feature branch: main
+Session log: agent-context/session-log/main.md
 Depends on: TBD
 
 Define the PayToDapp route registration request, route CRUD response shapes, validation rules, and `user_action_required` behavior for overlapping routes.
@@ -183,9 +183,9 @@ Acceptance notes:
 
 ### GPTS-S3-T1 Build PayingDapp Basic Example
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete
+Feature branch: main
+Session log: agent-context/session-log/main.md
 Depends on: globalpayto-sdk:GPTS-S2-T2, globalpayto-sdk:GPTS-S2-T4
 
 Build a runnable example showing a PayingDapp resolving a verified-stamp recipient into a GlobalPayTo JSON intent.
