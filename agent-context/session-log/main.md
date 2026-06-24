@@ -42,3 +42,12 @@ head: ba3d8e9
 summary: Completed GPTS-S1-T4 by finalizing the resolver-to-PayToDapp provider intent callback contract.
 validation: Confirmed callback shape includes resolver request id, recipient alias, selected path, amount, purpose, expiry, and authentication/replay-protection requirements.
 follow-ups: Continue SDK Sprint 1 with intent, versioning, and notification contracts.
+
+---
+
+agent: Codex
+branch: main
+head: f3b8c1a
+summary: Completed GPTS-S1-T5 by finalizing the GlobalPayTo intent schema design.
+validation: Confirmed the intent uses globalpayto.intent.v1, provider_json payment instructions, single-use defaults, and no external protocol renderer commitments.
+follow-ups: Continue SDK Sprint 1 with versioning and notification contracts.

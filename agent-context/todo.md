@@ -66,9 +66,9 @@ Acceptance notes:
 
 ### GPTS-S1-T5 Finalize GlobalPayTo Intent Schema
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete  
+Feature branch: main  
+Session log: agent-context/session-log/main.md  
 Depends on: TBD
 
 Define `globalpayto.intent.v1`, including intent id, status, modality, recipient hash, selected route, amount, expiry, single-use flag, payment instruction, and references.
