@@ -96,3 +96,12 @@ head: 8c5080e
 summary: Completed GPTS-S2-T2 by adding @globalpayto/sdk PayingDapp helpers for resolve request construction, response parsing, status narrowing, action URL access, and Cubid comms notification guards.
 validation: Ran pnpm --filter @globalpayto/sdk typecheck, test, and build; helper tests covered request validation, resolved/action-required narrowing, action URL access, and notification parsing.
 follow-ups: Continue SDK Sprint 2 with PayToDapp provider helper implementation.
+
+---
+
+agent: Codex
+branch: main
+head: 4aa94e9
+summary: Completed GPTS-S2-T3 by adding @globalpayto/provider-sdk helpers for route registration validation, provider callback parsing, provider response parsing, response-to-callback matching, and auth/replay integration hooks.
+validation: Ran pnpm --filter @globalpayto/provider-sdk typecheck, test, and build; tests covered route registration, callback/response validation, mismatch rejection, and replay hook behavior.
+follow-ups: Finish SDK Sprint 2 with shared testing fixtures and mock services.

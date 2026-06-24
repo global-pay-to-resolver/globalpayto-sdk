@@ -149,9 +149,9 @@ Acceptance notes:
 
 ### GPTS-S2-T3 Implement PayToDapp Provider SDK Helpers
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete  
+Feature branch: main  
+Session log: agent-context/session-log/main.md  
 Depends on: globalpayto-sdk:GPTS-S2-T1
 
 Implement `@globalpayto/provider-sdk` helpers for PayToDapp route registration and Modality B intent callbacks.
