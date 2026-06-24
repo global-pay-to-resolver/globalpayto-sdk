@@ -159,3 +159,12 @@ head: 93491b1
 summary: Completed GPTS-S3-T4 by adding public integration guides for PayingDapps, PayToDapps, status/action handling, Cubid comms notifications, and reusable testing fixtures.
 validation: Ran pnpm typecheck, pnpm test, and pnpm build; scanned public docs and examples for private-repo links, stale payment_received/payment received MVP language, and stale top-level provider recipientAddress guidance.
 follow-ups: SDK Sprint 3 is ready for backend and site Sprint 3 consumers to use the public examples and guides.
+
+---
+
+agent: Codex
+branch: main
+head: e1a4562
+summary: Completed GPTS-S4-T1 by expanding protocol contract validation tests to cover every public status response shape, forbidden route-registration payment fields, action URL requirements, provider payload address leakage, and Cubid comms notification limits.
+validation: Ran pnpm --filter @globalpayto/protocol test, typecheck, and build; protocol tests now cover 25 passing workspace test cases during the filtered run.
+follow-ups: Continue SDK Sprint 4 with PayToDapp provider conformance tests for callback auth, replay, malformed payloads, and provider error behavior.

@@ -36,9 +36,9 @@ Acceptance notes:
 
 ### GPTS-S1-T3 Finalize Resolve Request And Response Contract
 
-Status: Complete  
-Feature branch: main  
-Session log: agent-context/session-log/main.md  
+Status: Complete
+Feature branch: main
+Session log: agent-context/session-log/main.md
 Depends on: TBD
 
 Define the PayingDapp resolve request and response contracts, including recipient stamp input, supported paths, amount, purpose, intent mode, PayingDapp reference, and safe action URLs.
@@ -52,9 +52,9 @@ Acceptance notes:
 
 ### GPTS-S1-T4 Finalize Provider Intent Callback Contract
 
-Status: Complete  
-Feature branch: main  
-Session log: agent-context/session-log/main.md  
+Status: Complete
+Feature branch: main
+Session log: agent-context/session-log/main.md
 Depends on: TBD
 
 Define the resolver-to-PayToDapp payment intent callback request and expected provider response shape.
@@ -133,9 +133,9 @@ Acceptance notes:
 
 ### GPTS-S2-T2 Implement PayingDapp SDK Helpers
 
-Status: Complete  
-Feature branch: main  
-Session log: agent-context/session-log/main.md  
+Status: Complete
+Feature branch: main
+Session log: agent-context/session-log/main.md
 Depends on: globalpayto-sdk:GPTS-S2-T1
 
 Implement `@globalpayto/sdk` helpers for PayingDapp integrations.
@@ -247,9 +247,9 @@ Acceptance notes:
 
 ### GPTS-S4-T1 Add Contract Validation Tests
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete
+Feature branch: main
+Session log: agent-context/session-log/main.md
 Depends on: globalpayto-sdk:GPTS-S2-T1
 
 Add automated tests proving all public request and response schemas accept valid fixtures and reject invalid fixtures.
