@@ -4,6 +4,11 @@ Public developer-facing protocol and SDK workspace for GlobalPayTo.
 
 This repo should become the source of truth for request and response contracts, client SDKs, provider helpers, mocks, examples, and integration documentation.
 
+## Architecture
+
+- [Protocol and SDK architecture](docs/engineering/protocol-and-sdk-architecture.md)
+- Hosted user-action UX lives in the sibling `globalpayto-site` repo.
+
 ## Intended Packages
 
 - `@globalpayto/protocol`
@@ -25,4 +30,3 @@ This repo should become the source of truth for request and response contracts, 
 ## Development Status
 
 This is a scaffolded repo. Build, test, package, and publishing commands should be added when the first package lands.
-
