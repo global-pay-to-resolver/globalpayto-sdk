@@ -51,9 +51,9 @@ Acceptance notes:
 
 ### GPTS-S1-T4 Finalize Provider Intent Callback Contract
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete  
+Feature branch: main  
+Session log: agent-context/session-log/main.md  
 Depends on: TBD
 
 Define the resolver-to-PayToDapp payment intent callback request and expected provider response shape.

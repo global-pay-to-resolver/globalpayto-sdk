@@ -33,3 +33,12 @@ head: aed203b
 summary: Completed GPTS-S1-T3 by finalizing the PayingDapp resolve request and response contract.
 validation: Confirmed the contract covers resolved, no_route, and user_action_required responses without exposing wallet graph or preference details.
 follow-ups: Continue SDK Sprint 1 with callback, intent, versioning, and notification contracts.
+
+---
+
+agent: Codex
+branch: main
+head: ba3d8e9
+summary: Completed GPTS-S1-T4 by finalizing the resolver-to-PayToDapp provider intent callback contract.
+validation: Confirmed callback shape includes resolver request id, recipient alias, selected path, amount, purpose, expiry, and authentication/replay-protection requirements.
+follow-ups: Continue SDK Sprint 1 with intent, versioning, and notification contracts.
