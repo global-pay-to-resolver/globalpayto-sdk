@@ -105,3 +105,12 @@ head: 4aa94e9
 summary: Completed GPTS-S2-T3 by adding @globalpayto/provider-sdk helpers for route registration validation, provider callback parsing, provider response parsing, response-to-callback matching, and auth/replay integration hooks.
 validation: Ran pnpm --filter @globalpayto/provider-sdk typecheck, test, and build; tests covered route registration, callback/response validation, mismatch rejection, and replay hook behavior.
 follow-ups: Finish SDK Sprint 2 with shared testing fixtures and mock services.
+
+---
+
+agent: Codex
+branch: main
+head: 7012b29
+summary: Completed GPTS-S2-T4 by adding @globalpayto/testing fixtures and mocks for resolver responses, Cubid validation, PayToDapp callbacks, provider responses, forbidden route-registration fields, and the MVP payment_intent_created notification event.
+validation: Ran pnpm typecheck, pnpm test, and pnpm build across the SDK workspace; all four packages passed.
+follow-ups: Backend Sprint 2 can now use the SDK protocol contracts as the dependency gate for Postgres design and implementation.
