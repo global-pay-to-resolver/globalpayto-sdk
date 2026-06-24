@@ -20,6 +20,7 @@ Planned packages:
 - `@globalpayto/sdk`: client helpers for PayingDapp and resolver integrations.
 - `@globalpayto/provider-sdk`: helpers for PayToDapp route registration and Modality B intent callbacks.
 - `@globalpayto/testing`: mock resolver, mock Cubid validator, mock PayToDapp, fixtures, and conformance test vectors.
+- Notification-related public event types belong in `@globalpayto/protocol`; delivery uses Cubid comms rather than a GlobalPayTo notification provider SDK.
 
 The public protocol package should be importable by both integrators and the private resolver backend.
 
@@ -32,6 +33,7 @@ The MVP protocol supports:
 - PayingDapp resolution requests,
 - resolver-to-PayToDapp Modality B payment-intent callback schemas,
 - GlobalPayTo JSON intent responses,
+- public notification event types for Cubid comms payloads,
 - safe action/status responses.
 
 The MVP protocol does not support:
@@ -41,7 +43,8 @@ The MVP protocol does not support:
 - resolver-built Modality A intents,
 - swaps, bridges, streams, recurring payments, refunds, or settlement guarantees,
 - ERC-681, Solana Pay, WalletConnect Pay, ENS, FIO, Request Network, Stripe, Circle, Coinbase Commerce, or hosted payment link rendering,
-- public profile or directory APIs.
+- public profile or directory APIs,
+- notification inbox APIs, marketing notification APIs, or non-Cubid notification provider APIs.
 
 ## Public API Shapes
 
@@ -205,6 +208,16 @@ Public statuses:
 
 SDK helpers should make it easy for integrators to branch on these statuses without relying on private backend diagnostics.
 
+## Notification Event Types
+
+The MVP public protocol should define Cubid comms event payload types for user-visible resolver events. Initial examples are:
+
+- `payment_intent_created`
+- `payment_received`
+- `user_action_required`
+
+Notification payloads must use masked display values, public references, and action URLs when needed. They must not include wallet graphs, unrelated PayToDapps, route preferences, provider internals, raw identifiers, or private backend diagnostics.
+
 ## SDK Helpers
 
 `@globalpayto/sdk` should provide:
@@ -212,6 +225,7 @@ SDK helpers should make it easy for integrators to branch on these statuses with
 - request builders for PayingDapp resolution,
 - schema validation for responses,
 - status narrowing helpers,
+- notification event type guards for Cubid comms payloads,
 - retry guidance for provider or resolver availability failures,
 - typed handling for `user_action_required` and `no_route` setup URLs.
 
@@ -225,6 +239,7 @@ SDK helpers should make it easy for integrators to branch on these statuses with
 `@globalpayto/testing` should provide:
 
 - mock resolver responses for each public status,
+- mock Cubid comms notification events,
 - mock PayToDapp callback fixtures,
 - invalid route registration fixtures that include forbidden address/account fields,
 - happy-path verified-stamp fixtures,
@@ -239,6 +254,7 @@ Public docs should explain:
 - how PayingDapps request payment intents,
 - how PayToDapps implement payment-intent callbacks,
 - how `no_route` and `user_action_required` should be handled,
+- how Cubid comms notifications such as payment received are shaped and what data they intentionally omit,
 - privacy boundaries and anti-enumeration behavior at the contract level.
 
 Public docs should not describe private storage layouts, RLS policy details, service-role usage, deployment wiring, private logs, or private admin processes.
@@ -247,7 +263,7 @@ Public docs should not describe private storage layouts, RLS policy details, ser
 
 The SDK architecture is MVP-complete when:
 
-- schemas exist for route registration, resolve requests, callback requests, intents, and statuses,
+- schemas exist for route registration, resolve requests, callback requests, intents, statuses, and public Cubid comms notification event payloads,
 - TypeScript types are generated or exported from the same schema source,
 - examples cover PayingDapp resolution and PayToDapp Modality B registration,
 - testing fixtures cover happy path, no route, route selection required, invalid identifier, provider failure, and forbidden address registration,
