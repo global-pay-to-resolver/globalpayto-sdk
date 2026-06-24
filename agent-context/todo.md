@@ -81,9 +81,9 @@ Acceptance notes:
 
 ### GPTS-S1-T6 Define Contract Versioning And Compatibility Rules
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete  
+Feature branch: main  
+Session log: agent-context/session-log/main.md  
 Depends on: TBD
 
 Define how protocol versions, schema names, SDK exports, and breaking changes are managed before the first package release.

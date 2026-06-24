@@ -51,3 +51,12 @@ head: f3b8c1a
 summary: Completed GPTS-S1-T5 by finalizing the GlobalPayTo intent schema design.
 validation: Confirmed the intent uses globalpayto.intent.v1, provider_json payment instructions, single-use defaults, and no external protocol renderer commitments.
 follow-ups: Continue SDK Sprint 1 with versioning and notification contracts.
+
+---
+
+agent: Codex
+branch: main
+head: d73727f
+summary: Completed GPTS-S1-T6 by finalizing MVP contract versioning and compatibility rules.
+validation: Confirmed schema names for globalpayto.intent.v1 and globalpayto.notification.v1 and documented pre-release and post-release compatibility expectations.
+follow-ups: Finish SDK Sprint 1 with Cubid comms notification event contracts.
