@@ -21,9 +21,9 @@ Acceptance notes:
 
 ### GPTS-S1-T2 Finalize Route Registration Contract
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete  
+Feature branch: main  
+Session log: agent-context/session-log/main.md  
 Depends on: TBD
 
 Define the PayToDapp route registration request, route CRUD response shapes, validation rules, and `user_action_required` behavior for overlapping routes.

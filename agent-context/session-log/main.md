@@ -15,3 +15,12 @@ head: 4d7a56a
 summary: Completed GPTS-S1-T1 by finalizing the public resolver status model in the MVP API contracts doc.
 validation: Confirmed the status set matches the PRD and protocol architecture doc and separates public statuses from private diagnostics.
 follow-ups: Continue SDK Sprint 1 with route registration, resolve, callback, intent, versioning, and notification contracts.
+
+---
+
+agent: Codex
+branch: main
+head: 0e93d90
+summary: Completed GPTS-S1-T2 by finalizing the PayToDapp route registration contract and overlap action behavior.
+validation: Confirmed the route contract rejects address/account/payment-instruction fields and preserves the Modality B boundary.
+follow-ups: Continue SDK Sprint 1 with resolve, callback, intent, versioning, and notification contracts.
