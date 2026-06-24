@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.25.0",
   "scripts": {
     "build": "pnpm -r build",
+    "clean": "pnpm -r --filter './packages/*' exec rm -rf dist",
     "example:paying-dapp": "pnpm --filter @globalpayto/example-paying-dapp-basic start",
     "example:payto-dapp": "pnpm --filter @globalpayto/example-payto-dapp-modality-b start",
     "generate": "pnpm --filter @globalpayto/protocol generate",
+    "pack:dry-run": "pnpm -r --filter './packages/*' exec npm pack --dry-run",
     "test": "pnpm -r test",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "validate": "pnpm generate && pnpm typecheck && pnpm test && pnpm clean && pnpm build"
   },
   "devDependencies": {
     "@types/node": "^20.19.1",

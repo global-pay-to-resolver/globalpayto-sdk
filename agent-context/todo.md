@@ -278,9 +278,9 @@ Acceptance notes:
 
 ### GPTS-S4-T3 Add Package Build And Publish Workflow
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete
+Feature branch: main
+Session log: agent-context/session-log/main.md
 Depends on: globalpayto-sdk:GPTS-S2-T1, globalpayto-sdk:GPTS-S2-T2, globalpayto-sdk:GPTS-S2-T3, globalpayto-sdk:GPTS-S2-T4
 
 Add package manifests, build scripts, test scripts, and publishing workflow scaffolding for the public SDK packages.

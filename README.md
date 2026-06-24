@@ -30,4 +30,51 @@ This repo should become the source of truth for request and response contracts, 
 
 ## Development Status
 
-This is a scaffolded repo. Build, test, package, and publishing commands should be added when the first package lands.
+The SDK workspace now has runnable protocol, client SDK, provider SDK, testing, and example packages.
+
+## Local Development
+
+Install dependencies:
+
+```sh
+pnpm install
+```
+
+Regenerate protocol TypeScript types from JSON Schema:
+
+```sh
+pnpm generate
+```
+
+Run the full local validation sequence:
+
+```sh
+pnpm run validate
+```
+
+Run individual checks:
+
+```sh
+pnpm typecheck
+pnpm test
+pnpm build
+```
+
+Run examples:
+
+```sh
+pnpm example:paying-dapp
+pnpm example:payto-dapp
+```
+
+Dry-run package packing for the public packages:
+
+```sh
+pnpm pack:dry-run
+```
+
+## Publishing
+
+Publishing is scaffolded through `.github/workflows/publish.yml`. The workflow validates the workspace before publishing and requires `NPM_TOKEN` for real publishes. Normal pushes do not publish packages.
+
+Real package publishing is intended for `sdk-v*` tags or an explicit manual workflow dispatch with `dry_run` set to `false`.

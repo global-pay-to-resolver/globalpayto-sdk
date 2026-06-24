@@ -177,3 +177,12 @@ head: 90432f6
 summary: Completed GPTS-S4-T2 by adding PayToDapp provider conformance tests for valid callback handling, Cubid alias-only callbacks, auth freshness and replay expectations, provider error status rejection, malformed provider payload rejection, callback/response matching, and GlobalPayTo intent-envelope containment.
 validation: Ran pnpm --filter @globalpayto/provider-sdk test, typecheck, and build; provider conformance added seven passing cases and the filtered run covered 32 passing workspace tests.
 follow-ups: Continue SDK Sprint 4 with package build and publish workflow scaffolding.
+
+---
+
+agent: Codex
+branch: main
+head: 19b638a
+summary: Completed GPTS-S4-T3 by adding package publish metadata, a clean workspace validation script, package dry-run packing, CI workflow coverage, guarded npm publish workflow scaffolding, and README build/test/publish instructions.
+validation: Ran pnpm run validate and pnpm run pack:dry-run; validation regenerated protocol types, typechecked, tested, cleaned, built, and dry-run packed protocol, SDK, provider SDK, and testing packages without test files in package tarballs.
+follow-ups: Finish SDK Sprint 4 by reviewing public docs, examples, and README files for private backend leakage.
