@@ -27,6 +27,11 @@ export interface ReplayStore {
   remember(key: string, expiresAt: string): void | Promise<void>;
 }
 
+export interface CallbackFreshnessOptions {
+  now?: Date;
+  maxFutureSkewMs?: number;
+}
+
 export function buildRouteRegistrationRequest(input: RouteRegistrationRequest): RouteRegistrationRequest {
   return validateRouteRegistrationRequest(input);
 }
@@ -43,11 +48,18 @@ export async function verifyCallbackAuth(
   envelope: CallbackAuthEnvelope,
   verifier: CallbackAuthVerifier,
   replayStore: ReplayStore,
+  options: CallbackFreshnessOptions = {},
 ): Promise<boolean> {
-  // REVIEW: Replay protection is necessary but not enough: this helper does not reject expired
-  // envelopes, future timestamps, or stale callback windows before invoking the verifier. Add
-  // clock-skew-aware `timestamp`/`expiresAt` checks so PayToDapps do not all have to rediscover
-  // the same freshness rules.
+  const now = options.now ?? new Date();
+  const maxFutureSkewMs = options.maxFutureSkewMs ?? 5 * 60 * 1000;
+  const timestampMs = Date.parse(envelope.timestamp);
+  const expiresAtMs = Date.parse(envelope.expiresAt);
+
+  if (!Number.isFinite(timestampMs) || !Number.isFinite(expiresAtMs)) return false;
+  if (expiresAtMs <= now.getTime()) return false;
+  if (timestampMs > now.getTime() + maxFutureSkewMs) return false;
+  if (timestampMs > expiresAtMs) return false;
+
   const replayKey = `${envelope.resolverRequestId}:${envelope.nonce}:${envelope.timestamp}`;
 
   if (await replayStore.has(replayKey)) {
@@ -69,17 +81,15 @@ export function assertProviderResponseMatchesCallback(
   response: ProviderResponse,
 ): ProviderResponse {
   const payload = response.paymentInstruction.payload;
-  // REVIEW: This validates path and amount, but not response identity/idempotency. Also require the
-  // top-level provider intent id to match `payload.providerIntentId`, and document how a repeated
-  // `resolverRequestId` should map to the same provider intent instead of minting another one.
 
   if (
     payload.chain !== callback.selectedPath.chain ||
     payload.network !== callback.selectedPath.network ||
     payload.asset !== callback.selectedPath.asset ||
-    payload.amount !== callback.amount.value
+    payload.amount !== callback.amount.value ||
+    payload.providerIntentId !== response.providerIntentId
   ) {
-    throw new Error("Provider response does not match callback request path or amount");
+    throw new Error("Provider response does not match callback request");
   }
 
   return response;

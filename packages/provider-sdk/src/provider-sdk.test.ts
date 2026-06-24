@@ -71,7 +71,54 @@ describe("@globalpayto/provider-sdk", () => {
     const replayStore = createMemoryReplayStore();
     const verifier = { verify: () => true };
 
-    await expect(verifyCallbackAuth(authEnvelope, verifier, replayStore)).resolves.toBe(true);
-    await expect(verifyCallbackAuth(authEnvelope, verifier, replayStore)).resolves.toBe(false);
+    await expect(
+      verifyCallbackAuth(authEnvelope, verifier, replayStore, {
+        now: new Date("2026-06-24T20:01:00Z"),
+      }),
+    ).resolves.toBe(true);
+    await expect(
+      verifyCallbackAuth(authEnvelope, verifier, replayStore, {
+        now: new Date("2026-06-24T20:01:00Z"),
+      }),
+    ).resolves.toBe(false);
+  });
+
+  it("rejects expired and far-future callback envelopes before verifier work", async () => {
+    const replayStore = createMemoryReplayStore();
+    const verifier = { verify: () => {
+      throw new Error("verifier should not be called");
+    } };
+
+    await expect(
+      verifyCallbackAuth(
+        { ...authEnvelope, expiresAt: "2026-06-24T19:59:00Z" },
+        verifier,
+        replayStore,
+        { now: new Date("2026-06-24T20:01:00Z") },
+      ),
+    ).resolves.toBe(false);
+    await expect(
+      verifyCallbackAuth(
+        { ...authEnvelope, timestamp: "2026-06-24T20:20:00Z" },
+        verifier,
+        replayStore,
+        { now: new Date("2026-06-24T20:01:00Z") },
+      ),
+    ).resolves.toBe(false);
+  });
+
+  it("rejects provider response id mismatch", () => {
+    expect(() =>
+      assertProviderResponseMatchesCallback(validProviderCallbackRequest, {
+        ...validProviderResponse,
+        paymentInstruction: {
+          ...validProviderResponse.paymentInstruction,
+          payload: {
+            ...validProviderResponse.paymentInstruction.payload,
+            providerIntentId: "different_provider_intent",
+          },
+        },
+      }),
+    ).toThrow();
   });
 });

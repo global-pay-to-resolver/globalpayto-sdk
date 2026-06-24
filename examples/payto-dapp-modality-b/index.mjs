@@ -25,22 +25,40 @@ const callbackAuthEnvelope = {
   url: "https://smartrust.example.test/payment-intents",
   bodyDigest: "sha256:example-body",
   resolverRequestId: globalPayToFixtures.provider.callback.resolverRequestId,
-  signature: "example-signature",
+  signature: await hmacSignature("modality-b-test-key", [
+    "POST",
+    "https://smartrust.example.test/payment-intents",
+    "sha256:example-body",
+    globalPayToFixtures.provider.callback.resolverRequestId,
+    "example-nonce",
+    "2026-06-24T20:00:00Z",
+  ].join("\n")),
   nonce: "example-nonce",
   timestamp: "2026-06-24T20:00:00Z",
-  expiresAt: globalPayToFixtures.provider.callback.expiresAt,
+  expiresAt: "2026-06-24T20:05:00Z",
 };
 
 const replayStore = createMemoryReplayStore();
 const verifier = {
-  // REVIEW: This accepts any non-empty signature, which is easy to copy into a real integration.
-  // Replace the example with an HMAC verification stub that checks method, URL, body digest,
-  // resolver request id, nonce, and timestamp against a named test key.
-  verify: (envelope) => envelope.signature.length > 0,
+  async verify(envelope) {
+    const canonical = [
+      envelope.method,
+      envelope.url,
+      envelope.bodyDigest,
+      envelope.resolverRequestId,
+      envelope.nonce,
+      envelope.timestamp,
+    ].join("\n");
+    return envelope.signature === await hmacSignature("modality-b-test-key", canonical);
+  },
 };
 
-const firstAuthCheck = await verifyCallbackAuth(callbackAuthEnvelope, verifier, replayStore);
-const replayAuthCheck = await verifyCallbackAuth(callbackAuthEnvelope, verifier, replayStore);
+const firstAuthCheck = await verifyCallbackAuth(callbackAuthEnvelope, verifier, replayStore, {
+  now: new Date("2026-06-24T20:01:00Z"),
+});
+const replayAuthCheck = await verifyCallbackAuth(callbackAuthEnvelope, verifier, replayStore, {
+  now: new Date("2026-06-24T20:01:00Z"),
+});
 
 const callback = parseProviderCallbackRequest(globalPayToFixtures.provider.callback);
 const payToDapp = createMockPayToDapp(globalPayToFixtures.provider.response);
@@ -68,3 +86,17 @@ console.log(
     2,
   ),
 );
+
+async function hmacSignature(secret, value) {
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(value));
+  const hex = Array.from(new Uint8Array(signature), (byte) => byte.toString(16).padStart(2, "0")).join("");
+  return `sha256=${hex}`;
+}
