@@ -1,6 +1,10 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 
+// REVIEW: This scan skips `packages/**/src`, `packages/**/schemas`, and package README files even
+// though those are the public API/docs that get compiled or shipped. Add the publishable package
+// sources/schemas to the scan roots so private resolver terms cannot leak through exported comments,
+// schemas, or bundled docs.
 const roots = ["README.md", "docs", "examples"];
 const textFilePattern = /\.(md|mdx|mjs|ts|tsx|json)$/;
 const boundaryLanguage = /\b(must not|should not|do not|does not|intentionally|out of scope|without exposing|rather than)\b/i;

@@ -45,6 +45,10 @@ jobs:
 
       - name: Publish dry run
         if: github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true'
+        # REVIEW: `npm publish` does not rewrite `workspace:*` dependencies the way `pnpm publish`
+        # does. The SDK/provider/testing package manifests currently depend on
+        # `@globalpayto/protocol: workspace:*`; verify the packed manifests replace those with real
+        # semver ranges before using this workflow for public npm releases.
         run: pnpm -r --filter './packages/*' exec npm publish --dry-run --access public
 
       - name: Publish
@@ -56,4 +60,7 @@ jobs:
             echo "NPM_TOKEN is required to publish packages."
             exit 1
           fi
+          # REVIEW: Same workspace-dependency concern as the dry run above. Prefer `pnpm -r publish`
+          # or add a tarball inspection step that fails if any published package.json still contains
+          # `workspace:*`, otherwise downstream npm consumers may receive uninstallable packages.
           pnpm -r --filter './packages/*' exec npm publish --access public
