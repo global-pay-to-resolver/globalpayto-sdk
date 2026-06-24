@@ -228,9 +228,9 @@ Acceptance notes:
 
 ### GPTS-S3-T4 Write Public Integration Guides
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete
+Feature branch: main
+Session log: agent-context/session-log/main.md
 Depends on: globalpayto-sdk:GPTS-S3-T1, globalpayto-sdk:GPTS-S3-T2
 
 Write public integration docs for PayingDapps, PayToDapps, status handling, privacy boundaries, and test fixtures.

@@ -150,3 +150,12 @@ head: 00e601a
 summary: Completed GPTS-S3-T3 by reframing the PayToDapp Modality A placeholder as an explicitly out-of-scope future note and pointing implementers to the runnable Modality B MVP example.
 validation: Ran pnpm typecheck and pnpm test; scanned README, examples, docs, and TODOs to confirm Modality A no longer appears as an MVP integration path.
 follow-ups: Finish SDK Sprint 3 with public integration guides for PayingDapps, PayToDapps, status handling, notifications, and fixtures.
+
+---
+
+agent: Codex
+branch: main
+head: 93491b1
+summary: Completed GPTS-S3-T4 by adding public integration guides for PayingDapps, PayToDapps, status/action handling, Cubid comms notifications, and reusable testing fixtures.
+validation: Ran pnpm typecheck, pnpm test, and pnpm build; scanned public docs and examples for private-repo links, stale payment_received/payment received MVP language, and stale top-level provider recipientAddress guidance.
+follow-ups: SDK Sprint 3 is ready for backend and site Sprint 3 consumers to use the public examples and guides.

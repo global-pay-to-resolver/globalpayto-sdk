@@ -7,6 +7,7 @@ This repo should become the source of truth for request and response contracts, 
 ## Architecture
 
 - [Protocol and SDK architecture](docs/engineering/protocol-and-sdk-architecture.md)
+- [Public integration guides](docs/integration/README.md)
 - Hosted user-action UX lives in the sibling `globalpayto-site` repo.
 
 ## Intended Packages
