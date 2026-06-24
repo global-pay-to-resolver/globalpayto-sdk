@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/route-registration-response.schema.json",
+  "title": "RouteRegistrationResponse",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "routes"],
+      "properties": {
+        "status": { "const": "resolved" },
+        "routes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/routeRecord" }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "action"],
+      "properties": {
+        "status": { "const": "user_action_required" },
+        "action": { "$ref": "#/$defs/action" }
+      }
+    }
+  ],
+  "$defs": {
+    "routeRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "payToDappId", "chain", "network", "asset", "state"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "payToDappId": { "type": "string", "minLength": 1 },
+        "chain": { "type": "string", "minLength": 1 },
+        "network": { "type": "string", "minLength": 1 },
+        "asset": { "type": "string", "minLength": 1 },
+        "state": { "enum": ["active", "disabled", "revoked"] }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "url", "expiresAt"],
+      "properties": {
+        "type": { "enum": ["setup", "authorization", "route_selection"] },
+        "url": { "type": "string", "format": "uri" },
+        "expiresAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

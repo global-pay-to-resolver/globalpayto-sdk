@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/notification-event.schema.json",
+  "title": "NotificationEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["eventType", "schema", "recipient", "amount", "references", "action"],
+  "properties": {
+    "eventType": { "const": "payment_intent_created" },
+    "schema": { "const": "globalpayto.notification.v1" },
+    "recipient": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identifierType", "maskedDisplay"],
+      "properties": {
+        "identifierType": { "const": "verified_stamp" },
+        "maskedDisplay": { "type": "string", "minLength": 1 }
+      }
+    },
+    "amount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "currency"],
+      "properties": {
+        "value": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$" },
+        "currency": { "type": "string", "minLength": 1 }
+      }
+    },
+    "references": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resolverReference", "providerReference", "payingDappReference"],
+      "properties": {
+        "resolverReference": { "type": "string", "minLength": 1 },
+        "providerReference": { "type": "string", "minLength": 1 },
+        "payingDappReference": { "type": "string", "minLength": 1 }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": { "const": "none" }
+      }
+    }
+  }
+}

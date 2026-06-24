@@ -1,0 +1,1144 @@
+/* eslint-disable */
+// Generated from packages/protocol/schemas. Do not edit by hand.
+
+export const GlobalpaytoIntentSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/globalpayto-intent.schema.json",
+  "title": "GlobalPayToIntent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "schema",
+    "status",
+    "modality",
+    "recipient",
+    "selectedRoute",
+    "amount",
+    "expiresAt",
+    "singleUse",
+    "paymentInstruction",
+    "references"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema": {
+      "const": "globalpayto.intent.v1"
+    },
+    "status": {
+      "const": "ready"
+    },
+    "modality": {
+      "const": "provider_intent"
+    },
+    "recipient": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identifierType",
+        "identifierHash"
+      ],
+      "properties": {
+        "identifierType": {
+          "const": "verified_stamp"
+        },
+        "identifierHash": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "selectedRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "payToDappId",
+        "chain",
+        "network",
+        "asset"
+      ],
+      "properties": {
+        "payToDappId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "amount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "currency"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "singleUse": {
+      "const": true
+    },
+    "paymentInstruction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "provider",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "provider_json"
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payload": {
+          "$ref": "#/$defs/providerPayload"
+        }
+      }
+    },
+    "references": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resolverReference",
+        "providerReference",
+        "payingDappReference"
+      ],
+      "properties": {
+        "resolverReference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "providerReference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payingDappReference": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "$defs": {
+    "providerPayload": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "providerIntentId",
+        "chain",
+        "network",
+        "asset",
+        "recipientAddress",
+        "amount",
+        "reference",
+        "expiresAt"
+      ],
+      "properties": {
+        "providerIntentId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipientAddress": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+} as const;
+
+export const NotificationEventSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/notification-event.schema.json",
+  "title": "NotificationEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventType",
+    "schema",
+    "recipient",
+    "amount",
+    "references",
+    "action"
+  ],
+  "properties": {
+    "eventType": {
+      "const": "payment_intent_created"
+    },
+    "schema": {
+      "const": "globalpayto.notification.v1"
+    },
+    "recipient": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identifierType",
+        "maskedDisplay"
+      ],
+      "properties": {
+        "identifierType": {
+          "const": "verified_stamp"
+        },
+        "maskedDisplay": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "amount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "currency"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "references": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resolverReference",
+        "providerReference",
+        "payingDappReference"
+      ],
+      "properties": {
+        "resolverReference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "providerReference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payingDappReference": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "const": "none"
+        }
+      }
+    }
+  }
+} as const;
+
+export const ProviderCallbackRequestSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/provider-callback-request.schema.json",
+  "title": "ProviderCallbackRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resolverRequestId",
+    "recipient",
+    "payingDappId",
+    "selectedPath",
+    "amount",
+    "purpose",
+    "expiresAt"
+  ],
+  "properties": {
+    "resolverRequestId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recipient": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identifierType",
+        "identifierAlias"
+      ],
+      "properties": {
+        "identifierType": {
+          "const": "verified_stamp"
+        },
+        "identifierAlias": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "payingDappId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selectedPath": {
+      "$ref": "#/$defs/path"
+    },
+    "amount": {
+      "$ref": "#/$defs/amount"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "chain",
+        "network",
+        "asset"
+      ],
+      "properties": {
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "amount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "currency"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+} as const;
+
+export const ProviderResponseSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/provider-response.schema.json",
+  "title": "ProviderResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "providerIntentId",
+    "status",
+    "paymentInstruction"
+  ],
+  "properties": {
+    "providerIntentId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "const": "ready"
+    },
+    "paymentInstruction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "provider",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "provider_json"
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payload": {
+          "$ref": "#/$defs/providerPayload"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "providerPayload": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "providerIntentId",
+        "chain",
+        "network",
+        "asset",
+        "recipientAddress",
+        "amount",
+        "reference",
+        "expiresAt"
+      ],
+      "properties": {
+        "providerIntentId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipientAddress": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+} as const;
+
+export const ResolveRequestSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/resolve-request.schema.json",
+  "title": "ResolveRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "recipient",
+    "supportedPaths",
+    "amount",
+    "purpose",
+    "intentMode",
+    "payingDappReference"
+  ],
+  "properties": {
+    "recipient": {
+      "$ref": "#/$defs/recipient"
+    },
+    "supportedPaths": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/path"
+      }
+    },
+    "amount": {
+      "$ref": "#/$defs/amount"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "intentMode": {
+      "const": "one_time"
+    },
+    "payingDappReference": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "recipient": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identifierType",
+        "identifier"
+      ],
+      "properties": {
+        "identifierType": {
+          "const": "verified_stamp"
+        },
+        "identifier": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "chain",
+        "network",
+        "asset"
+      ],
+      "properties": {
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "amount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "currency"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+} as const;
+
+export const ResolveResponseSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/resolve-response.schema.json",
+  "title": "ResolveResponse",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "intent"
+      ],
+      "properties": {
+        "status": {
+          "const": "resolved"
+        },
+        "intent": {
+          "$ref": "#/$defs/intent"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "action"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "no_route",
+            "user_action_required",
+            "authorization_required"
+          ]
+        },
+        "action": {
+          "$ref": "#/$defs/action"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "unsupported_path",
+            "provider_unavailable",
+            "provider_error",
+            "expired_authorization",
+            "revoked_authorization",
+            "invalid_identifier",
+            "invalid_request"
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "url",
+        "expiresAt"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "setup",
+            "authorization",
+            "route_selection"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "schema",
+        "status",
+        "modality",
+        "recipient",
+        "selectedRoute",
+        "amount",
+        "expiresAt",
+        "singleUse",
+        "paymentInstruction",
+        "references"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema": {
+          "const": "globalpayto.intent.v1"
+        },
+        "status": {
+          "const": "ready"
+        },
+        "modality": {
+          "const": "provider_intent"
+        },
+        "recipient": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "identifierType",
+            "identifierHash"
+          ],
+          "properties": {
+            "identifierType": {
+              "const": "verified_stamp"
+            },
+            "identifierHash": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "selectedRoute": {
+          "$ref": "#/$defs/selectedRoute"
+        },
+        "amount": {
+          "$ref": "#/$defs/amount"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "singleUse": {
+          "const": true
+        },
+        "paymentInstruction": {
+          "$ref": "#/$defs/paymentInstruction"
+        },
+        "references": {
+          "$ref": "#/$defs/references"
+        }
+      }
+    },
+    "selectedRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "payToDappId",
+        "chain",
+        "network",
+        "asset"
+      ],
+      "properties": {
+        "payToDappId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "amount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "currency"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "paymentInstruction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "provider",
+        "payload"
+      ],
+      "properties": {
+        "type": {
+          "const": "provider_json"
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payload": {
+          "$ref": "#/$defs/providerPayload"
+        }
+      }
+    },
+    "providerPayload": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "providerIntentId",
+        "chain",
+        "network",
+        "asset",
+        "recipientAddress",
+        "amount",
+        "reference",
+        "expiresAt"
+      ],
+      "properties": {
+        "providerIntentId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recipientAddress": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "references": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resolverReference",
+        "providerReference",
+        "payingDappReference"
+      ],
+      "properties": {
+        "resolverReference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "providerReference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payingDappReference": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+} as const;
+
+export const RouteRegistrationRequestSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/route-registration-request.schema.json",
+  "title": "RouteRegistrationRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "recipient",
+    "payToDappId",
+    "supportedRoutes",
+    "consentToken"
+  ],
+  "properties": {
+    "recipient": {
+      "$ref": "#/$defs/recipient"
+    },
+    "payToDappId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "supportedRoutes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/route"
+      }
+    },
+    "consentToken": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "not": {
+    "anyOf": [
+      {
+        "required": [
+          "account"
+        ]
+      },
+      {
+        "required": [
+          "address"
+        ]
+      },
+      {
+        "required": [
+          "recipientAddress"
+        ]
+      },
+      {
+        "required": [
+          "memo"
+        ]
+      },
+      {
+        "required": [
+          "paymentInstruction"
+        ]
+      },
+      {
+        "required": [
+          "paymentLink"
+        ]
+      }
+    ]
+  },
+  "$defs": {
+    "recipient": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identifierType",
+        "identifier"
+      ],
+      "properties": {
+        "identifierType": {
+          "const": "verified_stamp"
+        },
+        "identifier": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "chain",
+        "network",
+        "asset"
+      ],
+      "properties": {
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+} as const;
+
+export const RouteRegistrationResponseSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/route-registration-response.schema.json",
+  "title": "RouteRegistrationResponse",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "routes"
+      ],
+      "properties": {
+        "status": {
+          "const": "resolved"
+        },
+        "routes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/routeRecord"
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "action"
+      ],
+      "properties": {
+        "status": {
+          "const": "user_action_required"
+        },
+        "action": {
+          "$ref": "#/$defs/action"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "routeRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "payToDappId",
+        "chain",
+        "network",
+        "asset",
+        "state"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payToDappId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state": {
+          "enum": [
+            "active",
+            "disabled",
+            "revoked"
+          ]
+        }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "url",
+        "expiresAt"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "setup",
+            "authorization",
+            "route_selection"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+} as const;
+
+export const StatusSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/status.schema.json",
+  "title": "GlobalPayToStatus",
+  "type": "string",
+  "enum": [
+    "resolved",
+    "no_route",
+    "user_action_required",
+    "authorization_required",
+    "unsupported_path",
+    "provider_unavailable",
+    "provider_error",
+    "expired_authorization",
+    "revoked_authorization",
+    "invalid_identifier",
+    "invalid_request"
+  ]
+} as const;
+
+export const protocolSchemas = {
+  "globalpayto-intent": GlobalpaytoIntentSchema,
+  "notification-event": NotificationEventSchema,
+  "provider-callback-request": ProviderCallbackRequestSchema,
+  "provider-response": ProviderResponseSchema,
+  "resolve-request": ResolveRequestSchema,
+  "resolve-response": ResolveResponseSchema,
+  "route-registration-request": RouteRegistrationRequestSchema,
+  "route-registration-response": RouteRegistrationResponseSchema,
+  "status": StatusSchema,
+} as const;

@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/resolve-response.schema.json",
+  "title": "ResolveResponse",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "intent"],
+      "properties": {
+        "status": { "const": "resolved" },
+        "intent": { "$ref": "#/$defs/intent" }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "action"],
+      "properties": {
+        "status": { "enum": ["no_route", "user_action_required", "authorization_required"] },
+        "action": { "$ref": "#/$defs/action" }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "enum": [
+            "unsupported_path",
+            "provider_unavailable",
+            "provider_error",
+            "expired_authorization",
+            "revoked_authorization",
+            "invalid_identifier",
+            "invalid_request"
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "url", "expiresAt"],
+      "properties": {
+        "type": { "enum": ["setup", "authorization", "route_selection"] },
+        "url": { "type": "string", "format": "uri" },
+        "expiresAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "schema", "status", "modality", "recipient", "selectedRoute", "amount", "expiresAt", "singleUse", "paymentInstruction", "references"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "schema": { "const": "globalpayto.intent.v1" },
+        "status": { "const": "ready" },
+        "modality": { "const": "provider_intent" },
+        "recipient": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["identifierType", "identifierHash"],
+          "properties": {
+            "identifierType": { "const": "verified_stamp" },
+            "identifierHash": { "type": "string", "minLength": 1 }
+          }
+        },
+        "selectedRoute": { "$ref": "#/$defs/selectedRoute" },
+        "amount": { "$ref": "#/$defs/amount" },
+        "expiresAt": { "type": "string", "format": "date-time" },
+        "singleUse": { "const": true },
+        "paymentInstruction": { "$ref": "#/$defs/paymentInstruction" },
+        "references": { "$ref": "#/$defs/references" }
+      }
+    },
+    "selectedRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payToDappId", "chain", "network", "asset"],
+      "properties": {
+        "payToDappId": { "type": "string", "minLength": 1 },
+        "chain": { "type": "string", "minLength": 1 },
+        "network": { "type": "string", "minLength": 1 },
+        "asset": { "type": "string", "minLength": 1 }
+      }
+    },
+    "amount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "currency"],
+      "properties": {
+        "value": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$" },
+        "currency": { "type": "string", "minLength": 1 }
+      }
+    },
+    "paymentInstruction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "provider", "payload"],
+      "properties": {
+        "type": { "const": "provider_json" },
+        "provider": { "type": "string", "minLength": 1 },
+        "payload": { "$ref": "#/$defs/providerPayload" }
+      }
+    },
+    "providerPayload": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["providerIntentId", "chain", "network", "asset", "recipientAddress", "amount", "reference", "expiresAt"],
+      "properties": {
+        "providerIntentId": { "type": "string", "minLength": 1 },
+        "chain": { "type": "string", "minLength": 1 },
+        "network": { "type": "string", "minLength": 1 },
+        "asset": { "type": "string", "minLength": 1 },
+        "recipientAddress": { "type": "string", "minLength": 1 },
+        "amount": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$" },
+        "reference": { "type": "string", "minLength": 1 },
+        "expiresAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "references": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resolverReference", "providerReference", "payingDappReference"],
+      "properties": {
+        "resolverReference": { "type": "string", "minLength": 1 },
+        "providerReference": { "type": "string", "minLength": 1 },
+        "payingDappReference": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

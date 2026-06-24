@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/status.schema.json",
+  "title": "GlobalPayToStatus",
+  "type": "string",
+  "enum": [
+    "resolved",
+    "no_route",
+    "user_action_required",
+    "authorization_required",
+    "unsupported_path",
+    "provider_unavailable",
+    "provider_error",
+    "expired_authorization",
+    "revoked_authorization",
+    "invalid_identifier",
+    "invalid_request"
+  ]
+}

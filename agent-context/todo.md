@@ -117,9 +117,9 @@ Acceptance notes:
 
 ### GPTS-S2-T1 Implement Protocol Schema Package
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete  
+Feature branch: main  
+Session log: agent-context/session-log/main.md  
 Depends on: globalpayto-sdk:GPTS-S1-T1, globalpayto-sdk:GPTS-S1-T2, globalpayto-sdk:GPTS-S1-T3, globalpayto-sdk:GPTS-S1-T4, globalpayto-sdk:GPTS-S1-T5, globalpayto-sdk:GPTS-S1-T6, globalpayto-sdk:GPTS-S1-T7
 
 Implement `@globalpayto/protocol` as the source of truth for public schemas, TypeScript types, enums, error/status codes, and test vectors.

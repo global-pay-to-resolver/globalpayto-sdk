@@ -1,0 +1,18 @@
+{
+  "name": "globalpayto-sdk-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm -r build",
+    "generate": "pnpm --filter @globalpayto/protocol generate",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.1",
+    "json-schema-to-typescript": "^15.0.4",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}

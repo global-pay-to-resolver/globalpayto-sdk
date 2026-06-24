@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/provider-callback-request.schema.json",
+  "title": "ProviderCallbackRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["resolverRequestId", "recipient", "payingDappId", "selectedPath", "amount", "purpose", "expiresAt"],
+  "properties": {
+    "resolverRequestId": { "type": "string", "minLength": 1 },
+    "recipient": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identifierType", "identifierAlias"],
+      "properties": {
+        "identifierType": { "const": "verified_stamp" },
+        "identifierAlias": { "type": "string", "minLength": 1 }
+      }
+    },
+    "payingDappId": { "type": "string", "minLength": 1 },
+    "selectedPath": { "$ref": "#/$defs/path" },
+    "amount": { "$ref": "#/$defs/amount" },
+    "purpose": { "type": "string", "minLength": 1 },
+    "expiresAt": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chain", "network", "asset"],
+      "properties": {
+        "chain": { "type": "string", "minLength": 1 },
+        "network": { "type": "string", "minLength": 1 },
+        "asset": { "type": "string", "minLength": 1 }
+      }
+    },
+    "amount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "currency"],
+      "properties": {
+        "value": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$" },
+        "currency": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

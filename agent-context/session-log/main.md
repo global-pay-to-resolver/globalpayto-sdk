@@ -78,3 +78,12 @@ head: 8f04e78
 summary: Tightened SDK public contracts and TODO requirements to match the MVP PRD trust-boundary updates, including explicit route network fields, safe action-token disclosure rules, callback conformance requirements, typed provider_json payload keys, and intent-created-only Cubid comms events.
 validation: Confirmed SDK contract, architecture, and TODO docs no longer contain raw REVIEW notes, payment_received/payment received MVP requirements, legacy `to` destination fields, or vague minimum provider payload language.
 follow-ups: Implement Sprint 2 protocol schemas from these tightened SDK contracts before backend Postgres/app and site app implementation continue.
+
+---
+
+agent: Codex
+branch: main
+head: a3629cd
+summary: Completed GPTS-S2-T1 by adding the runnable PNPM TypeScript workspace and @globalpayto/protocol package with JSON Schema source files, generated TypeScript exports, Ajv validators, protocol fixtures, and validation tests.
+validation: Ran pnpm --filter @globalpayto/protocol typecheck, test, and build; protocol tests covered valid fixtures plus forbidden address fields, missing network, malformed action URLs, bad provider payloads, and unsupported notification events.
+follow-ups: Continue SDK Sprint 2 with PayingDapp helper implementation on top of the generated protocol types and validators.
