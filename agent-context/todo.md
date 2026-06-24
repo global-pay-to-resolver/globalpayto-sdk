@@ -36,9 +36,9 @@ Acceptance notes:
 
 ### GPTS-S1-T3 Finalize Resolve Request And Response Contract
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete  
+Feature branch: main  
+Session log: agent-context/session-log/main.md  
 Depends on: TBD
 
 Define the PayingDapp resolve request and response contracts, including recipient stamp input, supported paths, amount, purpose, intent mode, PayingDapp reference, and safe action URLs.

@@ -24,3 +24,12 @@ head: 0e93d90
 summary: Completed GPTS-S1-T2 by finalizing the PayToDapp route registration contract and overlap action behavior.
 validation: Confirmed the route contract rejects address/account/payment-instruction fields and preserves the Modality B boundary.
 follow-ups: Continue SDK Sprint 1 with resolve, callback, intent, versioning, and notification contracts.
+
+---
+
+agent: Codex
+branch: main
+head: aed203b
+summary: Completed GPTS-S1-T3 by finalizing the PayingDapp resolve request and response contract.
+validation: Confirmed the contract covers resolved, no_route, and user_action_required responses without exposing wallet graph or preference details.
+follow-ups: Continue SDK Sprint 1 with callback, intent, versioning, and notification contracts.
