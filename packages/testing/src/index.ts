@@ -103,6 +103,9 @@ export interface MockResolver {
 
 export function createMockResolver(response: ResolveResponse = validResolvedResponse): MockResolver {
   return {
+    // REVIEW: The mock ignores the request, so examples/tests can pass even when the caller builds
+    // an invalid path, amount, or recipient. Validate the incoming request by default, or provide a
+    // strict mock variant that catches SDK integration mistakes before teams hit the real resolver.
     async resolve() {
       return response;
     },
@@ -127,6 +130,9 @@ export function createMockPayToDapp(response: ProviderResponse = validProviderRe
 export function createPaymentIntentCreatedNotification(
   overrides: Partial<NotificationEvent> = {},
 ): NotificationEvent {
+  // REVIEW: Shallow overrides can create invalid nested notification shapes while still returning a
+  // typed `NotificationEvent`. Run the merged object through `validateNotificationEvent` so fixture
+  // customization cannot drift away from the public schema.
   return {
     ...validNotificationEvent,
     ...overrides,

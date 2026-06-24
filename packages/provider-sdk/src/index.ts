@@ -44,6 +44,10 @@ export async function verifyCallbackAuth(
   verifier: CallbackAuthVerifier,
   replayStore: ReplayStore,
 ): Promise<boolean> {
+  // REVIEW: Replay protection is necessary but not enough: this helper does not reject expired
+  // envelopes, future timestamps, or stale callback windows before invoking the verifier. Add
+  // clock-skew-aware `timestamp`/`expiresAt` checks so PayToDapps do not all have to rediscover
+  // the same freshness rules.
   const replayKey = `${envelope.resolverRequestId}:${envelope.nonce}:${envelope.timestamp}`;
 
   if (await replayStore.has(replayKey)) {
@@ -65,6 +69,9 @@ export function assertProviderResponseMatchesCallback(
   response: ProviderResponse,
 ): ProviderResponse {
   const payload = response.paymentInstruction.payload;
+  // REVIEW: This validates path and amount, but not response identity/idempotency. Also require the
+  // top-level provider intent id to match `payload.providerIntentId`, and document how a repeated
+  // `resolverRequestId` should map to the same provider intent instead of minting another one.
 
   if (
     payload.chain !== callback.selectedPath.chain ||

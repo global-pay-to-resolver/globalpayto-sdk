@@ -33,6 +33,9 @@ const callbackAuthEnvelope = {
 
 const replayStore = createMemoryReplayStore();
 const verifier = {
+  // REVIEW: This accepts any non-empty signature, which is easy to copy into a real integration.
+  // Replace the example with an HMAC verification stub that checks method, URL, body digest,
+  // resolver request id, nonce, and timestamp against a named test key.
   verify: (envelope) => envelope.signature.length > 0,
 };
 
