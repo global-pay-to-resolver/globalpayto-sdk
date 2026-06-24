@@ -6,9 +6,9 @@ This document tracks MVP implementation work for the public developer-facing pro
 
 ### GPTS-S1-T1 Finalize Public API Status Model
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete  
+Feature branch: main  
+Session log: agent-context/session-log/main.md  
 Depends on: TBD
 
 Define the public resolver status set, status meanings, and integrator-facing handling guidance for `resolved`, `no_route`, `user_action_required`, `authorization_required`, `unsupported_path`, `provider_unavailable`, `provider_error`, `expired_authorization`, `revoked_authorization`, `invalid_identifier`, and `invalid_request`.

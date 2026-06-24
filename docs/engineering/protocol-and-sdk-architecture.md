@@ -48,6 +48,8 @@ The MVP protocol does not support:
 
 ## Public API Shapes
 
+The Sprint 1 finalized wire contracts live in [`mvp-api-contracts.md`](./mvp-api-contracts.md). This section summarizes the same public surface.
+
 ### PayToDapp Route Registration
 
 ```http
