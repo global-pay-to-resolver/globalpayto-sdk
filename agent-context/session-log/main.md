@@ -69,3 +69,12 @@ head: 85efcc2
 summary: Completed GPTS-S1-T7 by finalizing public Cubid comms notification event contracts.
 validation: Confirmed notification payloads use globalpayto.notification.v1 and omit wallet graphs, unrelated PayToDapps, route preferences, raw identifiers, and private diagnostics.
 follow-ups: SDK Sprint 2 can implement protocol schemas and package exports from the finalized Sprint 1 contracts.
+
+---
+
+agent: Codex
+branch: main
+head: 8f04e78
+summary: Tightened SDK public contracts and TODO requirements to match the MVP PRD trust-boundary updates, including explicit route network fields, safe action-token disclosure rules, callback conformance requirements, typed provider_json payload keys, and intent-created-only Cubid comms events.
+validation: Confirmed SDK contract, architecture, and TODO docs no longer contain raw REVIEW notes, payment_received/payment received MVP requirements, legacy `to` destination fields, or vague minimum provider payload language.
+follow-ups: Implement Sprint 2 protocol schemas from these tightened SDK contracts before backend Postgres/app and site app implementation continue.

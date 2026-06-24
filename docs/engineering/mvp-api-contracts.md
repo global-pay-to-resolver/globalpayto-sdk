@@ -32,13 +32,15 @@ Rules:
 ```json
 {
   "chain": "base",
+  "network": "mainnet",
   "asset": "USDC"
 }
 ```
 
 Rules:
 
-- Route/path matching uses chain and asset in MVP.
+- Route/path matching uses chain, network, and asset in MVP.
+- `network` is required so SDK schemas do not accept ambiguous mainnet/testnet-style requests.
 - Route registration must not include account, address, memo, payment link, or chain-specific payment instruction fields.
 - Dynamic destination details belong only inside a selected provider intent response.
 
@@ -76,6 +78,8 @@ Public statuses:
 
 Private backend diagnostics must never appear as public statuses.
 
+Action URLs for `no_route`, `authorization_required`, and `user_action_required` are opaque, short-lived, and safe to open before authentication. They must not reveal whether the identifier, route, PayToDapp, or authorization exists until hosted-action validation and user authentication succeed.
+
 ## PayToDapp Route Registration
 
 Endpoints:
@@ -86,6 +90,8 @@ GET /functions/v1/payto-routes
 PATCH /functions/v1/payto-routes/{routeId}
 DELETE /functions/v1/payto-routes/{routeId}
 ```
+
+Route CRUD responses are scoped to the authenticated PayToDapp and the current user/action context. `GET`, `PATCH`, and `DELETE` must never expose unrelated routes, unrelated PayToDapps, user route preferences, wallet graph details, or private diagnostics.
 
 Create/update request:
 
@@ -99,6 +105,7 @@ Create/update request:
   "supportedRoutes": [
     {
       "chain": "base",
+      "network": "mainnet",
       "asset": "USDC"
     }
   ],
@@ -116,6 +123,7 @@ Resolved registration response:
       "id": "gptr_route_123",
       "payToDappId": "smartrust-wallet",
       "chain": "base",
+      "network": "mainnet",
       "asset": "USDC",
       "state": "active"
     }
@@ -161,6 +169,7 @@ Request:
   "supportedPaths": [
     {
       "chain": "base",
+      "network": "mainnet",
       "asset": "USDC"
     }
   ],
@@ -206,7 +215,10 @@ Rules:
 
 - `intentMode` is `one_time` for MVP.
 - Resolver responses must not disclose unrelated PayToDapps, route preferences, wallet graphs, or raw private identifiers.
-- Action URLs are short-lived hosted-action links.
+- Action URLs use opaque action ids or tokens and are short-lived hosted-action links.
+- Hosted action tokens are one-time or replay-protected and must be exchanged into a clean URL after validation where the site flow supports it.
+- Action URLs must not embed recipient, route, provider, authorization, wallet, preference, or diagnostic data.
+- Unauthenticated action pages must remain safe even when opened by the wrong user, crawler, browser preview, or expired session.
 
 ## Provider Intent Callback
 
@@ -228,6 +240,7 @@ Request:
   "payingDappId": "chaincrew",
   "selectedPath": {
     "chain": "base",
+    "network": "mainnet",
     "asset": "USDC"
   },
   "amount": {
@@ -251,8 +264,9 @@ Expected provider response:
     "payload": {
       "providerIntentId": "st_pi_456",
       "chain": "base",
+      "network": "mainnet",
       "asset": "USDC",
-      "to": "0xabc...",
+      "recipientAddress": "0xabc...",
       "amount": "25.00",
       "reference": "smartrust:st_pi_456",
       "expiresAt": "2026-06-24T20:00:00Z"
@@ -264,6 +278,9 @@ Expected provider response:
 Rules:
 
 - Callback authentication and replay protection are required.
+- Public conformance requires signature or equivalent auth metadata, timestamp, nonce, request expiry, and `resolverRequestId`.
+- Providers must reject callbacks outside the allowed clock-skew window, repeated nonce/timestamp combinations, and expired requests.
+- Repeated callbacks with the same `resolverRequestId` must be handled idempotently.
 - Provider response payloads are preserved inside `paymentInstruction.payload`.
 - External payment protocol rendering is out of scope for MVP.
 
@@ -284,6 +301,7 @@ Rules:
     "selectedRoute": {
       "payToDappId": "smartrust-wallet",
       "chain": "base",
+      "network": "mainnet",
       "asset": "USDC"
     },
     "amount": {
@@ -298,8 +316,9 @@ Rules:
       "payload": {
         "providerIntentId": "st_pi_456",
         "chain": "base",
+        "network": "mainnet",
         "asset": "USDC",
-        "to": "0xabc...",
+        "recipientAddress": "0xabc...",
         "amount": "25.00",
         "reference": "smartrust:st_pi_456",
         "expiresAt": "2026-06-24T20:00:00Z"
@@ -319,7 +338,26 @@ Rules:
 - `schema` is `globalpayto.intent.v1` for MVP.
 - `singleUse` defaults to `true`.
 - `paymentInstruction.type` is `provider_json`.
-- The resolver validates the envelope and minimum provider payload fields only.
+- The resolver validates the envelope and the required provider payload fields below.
+
+Required `provider_json.payload` keys:
+
+- `providerIntentId`
+- `chain`
+- `network`
+- `asset`
+- `recipientAddress`
+- `amount`
+- `reference`
+- `expiresAt`
+
+Matching rules:
+
+- `chain`, `network`, and `asset` must match the selected route/path.
+- `amount` must match `intent.amount.value`.
+- `expiresAt` must not exceed the GlobalPayTo intent expiry.
+- `recipientAddress` is the provider-selected destination for this intent and must not appear in route registration.
+- Providers may add extension fields, but SDK validators must preserve unknown extension fields without allowing them to replace required keys.
 
 ## Cubid Comms Notification Events
 
@@ -329,7 +367,7 @@ Common payload fields:
 
 ```json
 {
-  "eventType": "payment_received",
+  "eventType": "payment_intent_created",
   "schema": "globalpayto.notification.v1",
   "recipient": {
     "identifierType": "verified_stamp",
@@ -353,12 +391,12 @@ Common payload fields:
 Initial event types:
 
 - `payment_intent_created`
-- `payment_received`
-- `user_action_required`
+
+Future event candidates such as provider-reported receipt events or notification-driven user-action events require separate trust, disclosure, and callback contracts before they become public SDK events.
 
 Rules:
 
-- Notification payloads may include masked display values, public references, amounts, and action URLs when user action is needed.
+- Notification payloads may include masked display values, public references, amounts, and action URLs when allowed by the event contract.
 - Notification payloads must omit wallet graphs, unrelated PayToDapps, route preferences, provider internals, raw identifiers, and private backend diagnostics.
 - GlobalPayTo does not define a separate notification provider SDK in MVP.
 

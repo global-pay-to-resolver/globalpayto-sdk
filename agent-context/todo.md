@@ -48,6 +48,7 @@ Acceptance notes:
 - Contract supports `resolved`, `no_route`, and `user_action_required` responses.
 - Contract avoids exposing route preference data or broader wallet graph information.
 - Contract clearly identifies when integrators should redirect users to setup or route selection.
+- Safe action URLs use opaque tokens with replay/expiry behavior and response-shape constraints for `no_route`, `authorization_required`, and `user_action_required`.
 
 ### GPTS-S1-T4 Finalize Provider Intent Callback Contract
 
@@ -62,6 +63,7 @@ Acceptance notes:
 
 - Contract includes resolver request id, recipient alias, paying dapp id, selected path, amount, purpose, and expiry.
 - Contract documents authentication and replay-protection requirements without publishing private resolver secrets.
+- Contract defines provider-facing verification requirements for signature or equivalent auth metadata, timestamp/nonce handling, expiry skew, and repeated `resolverRequestId` idempotency.
 - Contract supports provider JSON payloads without requiring external protocol rendering.
 
 ### GPTS-S1-T5 Finalize GlobalPayTo Intent Schema
@@ -75,7 +77,8 @@ Define `globalpayto.intent.v1`, including intent id, status, modality, recipient
 
 Acceptance notes:
 
-- Schema validates the GlobalPayTo envelope and minimum provider payload fields.
+- Schema validates the GlobalPayTo envelope and typed `provider_json.payload` fields.
+- Required payload keys include chain, network, asset, amount, reference, expiry, and destination semantics.
 - Schema keeps provider-specific details inside `paymentInstruction.payload`.
 - Schema does not add ERC-681, Solana Pay, WalletConnect Pay, ENS, FIO, Request Network, Stripe, Circle, Coinbase Commerce, or hosted payment link renderers.
 
@@ -101,13 +104,14 @@ Feature branch: main
 Session log: agent-context/session-log/main.md  
 Depends on: globalpayto-sdk:GPTS-S1-T1, globalpayto-sdk:GPTS-S1-T5
 
-Define public Cubid comms event payload types for user-visible resolver notifications such as payment intent created, payment received, and user action required.
+Define public Cubid comms event payload types for the MVP user-visible resolver notification event, `payment_intent_created`.
 
 Acceptance notes:
 
 - Notification event types use masked display values, public references, and action URLs when needed.
 - Payloads omit wallet graphs, unrelated PayToDapps, route preferences, provider internals, raw identifiers, and private backend diagnostics.
 - Delivery is explicitly through Cubid comms, not a new GlobalPayTo notification provider SDK.
+- Provider-reported receipt and notification-driven user-action events are tracked as future contracts, not MVP notification events.
 
 ## Sprint 2: SDK Package Implementation
 
@@ -170,7 +174,8 @@ Implement `@globalpayto/testing` fixtures and mocks for protocol conformance and
 Acceptance notes:
 
 - Fixtures cover happy path, no route, route selection required, invalid identifier, provider failure, and forbidden address registration.
-- Fixtures include Cubid comms notification events for payment intent created, payment received, and user action required.
+- Fixtures include the MVP Cubid comms notification event for `payment_intent_created`.
+- Provider-reported receipt and notification-driven user-action fixtures are future/negative fixtures only.
 - Mock resolver, mock Cubid validator, and mock PayToDapp are clearly separate from production resolver behavior.
 - Test vectors are reusable by backend and site acceptance tests.
 
@@ -234,7 +239,8 @@ Acceptance notes:
 
 - Guides explain why PayToDapps submit route availability but not wallet addresses.
 - Guides explain how to handle setup and route-selection URLs.
-- Guides explain Cubid comms notification events such as payment received and the privacy limits on notification payloads.
+- Guides explain Cubid comms `payment_intent_created` notification handling and the privacy limits on notification payloads.
+- Guides reserve provider-reported receipt events for a later status-tracking phase.
 - Guides avoid private storage layouts, RLS policies, service-role usage, deployment wiring, private logs, and admin processes.
 
 ## Sprint 4: SDK Acceptance And Release Readiness

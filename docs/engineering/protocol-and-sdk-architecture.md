@@ -10,7 +10,7 @@ This public repo owns the developer-facing GlobalPayTo contract. It should becom
 
 This repo must not contain private resolver implementation details, production database access, private deployment assumptions, provider secrets, audit internals, or admin tooling.
 
-For hosted user-action UX, see the public site architecture doc in [`../../../globalpayto-site/docs/engineering/hosted-user-actions-architecture.md`](../../../globalpayto-site/docs/engineering/hosted-user-actions-architecture.md) when working from the parent workspace checkout.
+For hosted user-action UX, see the public GlobalPayTo site repository docs, especially `docs/engineering/hosted-user-actions-architecture.md` and `docs/engineering/hosted-action-contract.md`.
 
 ## Package Responsibilities
 
@@ -71,6 +71,7 @@ Route registration request:
   "supportedRoutes": [
     {
       "chain": "base",
+      "network": "mainnet",
       "asset": "USDC"
     }
   ],
@@ -97,6 +98,7 @@ Resolve request:
   "supportedPaths": [
     {
       "chain": "base",
+      "network": "mainnet",
       "asset": "USDC"
     }
   ],
@@ -128,6 +130,7 @@ Callback request:
   "payingDappId": "chaincrew",
   "selectedPath": {
     "chain": "base",
+    "network": "mainnet",
     "asset": "USDC"
   },
   "amount": {
@@ -140,6 +143,8 @@ Callback request:
 ```
 
 The callback contract must document authentication and replay-protection requirements without publishing resolver secrets.
+
+Provider SDK helpers must expose concrete verification interfaces for signed requests or equivalent auth metadata, nonce/timestamp checks, expiry skew, and repeated `resolverRequestId` idempotency so conformance tests can prove callbacks are accepted or rejected consistently.
 
 ## GlobalPayTo JSON Intent
 
@@ -160,6 +165,7 @@ Resolved response shape:
     "selectedRoute": {
       "payToDappId": "smartrust-wallet",
       "chain": "base",
+      "network": "mainnet",
       "asset": "USDC"
     },
     "amount": {
@@ -174,8 +180,9 @@ Resolved response shape:
       "payload": {
         "providerIntentId": "st_pi_456",
         "chain": "base",
+        "network": "mainnet",
         "asset": "USDC",
-        "to": "0xabc...",
+        "recipientAddress": "0xabc...",
         "amount": "25.00",
         "reference": "smartrust:st_pi_456",
         "expiresAt": "2026-06-24T20:00:00Z"
@@ -190,7 +197,7 @@ Resolved response shape:
 }
 ```
 
-The protocol validates the GlobalPayTo envelope and minimal provider payload fields. It does not render external protocol formats in the MVP.
+The protocol validates the GlobalPayTo envelope and the required `provider_json.payload` keys defined in `mvp-api-contracts.md`, including `providerIntentId`, `chain`, `network`, `asset`, `recipientAddress`, `amount`, `reference`, and `expiresAt`. It does not render external protocol formats in the MVP.
 
 ## Status Values
 
@@ -212,11 +219,11 @@ SDK helpers should make it easy for integrators to branch on these statuses with
 
 ## Notification Event Types
 
-The MVP public protocol should define Cubid comms event payload types for user-visible resolver events. Initial examples are:
+The MVP public protocol should define Cubid comms event payload types for user-visible resolver events. MVP event types are:
 
 - `payment_intent_created`
-- `payment_received`
-- `user_action_required`
+
+Future event candidates such as provider-reported receipt events or notification-driven user-action events require separate trust, disclosure, and callback contracts.
 
 Notification payloads must use masked display values, public references, and action URLs when needed. They must not include wallet graphs, unrelated PayToDapps, route preferences, provider internals, raw identifiers, or private backend diagnostics.
 
@@ -256,7 +263,8 @@ Public docs should explain:
 - how PayingDapps request payment intents,
 - how PayToDapps implement payment-intent callbacks,
 - how `no_route` and `user_action_required` should be handled,
-- how Cubid comms notifications such as payment received are shaped and what data they intentionally omit,
+- how Cubid comms `payment_intent_created` notifications are shaped and what data they intentionally omit,
+- what future documentation is required before provider-reported receipt events are introduced,
 - privacy boundaries and anti-enumeration behavior at the contract level.
 
 Public docs should not describe private storage layouts, RLS policy details, service-role usage, deployment wiring, private logs, or private admin processes.
