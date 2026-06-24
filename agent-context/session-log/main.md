@@ -186,3 +186,12 @@ head: 19b638a
 summary: Completed GPTS-S4-T3 by adding package publish metadata, a clean workspace validation script, package dry-run packing, CI workflow coverage, guarded npm publish workflow scaffolding, and README build/test/publish instructions.
 validation: Ran pnpm run validate and pnpm run pack:dry-run; validation regenerated protocol types, typechecked, tested, cleaned, built, and dry-run packed protocol, SDK, provider SDK, and testing packages without test files in package tarballs.
 follow-ups: Finish SDK Sprint 4 by reviewing public docs, examples, and README files for private backend leakage.
+
+---
+
+agent: Codex
+branch: main
+head: b4a84f3
+summary: Completed GPTS-S4-T4 by reviewing public README, docs, and examples for private resolver leakage and adding a reusable public-boundary scan for private repo links, backend storage internals, private deployment wiring, service-role details, and secret names.
+validation: Ran pnpm run scan:public-boundary and pnpm run validate; the scan passed and full validation regenerated protocol types, typechecked, tested, scanned docs, cleaned, and rebuilt the workspace.
+follow-ups: SDK Sprint 4 is complete. Backend Sprint 4 acceptance can now use the SDK validation and conformance baseline.

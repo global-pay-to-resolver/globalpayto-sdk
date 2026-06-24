@@ -57,6 +57,7 @@ Run individual checks:
 ```sh
 pnpm typecheck
 pnpm test
+pnpm scan:public-boundary
 pnpm build
 ```
 

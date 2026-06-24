@@ -293,9 +293,9 @@ Acceptance notes:
 
 ### GPTS-S4-T4 Confirm Public Docs Do Not Expose Private Backend Internals
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete
+Feature branch: main
+Session log: agent-context/session-log/main.md
 Depends on: globalpayto-sdk:GPTS-S3-T4
 
 Review public SDK docs, examples, and README files for private backend leakage.
