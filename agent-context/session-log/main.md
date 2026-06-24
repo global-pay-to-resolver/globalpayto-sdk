@@ -132,3 +132,12 @@ head: 2820496
 summary: Completed GPTS-S3-T1 by adding a runnable PayingDapp basic example that builds a resolve request, uses public SDK/testing helpers, and handles resolved, no-route, route-selection, and provider-unavailable outcomes.
 validation: Ran pnpm example:paying-dapp, pnpm typecheck, pnpm test, and pnpm build; the example printed the resolved intent destination plus action URLs and retry guidance for non-resolved states.
 follow-ups: Continue SDK Sprint 3 with the PayToDapp Modality B route-registration and provider-callback example.
+
+---
+
+agent: Codex
+branch: main
+head: 19941d8
+summary: Completed GPTS-S3-T2 by adding a runnable PayToDapp Modality B example for supported-route registration, provider callback parsing, auth/replay integration hooks, and provider response validation.
+validation: Ran pnpm example:payto-dapp, pnpm typecheck, pnpm test, and pnpm build; the example confirmed route registration contains no wallet address and replay auth rejects a repeated callback envelope.
+follow-ups: Remove or reframe the public Modality A placeholder so MVP examples point implementers to Modality B first.

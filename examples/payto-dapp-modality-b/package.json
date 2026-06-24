@@ -1,0 +1,13 @@
+{
+  "name": "@globalpayto/example-payto-dapp-modality-b",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "dependencies": {
+    "@globalpayto/provider-sdk": "workspace:*",
+    "@globalpayto/testing": "workspace:*"
+  }
+}

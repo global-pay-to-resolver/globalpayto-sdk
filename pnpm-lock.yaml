@@ -30,6 +30,15 @@ importers:
         specifier: workspace:*
         version: link:../../packages/testing
 
+  examples/payto-dapp-modality-b:
+    dependencies:
+      '@globalpayto/provider-sdk':
+        specifier: workspace:*
+        version: link:../../packages/provider-sdk
+      '@globalpayto/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+
   packages/protocol:
     dependencies:
       ajv:

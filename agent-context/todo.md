@@ -198,9 +198,9 @@ Acceptance notes:
 
 ### GPTS-S3-T2 Build PayToDapp Modality B Example
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete
+Feature branch: main
+Session log: agent-context/session-log/main.md
 Depends on: globalpayto-sdk:GPTS-S2-T3, globalpayto-sdk:GPTS-S2-T4
 
 Build a runnable example showing a PayToDapp registering route support and responding to provider intent callbacks.

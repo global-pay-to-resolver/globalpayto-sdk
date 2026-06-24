@@ -6,6 +6,7 @@
   "scripts": {
     "build": "pnpm -r build",
     "example:paying-dapp": "pnpm --filter @globalpayto/example-paying-dapp-basic start",
+    "example:payto-dapp": "pnpm --filter @globalpayto/example-payto-dapp-modality-b start",
     "generate": "pnpm --filter @globalpayto/protocol generate",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck"
