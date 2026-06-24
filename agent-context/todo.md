@@ -213,9 +213,9 @@ Acceptance notes:
 
 ### GPTS-S3-T3 Remove Or Reframe Modality A Example Placeholder
 
-Status: TBD  
-Feature branch: TBD  
-Session log: TBD  
+Status: Complete
+Feature branch: main
+Session log: agent-context/session-log/main.md
 Depends on: globalpayto-sdk:GPTS-S1-T2
 
 Remove the existing Modality A placeholder or reframe it as an explicitly out-of-scope future candidate.

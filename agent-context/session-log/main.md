@@ -141,3 +141,12 @@ head: 19941d8
 summary: Completed GPTS-S3-T2 by adding a runnable PayToDapp Modality B example for supported-route registration, provider callback parsing, auth/replay integration hooks, and provider response validation.
 validation: Ran pnpm example:payto-dapp, pnpm typecheck, pnpm test, and pnpm build; the example confirmed route registration contains no wallet address and replay auth rejects a repeated callback envelope.
 follow-ups: Remove or reframe the public Modality A placeholder so MVP examples point implementers to Modality B first.
+
+---
+
+agent: Codex
+branch: main
+head: 00e601a
+summary: Completed GPTS-S3-T3 by reframing the PayToDapp Modality A placeholder as an explicitly out-of-scope future note and pointing implementers to the runnable Modality B MVP example.
+validation: Ran pnpm typecheck and pnpm test; scanned README, examples, docs, and TODOs to confirm Modality A no longer appears as an MVP integration path.
+follow-ups: Finish SDK Sprint 3 with public integration guides for PayingDapps, PayToDapps, status handling, notifications, and fixtures.

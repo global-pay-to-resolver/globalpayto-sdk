@@ -23,8 +23,8 @@ This repo should become the source of truth for request and response contracts, 
 - `packages/provider-sdk/`
 - `packages/testing/`
 - `examples/paying-dapp-basic/`
-- `examples/payto-dapp-modality-a/`
 - `examples/payto-dapp-modality-b/`
+- `examples/payto-dapp-modality-a/` - future/out-of-scope note only; not an MVP integration path.
 - `docs/`
 
 ## Development Status
