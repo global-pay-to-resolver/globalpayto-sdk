@@ -305,3 +305,69 @@ Acceptance notes:
 - Public docs do not link into private repo files.
 - Public docs do not describe private storage layouts, service-role handling, deployment wiring, private audit internals, or admin tools.
 - Cross-repo references point only to public site docs or stable dependency IDs.
+
+## Sprint 5: Generic Payor-App Route Options And Execution Quotes
+
+### GPTS-S5-T1 Define Route Quote Preview And Payor-App Request Contracts
+
+Status: TBD
+Feature branch: TBD
+Session log: TBD
+Depends on: globalpayto:GPTR-S5-T1
+
+Define public SDK/protocol support for generic payor-app route option and quote preview flows.
+
+Acceptance notes:
+
+- Protocol docs distinguish route availability queries, payment intent option queries, and final resolved intents.
+- Quote preview contract covers method, send amount, receive amount, fee rows, expiry, and resolver reference.
+- Fee rows can distinguish payor-app, provider, and resolver fee sources.
+- Contracts do not expose recipient wallet inventory, route preferences, or unrelated PayToDapps.
+
+### GPTS-S5-T2 Implement Execution Solver Quote Provider Interfaces
+
+Status: TBD
+Feature branch: TBD
+Session log: TBD
+Depends on: globalpayto-sdk:GPTS-S5-T1
+
+Implement SDK interfaces and helpers for crypto-native execution solver quote providers.
+
+Acceptance notes:
+
+- SDK exports solver ids for NEAR Intents / 1Click, LI.FI, Squid, 0x Cross-Chain API, Across, and LayerZero Value Transfer API / Stargate.
+- SDK exposes a quote provider interface that accepts resolved receive requirements and returns quotes or transaction-request options.
+- If a preferred solver is selected, SDK requests that solver only.
+- If no preferred solver is selected, SDK requests quotes from every configured provider and returns successful quote results.
+
+### GPTS-S5-T3 Add Generic Payor-App Request Builders
+
+Status: TBD
+Feature branch: TBD
+Session log: TBD
+Depends on: globalpayto-sdk:GPTS-S5-T1
+
+Add helper functions that let payor-apps build resolver requests from sender-side app state without hand-rolling protocol payloads.
+
+Acceptance notes:
+
+- Helpers build supported paths, amount values, exactness-aware request inputs, and payor-app references.
+- Helpers validate generated payloads against protocol schemas.
+- Helpers do not require payor-apps to model recipient PayToDapp preferences or wallet graph state.
+- Existing PayingDapp helpers remain backwards-compatible.
+
+### GPTS-S5-T4 Add Generic Quote And Resolver Fixtures
+
+Status: TBD
+Feature branch: TBD
+Session log: TBD
+Depends on: globalpayto-sdk:GPTS-S5-T1, globalpayto-sdk:GPTS-S5-T2
+
+Extend `@globalpayto/testing` with generic route option, quote, and solver fixtures.
+
+Acceptance notes:
+
+- Fixtures cover direct transfer, same-chain exchange, bridge, cross-chain intent, no-route, route-selection-required, provider-unavailable, insufficient-balance, exact-send, and exact-receive scenarios.
+- Fixtures include SmarTrust-like examples without SmarTrust-specific exported type names.
+- Mock quote providers support preferred-solver and quote-fanout tests.
+- Fixtures remain public-safe and do not reference private backend implementation details.
