@@ -10,7 +10,8 @@ import {
 
 export type ResolveRequestInput = ResolveRequest;
 
-export type ActionRequiredStatus = "no_route" | "user_action_required" | "authorization_required";
+export type ActionRequiredStatus = "user_action_required";
+export type ActionRequiredResponse = Extract<ResolveResponse, { action: unknown }>;
 
 export type RetryableStatus = "provider_unavailable";
 
@@ -43,12 +44,8 @@ export function isResolved(response: ResolveResponse): response is Extract<Resol
 
 export function isActionRequired(
   response: ResolveResponse,
-): response is Extract<ResolveResponse, { status: ActionRequiredStatus }> {
-  return (
-    response.status === "no_route" ||
-    response.status === "user_action_required" ||
-    response.status === "authorization_required"
-  );
+): response is ActionRequiredResponse {
+  return response.status === "user_action_required";
 }
 
 export function isRetryable(response: ResolveResponse): response is Extract<ResolveResponse, { status: RetryableStatus }> {

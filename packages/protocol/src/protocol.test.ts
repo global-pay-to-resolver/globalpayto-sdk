@@ -19,6 +19,8 @@ import {
 } from "./index.js";
 
 const terminalStatusFixtures = [
+  "no_route",
+  "authorization_required",
   "unsupported_path",
   "provider_unavailable",
   "provider_error",
@@ -29,22 +31,6 @@ const terminalStatusFixtures = [
 ] as const;
 
 const actionStatusFixtures = [
-  {
-    status: "no_route",
-    action: {
-      type: "setup",
-      url: "https://globalpayto.example/actions/setup/gptr_act_456",
-      expiresAt: "2026-06-24T20:00:00Z",
-    },
-  },
-  {
-    status: "authorization_required",
-    action: {
-      type: "authorization",
-      url: "https://globalpayto.example/actions/setup/gptr_act_auth",
-      expiresAt: "2026-06-24T20:00:00Z",
-    },
-  },
   validRouteSelectionResponse,
 ] as const;
 
@@ -113,9 +99,9 @@ describe("@globalpayto/protocol", () => {
   it("rejects malformed action URLs", () => {
     expect(() => {
       const invalidResponse = {
-        ...validNoRouteResponse,
+        ...validRouteSelectionResponse,
         action: {
-          ...("action" in validNoRouteResponse ? validNoRouteResponse.action : {}),
+          ...validRouteSelectionResponse.action,
           url: "not a uri",
         },
       };
@@ -124,12 +110,34 @@ describe("@globalpayto/protocol", () => {
     }).toThrow();
   });
 
-  it("rejects action statuses without action URLs", () => {
+  it("rejects route-selection statuses without action URLs", () => {
     expect(() =>
       validateResolveResponse({
-        status: "authorization_required",
+        status: "user_action_required",
       }),
     ).toThrow();
+  });
+
+  it("rejects setup or authorization action links on resolve responses", () => {
+    for (const action of [
+      {
+        type: "setup",
+        url: "https://globalpayto.example/actions/setup/gptr_act_456",
+        expiresAt: "2026-06-24T20:00:00Z",
+      },
+      {
+        type: "authorization",
+        url: "https://globalpayto.example/actions/setup/gptr_act_auth",
+        expiresAt: "2026-06-24T20:00:00Z",
+      },
+    ] as const) {
+      expect(() =>
+        validateResolveResponse({
+          status: "user_action_required",
+          action,
+        }),
+      ).toThrow();
+    }
   });
 
   it("rejects provider payloads without typed destination fields", () => {

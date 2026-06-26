@@ -20,7 +20,7 @@ export interface RouteRecord {
   state: "active" | "disabled" | "revoked";
 }
 export interface Action {
-  type: "setup" | "authorization" | "route_selection";
+  type: "route_selection";
   url: string;
   expiresAt: string;
 }

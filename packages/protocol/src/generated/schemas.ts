@@ -685,11 +685,7 @@ export const ResolveResponseSchema = {
       ],
       "properties": {
         "status": {
-          "enum": [
-            "no_route",
-            "user_action_required",
-            "authorization_required"
-          ]
+          "const": "user_action_required"
         },
         "action": {
           "$ref": "#/$defs/action"
@@ -705,6 +701,8 @@ export const ResolveResponseSchema = {
       "properties": {
         "status": {
           "enum": [
+            "no_route",
+            "authorization_required",
             "unsupported_path",
             "provider_unavailable",
             "provider_error",
@@ -728,11 +726,7 @@ export const ResolveResponseSchema = {
       ],
       "properties": {
         "type": {
-          "enum": [
-            "setup",
-            "authorization",
-            "route_selection"
-          ]
+          "const": "route_selection"
         },
         "url": {
           "type": "string",
@@ -1188,11 +1182,7 @@ export const RouteRegistrationResponseSchema = {
       ],
       "properties": {
         "type": {
-          "enum": [
-            "setup",
-            "authorization",
-            "route_selection"
-          ]
+          "const": "route_selection"
         },
         "url": {
           "type": "string",

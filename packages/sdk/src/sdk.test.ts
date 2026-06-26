@@ -5,6 +5,7 @@ import {
   validNotificationEvent,
   validResolvedResponse,
   validResolveRequest,
+  validRouteSelectionResponse,
 } from "@globalpayto/protocol";
 
 import {
@@ -29,11 +30,18 @@ describe("@globalpayto/sdk", () => {
     expect(isActionRequired(response)).toBe(false);
   });
 
-  it("keeps action URLs visible for integrators", () => {
-    const response = parseResolveResponse(validNoRouteResponse);
+  it("keeps route-selection action URLs visible for integrators", () => {
+    const response = parseResolveResponse(validRouteSelectionResponse);
 
     expect(isActionRequired(response)).toBe(true);
-    expect(getActionUrl(response)).toBe("https://globalpayto.example/actions/setup/gptr_act_456");
+    expect(getActionUrl(response)).toBe("https://globalpayto.example/actions/route-selection/gptr_act_789");
+  });
+
+  it("treats no-route responses as status-only", () => {
+    const response = parseResolveResponse(validNoRouteResponse);
+
+    expect(isActionRequired(response)).toBe(false);
+    expect(getActionUrl(response)).toBeUndefined();
   });
 
   it("guards Cubid comms notification payloads", () => {

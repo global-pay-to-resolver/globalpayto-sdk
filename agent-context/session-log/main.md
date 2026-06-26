@@ -195,3 +195,12 @@ head: b4a84f3
 summary: Completed GPTS-S4-T4 by reviewing public README, docs, and examples for private resolver leakage and adding a reusable public-boundary scan for private repo links, backend storage internals, private deployment wiring, service-role details, and secret names.
 validation: Ran pnpm run scan:public-boundary and pnpm run validate; the scan passed and full validation regenerated protocol types, typechecked, tested, scanned docs, cleaned, and rebuilt the workspace.
 follow-ups: SDK Sprint 4 is complete. Backend Sprint 4 acceptance can now use the SDK validation and conformance baseline.
+
+---
+
+agent: Codex
+branch: main
+head: 7e7f2c8
+summary: Updated the public protocol so only route selection carries hosted action URLs; no_route and authorization_required are status-only MVP responses.
+validation: Ran pnpm generate, pnpm typecheck, pnpm test -- --run, pnpm scan:public-boundary, and pnpm build.
+follow-ups: Keep SDK examples and integration copy aligned with send-to channels being enabled by default for requesting apps.

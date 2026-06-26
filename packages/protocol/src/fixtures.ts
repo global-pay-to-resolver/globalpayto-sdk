@@ -138,11 +138,6 @@ export const validResolvedResponse: ResolveResponse = {
 
 export const validNoRouteResponse: ResolveResponse = {
   status: "no_route",
-  action: {
-    type: "setup",
-    url: "https://globalpayto.example/actions/setup/gptr_act_456",
-    expiresAt: "2026-06-24T20:00:00Z",
-  },
 };
 
 export const validRouteSelectionResponse: ResolveResponse = {

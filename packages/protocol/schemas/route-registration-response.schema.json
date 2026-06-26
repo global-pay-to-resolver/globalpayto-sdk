@@ -44,7 +44,7 @@
       "additionalProperties": false,
       "required": ["type", "url", "expiresAt"],
       "properties": {
-        "type": { "enum": ["setup", "authorization", "route_selection"] },
+        "type": { "const": "route_selection" },
         "url": { "type": "string", "format": "uri" },
         "expiresAt": { "type": "string", "format": "date-time" }
       }

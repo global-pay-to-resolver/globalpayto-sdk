@@ -78,7 +78,7 @@ Public statuses:
 
 Private backend diagnostics must never appear as public statuses.
 
-Action URLs for `no_route`, `authorization_required`, and `user_action_required` are opaque, short-lived, and safe to open before authentication. They must not reveal whether the identifier, route, PayToDapp, or authorization exists until hosted-action validation and user authentication succeed.
+Route-selection action URLs for `user_action_required` are opaque, short-lived, and safe to open before authentication. `no_route` and `authorization_required` are status-only in the MVP and must not link to per-request setup or requesting-app approval pages.
 
 ## PayToDapp Route Registration
 
@@ -187,14 +187,13 @@ No route response:
 
 ```json
 {
-  "status": "no_route",
-  "action": {
-    "type": "setup",
-    "url": "https://globalpayto.example/actions/setup/gptr_act_456",
-    "expiresAt": "2026-06-24T20:00:00Z"
-  }
+  "status": "no_route"
 }
 ```
+
+`no_route` is status-only in the MVP. The public site does not host
+per-request setup or requesting-app approval pages because send-to channels are
+pre-authorized for requesting apps by default.
 
 User action response:
 

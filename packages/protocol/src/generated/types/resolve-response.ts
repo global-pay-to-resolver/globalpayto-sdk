@@ -7,11 +7,13 @@ export type ResolveResponse =
       intent: Intent;
     }
   | {
-      status: "no_route" | "user_action_required" | "authorization_required";
+      status: "user_action_required";
       action: Action;
     }
   | {
       status:
+        | "no_route"
+        | "authorization_required"
         | "unsupported_path"
         | "provider_unavailable"
         | "provider_error"
@@ -72,7 +74,7 @@ export interface References {
   payingDappReference: string;
 }
 export interface Action {
-  type: "setup" | "authorization" | "route_selection";
+  type: "route_selection";
   url: string;
   expiresAt: string;
 }

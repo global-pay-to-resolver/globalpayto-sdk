@@ -17,7 +17,7 @@
       "additionalProperties": false,
       "required": ["status", "action"],
       "properties": {
-        "status": { "enum": ["no_route", "user_action_required", "authorization_required"] },
+        "status": { "const": "user_action_required" },
         "action": { "$ref": "#/$defs/action" }
       }
     },
@@ -28,6 +28,8 @@
       "properties": {
         "status": {
           "enum": [
+            "no_route",
+            "authorization_required",
             "unsupported_path",
             "provider_unavailable",
             "provider_error",
@@ -46,7 +48,7 @@
       "additionalProperties": false,
       "required": ["type", "url", "expiresAt"],
       "properties": {
-        "type": { "enum": ["setup", "authorization", "route_selection"] },
+        "type": { "const": "route_selection" },
         "url": { "type": "string", "format": "uri" },
         "expiresAt": { "type": "string", "format": "date-time" }
       }
