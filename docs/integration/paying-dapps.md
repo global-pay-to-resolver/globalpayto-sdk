@@ -9,8 +9,8 @@ one-time GlobalPayTo JSON intent.
 - Parse resolver responses with `parseResolveResponse`.
 - Branch with `isResolved`, `isActionRequired`, `isRetryable`, and
   `isInvalidForRetry`.
-- Use `getActionUrl` for `no_route`, `authorization_required`, and
-  `user_action_required` responses.
+- Use `getActionUrl` only when `user_action_required` includes a
+  route-selection action.
 
 Runnable example: `examples/paying-dapp-basic`.
 
@@ -26,6 +26,8 @@ PayingDapps provide:
 
 The resolver response must not be treated as a wallet graph. PayingDapps should
 only use the returned intent or hosted-action URL for the current payment flow.
+`no_route` and `authorization_required` are status-only in the MVP; they do not
+send users to per-request setup or requesting-app approval pages.
 
 ## Resolved Intents
 

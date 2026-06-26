@@ -9,13 +9,22 @@ Private diagnostics are not part of the public contract.
 
 ## Hosted Action Required
 
-- `no_route`: send the user to the setup URL when provided.
-- `authorization_required`: send the user to the authorization URL when provided.
 - `user_action_required`: send the user to the route-selection URL when provided.
 
 Action URLs are opaque, short-lived hosted links. They must not be parsed for
 recipient, route, provider, wallet, preference, authorization, or diagnostic
+details. The public site signs the user in with Cubid before hydrating route
 details.
+
+## Status Only
+
+- `no_route`: show safe no-route copy; do not infer whether the recipient exists
+  or has other routes.
+- `authorization_required`: show safe authorization-required copy or use a
+  Cubid-owned grant path when one exists.
+
+`no_route` and `authorization_required` do not link to per-request setup or
+requesting-app approval pages in the MVP.
 
 ## Retry Later
 

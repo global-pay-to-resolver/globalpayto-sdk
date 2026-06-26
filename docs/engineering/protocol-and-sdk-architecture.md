@@ -239,7 +239,8 @@ Notification payloads must use masked display values, public references, and act
 - status narrowing helpers,
 - notification event type guards for Cubid comms payloads,
 - retry guidance for provider or resolver availability failures,
-- typed handling for `user_action_required` and `no_route` setup URLs.
+- typed handling for `user_action_required` route-selection URLs and status-only
+  `no_route` / `authorization_required` outcomes.
 
 `@globalpayto/provider-sdk` should provide:
 

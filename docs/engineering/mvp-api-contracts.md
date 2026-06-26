@@ -65,9 +65,9 @@ Public statuses:
 | Status | Meaning | Integrator handling |
 | --- | --- | --- |
 | `resolved` | A GlobalPayTo intent is ready. | Present or execute the returned payment instruction. |
-| `no_route` | No authorized compatible PayToDapp route exists. | Send user to the setup URL when present. |
-| `user_action_required` | A user selection or authorization step is required. | Send user to the action URL when present. |
-| `authorization_required` | The dapp does not have required user authorization. | Start or retry authorization. |
+| `no_route` | No authorized compatible PayToDapp route exists. | Show safe no-route copy; do not infer recipient existence or route details. |
+| `user_action_required` | A route-selection step is required. | Send the signed-in user to the route-selection action URL when present. |
+| `authorization_required` | The dapp does not have required user authorization. | Show safe authorization-required copy or use a Cubid-owned grant path when available. |
 | `unsupported_path` | Requested paths do not match supported MVP route constraints. | Ask for another supported route/path. |
 | `provider_unavailable` | Selected PayToDapp could not be reached or is temporarily unavailable. | Retry later or show temporary failure. |
 | `provider_error` | Selected PayToDapp returned an invalid or failed response. | Show failure and retry only if user flow allows. |
@@ -78,7 +78,11 @@ Public statuses:
 
 Private backend diagnostics must never appear as public statuses.
 
-Route-selection action URLs for `user_action_required` are opaque, short-lived, and safe to open before authentication. `no_route` and `authorization_required` are status-only in the MVP and must not link to per-request setup or requesting-app approval pages.
+Route-selection action URLs for `user_action_required` are opaque, short-lived,
+and safe to open before authentication. The public site authenticates the user
+with Cubid before hydrating route details. `no_route` and
+`authorization_required` are status-only in the MVP and must not link to
+per-request setup or requesting-app approval pages.
 
 ## PayToDapp Route Registration
 
