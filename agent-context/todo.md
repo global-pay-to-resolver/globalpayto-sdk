@@ -342,9 +342,9 @@ Acceptance notes:
 
 ### GPTS-S5-T3 Add Generic Payor-App Request Builders
 
-Status: TBD
-Feature branch: TBD
-Session log: TBD
+Status: Complete
+Feature branch: feature/globalpayto-resolver-migration
+Session log: agent-context/session-log/main.md#2026-06-26-gpts-s5-t3
 Depends on: globalpayto-sdk:GPTS-S5-T1
 
 Add helper functions that let payor-apps build resolver requests from sender-side app state without hand-rolling protocol payloads.

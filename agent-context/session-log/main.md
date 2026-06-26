@@ -226,3 +226,14 @@ todo: globalpayto-sdk:GPTS-S5-T2
 summary: Completed SDK execution solver quote provider interfaces by validating the existing solver id exports, quote provider interface, preferred-solver selection, quote fanout behavior, partial provider failure handling, and all-provider failure handling.
 validation: Ran pnpm --filter @globalpayto/sdk typecheck and pnpm --filter @globalpayto/sdk test; SDK tests now cover 39 passing workspace cases including quote fanout and failure behavior.
 follow-ups: Continue with backend solver adapter boundaries that can consume the SDK solver ids and quote-provider behavior.
+
+---
+
+## 2026-06-26-gpts-s5-t3
+
+agent: Codex
+branch: feature/globalpayto-resolver-migration
+todo: globalpayto-sdk:GPTS-S5-T3
+summary: Added generic payor-app request builders for supported paths, amount values, payor-app references, and exactness-aware resolve request inputs while keeping the generated protocol payload backward-compatible.
+validation: Ran pnpm --filter @globalpayto/sdk typecheck and pnpm --filter @globalpayto/sdk test; SDK tests now cover 42 passing workspace cases including payor-app builder validation.
+follow-ups: Extend the public testing package with generic route option, quote, solver, and SmarTrust-like public-safe fixtures.

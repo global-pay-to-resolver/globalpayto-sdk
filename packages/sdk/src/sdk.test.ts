@@ -10,6 +10,10 @@ import {
 
 import {
   buildResolveRequest,
+  buildAmountValue,
+  buildPayorAppReference,
+  buildPayorAppResolveRequest,
+  buildSupportedPath,
   getActionUrl,
   isActionRequired,
   isGlobalPayToNotification,
@@ -24,6 +28,75 @@ import {
 describe("@globalpayto/sdk", () => {
   it("builds and validates resolve requests", () => {
     expect(buildResolveRequest(validResolveRequest)).toEqual(validResolveRequest);
+  });
+
+  it("builds generic payor-app resolve request inputs", () => {
+    const supportedPath = buildSupportedPath({
+      chain: " base ",
+      network: " mainnet ",
+      asset: " USDC ",
+    });
+    const amount = buildAmountValue({
+      value: "25.00",
+      currency: "USDC",
+    });
+
+    const result = buildPayorAppResolveRequest({
+      recipientIdentifier: "email:noak@example.com",
+      supportedPaths: [supportedPath],
+      amount,
+      purpose: "wallet_send",
+      payingDappReference: buildPayorAppReference({
+        payorAppId: "smartrust-wallet",
+        reference: "send_123",
+      }),
+      amountExactness: "exact_send",
+    });
+
+    expect(result.amountExactness).toBe("exact_send");
+    expect(result.request).toEqual({
+      ...validResolveRequest,
+      supportedPaths: [
+        {
+          chain: "base",
+          network: "mainnet",
+          asset: "USDC",
+        },
+      ],
+      purpose: "wallet_send",
+      payingDappReference: "smartrust-wallet:send_123",
+    });
+  });
+
+  it("defaults payor-app helper exactness to exact receive", () => {
+    const result = buildPayorAppResolveRequest({
+      recipientIdentifier: "email:noak@example.com",
+      supportedPaths: validResolveRequest.supportedPaths,
+      amount: validResolveRequest.amount,
+      purpose: validResolveRequest.purpose,
+      payingDappReference: validResolveRequest.payingDappReference,
+    });
+
+    expect(result.amountExactness).toBe("exact_receive");
+  });
+
+  it("rejects empty payor-app request fields before schema validation", () => {
+    expect(() =>
+      buildPayorAppResolveRequest({
+        recipientIdentifier: "email:noak@example.com",
+        supportedPaths: [],
+        amount: validResolveRequest.amount,
+        purpose: validResolveRequest.purpose,
+        payingDappReference: validResolveRequest.payingDappReference,
+      })
+    ).toThrow("supportedPaths must include at least one route path");
+
+    expect(() =>
+      buildPayorAppReference({
+        payorAppId: " ",
+        reference: "send_123",
+      })
+    ).toThrow("payorAppId must be a non-empty string");
   });
 
   it("parses and narrows resolved responses", () => {

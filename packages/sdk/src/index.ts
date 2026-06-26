@@ -9,6 +9,28 @@ import {
 } from "@globalpayto/protocol";
 
 export type ResolveRequestInput = ResolveRequest;
+export type SupportedPath = ResolveRequest["supportedPaths"][number];
+export type ResolveAmount = ResolveRequest["amount"];
+export type PayorAmountExactness = "exact_send" | "exact_receive";
+
+export interface PayorAppReferenceInput {
+  payorAppId: string;
+  reference: string;
+}
+
+export interface PayorAppResolveRequestInput {
+  recipientIdentifier: string;
+  supportedPaths: [SupportedPath, ...SupportedPath[]] | SupportedPath[];
+  amount: ResolveAmount;
+  purpose: string;
+  payingDappReference: string;
+  amountExactness?: PayorAmountExactness;
+}
+
+export interface ExactnessAwareResolveRequest {
+  request: ResolveRequest;
+  amountExactness: PayorAmountExactness;
+}
 
 export type ActionRequiredStatus = "user_action_required";
 export type ActionRequiredResponse = Extract<ResolveResponse, { action: unknown }>;
@@ -66,6 +88,52 @@ export function buildResolveRequest(input: ResolveRequestInput): ResolveRequest 
   return validateResolveRequest(input);
 }
 
+export function buildSupportedPath(input: SupportedPath): SupportedPath {
+  return {
+    chain: requireNonEmpty(input.chain, "chain"),
+    network: requireNonEmpty(input.network, "network"),
+    asset: requireNonEmpty(input.asset, "asset"),
+  };
+}
+
+export function buildAmountValue(input: ResolveAmount): ResolveAmount {
+  return {
+    value: requireNonEmpty(input.value, "amount.value"),
+    currency: requireNonEmpty(input.currency, "amount.currency"),
+  };
+}
+
+export function buildPayorAppReference(input: PayorAppReferenceInput): string {
+  const payorAppId = requireNonEmpty(input.payorAppId, "payorAppId");
+  const reference = requireNonEmpty(input.reference, "reference");
+  return `${payorAppId}:${reference}`;
+}
+
+export function buildPayorAppResolveRequest(input: PayorAppResolveRequestInput): ExactnessAwareResolveRequest {
+  const supportedPaths = input.supportedPaths.map(buildSupportedPath);
+  const [firstPath, ...remainingPaths] = supportedPaths;
+  if (!firstPath) {
+    throw new Error("supportedPaths must include at least one route path");
+  }
+
+  const request = buildResolveRequest({
+    recipient: {
+      identifierType: "verified_stamp",
+      identifier: requireNonEmpty(input.recipientIdentifier, "recipientIdentifier"),
+    },
+    supportedPaths: [firstPath, ...remainingPaths],
+    amount: buildAmountValue(input.amount),
+    purpose: requireNonEmpty(input.purpose, "purpose"),
+    intentMode: "one_time",
+    payingDappReference: requireNonEmpty(input.payingDappReference, "payingDappReference"),
+  });
+
+  return {
+    request,
+    amountExactness: input.amountExactness ?? "exact_receive",
+  };
+}
+
 export function parseResolveResponse(payload: unknown): ResolveResponse {
   return validateResolveResponse(payload);
 }
@@ -106,6 +174,14 @@ export function isInvalidForRetry(
 
 export function getActionUrl(response: ResolveResponse): string | undefined {
   return isActionRequired(response) ? response.action.url : undefined;
+}
+
+function requireNonEmpty(value: string, fieldName: string): string {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    throw new Error(`${fieldName} must be a non-empty string`);
+  }
+  return trimmed;
 }
 
 export async function requestExecutionQuotes({
