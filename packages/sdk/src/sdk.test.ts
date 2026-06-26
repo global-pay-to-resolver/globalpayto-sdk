@@ -16,6 +16,9 @@ import {
   isResolved,
   parseNotificationEvent,
   parseResolveResponse,
+  requestExecutionQuotes,
+  type CryptoNativeExecutionSolverId,
+  type ExecutionQuoteProvider,
 } from "./index.js";
 
 describe("@globalpayto/sdk", () => {
@@ -48,4 +51,65 @@ describe("@globalpayto/sdk", () => {
     expect(isGlobalPayToNotification(validNotificationEvent)).toBe(true);
     expect(parseNotificationEvent(validNotificationEvent)).toEqual(validNotificationEvent);
   });
+
+  it("requests execution quotes from every configured solver when none is preferred", async () => {
+    const calls: CryptoNativeExecutionSolverId[] = [];
+    const providers = [
+      createQuoteProvider("near_intents_1click", calls),
+      createQuoteProvider("lifi", calls),
+      createQuoteProvider("squid", calls),
+    ];
+
+    const quotes = await requestExecutionQuotes({
+      providers,
+      request: quoteRequest,
+    });
+
+    expect(calls).toEqual(["near_intents_1click", "lifi", "squid"]);
+    expect(quotes.map((quote) => quote.solverId)).toEqual(["near_intents_1click", "lifi", "squid"]);
+  });
+
+  it("requests an execution quote only from the preferred solver when provided", async () => {
+    const calls: CryptoNativeExecutionSolverId[] = [];
+    const providers = [
+      createQuoteProvider("near_intents_1click", calls),
+      createQuoteProvider("lifi", calls),
+      createQuoteProvider("squid", calls),
+    ];
+
+    const quotes = await requestExecutionQuotes({
+      preferredSolverId: "lifi",
+      providers,
+      request: quoteRequest,
+    });
+
+    expect(calls).toEqual(["lifi"]);
+    expect(quotes.map((quote) => quote.solverId)).toEqual(["lifi"]);
+  });
 });
+
+const quoteRequest = {
+  amount: {
+    value: "25.00",
+    currency: "USDC",
+  },
+  destinationAsset: "eip155:8453/erc20:0x...",
+  recipient: "eip155:8453:0xabc",
+  sourceAsset: "eip155:1/erc20:0x...",
+};
+
+function createQuoteProvider(
+  solverId: CryptoNativeExecutionSolverId,
+  calls: CryptoNativeExecutionSolverId[],
+): ExecutionQuoteProvider {
+  return {
+    solverId,
+    async requestQuote() {
+      calls.push(solverId);
+      return {
+        solverId,
+        quoteId: `quote_${solverId}`,
+      };
+    },
+  };
+}

@@ -46,6 +46,23 @@ The MVP protocol does not support:
 - public profile or directory APIs,
 - notification inbox APIs, marketing notification APIs, or non-Cubid notification provider APIs.
 
+## Crypto-Native Execution Solvers
+
+Future payor-app helpers should support crypto-native execution adapters alongside the selected PayToDapp intent flow. These adapters consume a resolved receive requirement and produce quotes or transaction requests; they do not decide which PayToDapp the recipient prefers.
+
+Short list for SDK adapter support:
+
+| Solver/router | Best fit |
+| --- | --- |
+| NEAR Intents / 1Click | Crypto-to-crypto cross-chain swaps, stablecoin delivery, distribution-channel fees, and default solver-style execution. |
+| LI.FI | EVM and Solana cross-chain routing, wallet-controlled execution, bridge/DEX aggregation, and quote responses with wallet-ready transaction requests. |
+| Squid | Broad chain coverage, cross-chain swaps, bridges, contract calls, and Cosmos/Axelar-style routing. |
+| 0x Cross-Chain API | Cross-chain payments, EVM/Solana routing, stablecoin settlement, fast quote responses, fallback paths, and progress tracking. |
+| Across | Fast bridge-focused EVM/L2 stablecoin transfers where supported. |
+| LayerZero Value Transfer API / Stargate | Cross-chain token transfer for OFT, LayerZero ecosystem assets, and routes where Stargate coverage is strong. |
+
+`@globalpayto/sdk` should expose a provider interface for these quote sources. When a payor-app passes a preferred solver id, the SDK asks only that quote provider. When no preferred solver id is selected, the SDK fans out quote requests to every configured quote provider and returns the successful quotes for app-side display or resolver-side selection.
+
 ## Public API Shapes
 
 The Sprint 1 finalized wire contracts live in [`mvp-api-contracts.md`](./mvp-api-contracts.md). This section summarizes the same public surface.
@@ -235,6 +252,7 @@ Notification payloads must use masked display values, public references, and act
 `@globalpayto/sdk` should provide:
 
 - request builders for PayingDapp resolution,
+- quote helpers for crypto-native execution solvers,
 - schema validation for responses,
 - status narrowing helpers,
 - notification event type guards for Cubid comms payloads,

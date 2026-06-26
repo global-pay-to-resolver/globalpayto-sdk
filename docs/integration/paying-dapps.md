@@ -6,6 +6,8 @@ one-time GlobalPayTo JSON intent.
 ## Use The SDK
 
 - Build resolve requests with `buildResolveRequest`.
+- Request crypto-native execution quotes with `requestExecutionQuotes` when your
+  app needs solver/router options for a resolved receive requirement.
 - Parse resolver responses with `parseResolveResponse`.
 - Branch with `isResolved`, `isActionRequired`, `isRetryable`, and
   `isInvalidForRetry`.
@@ -45,3 +47,24 @@ MVP payment instructions use `provider_json` with a typed provider destination:
 
 Do not infer reusable wallet details from this destination. It belongs to the
 selected one-time provider intent.
+
+## Crypto-Native Execution Quotes
+
+When a PayingDapp supports execution adapters, configure quote providers for the
+solver/router surfaces the app can use. The initial GlobalPayTo SDK solver ids
+are:
+
+- `near_intents_1click`
+- `lifi`
+- `squid`
+- `zero_x_cross_chain`
+- `across`
+- `layerzero_stargate`
+
+If the app has a preferred solver for the current flow, pass that solver id and
+the SDK requests only that quote. If no solver is preferred, the SDK requests
+quotes from every configured provider and returns the successful results.
+
+These adapters produce executable quote or transaction-request options. They do
+not determine which PayToDapp the recipient prefers, and they must not expose
+recipient wallet inventory to the PayingDapp.
