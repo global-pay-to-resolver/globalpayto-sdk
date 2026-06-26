@@ -8,6 +8,7 @@ import type {
   NotificationEvent,
   ProviderCallbackRequest,
   ProviderResponse,
+  RouteQuotePreview,
   ResolveRequest,
   ResolveResponse,
   RouteRegistrationRequest,
@@ -81,6 +82,9 @@ export const validateGlobalPayToIntent = (payload: unknown) =>
 
 export const validateNotificationEvent = (payload: unknown) =>
   validateProtocolPayload<NotificationEvent>("notification-event", payload);
+
+export const validateRouteQuotePreview = (payload: unknown) =>
+  validateProtocolPayload<RouteQuotePreview>("route-quote-preview", payload);
 
 export const isNotificationEvent = (payload: unknown): payload is NotificationEvent =>
   isProtocolPayload<NotificationEvent>("notification-event", payload);

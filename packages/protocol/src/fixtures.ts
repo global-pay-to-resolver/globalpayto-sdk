@@ -3,6 +3,7 @@ import type {
   NotificationEvent,
   ProviderCallbackRequest,
   ProviderResponse,
+  RouteQuotePreview,
   ResolveRequest,
   ResolveResponse,
   RouteRegistrationRequest,
@@ -168,4 +169,40 @@ export const validNotificationEvent: NotificationEvent = {
   action: {
     type: "none",
   },
+};
+
+export const validRouteQuotePreview: RouteQuotePreview = {
+  id: "gptr_quote_123",
+  method: "cross_chain_intent",
+  methodLabel: "Cross-chain intent route",
+  send: {
+    chain: "eip155",
+    network: "1",
+    asset: "USDC",
+    amount: "25.25",
+  },
+  receive: {
+    chain: "eip155",
+    network: "8453",
+    asset: "USDC",
+    amount: "25.00",
+  },
+  fees: [
+    {
+      label: "Provider cost",
+      amount: "0.20",
+      asset: "USDC",
+      chargedTo: "sender",
+      source: "provider",
+    },
+    {
+      label: "Payor app fee",
+      amount: "0.05",
+      asset: "USDC",
+      chargedTo: "sender",
+      source: "payor_app",
+    },
+  ],
+  expiresAt: "2026-06-24T20:00:00Z",
+  resolverReference: "gptr_req_123",
 };

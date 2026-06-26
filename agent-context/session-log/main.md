@@ -204,3 +204,14 @@ head: 7e7f2c8
 summary: Updated the public protocol so only route selection carries hosted action URLs; no_route and authorization_required are status-only MVP responses.
 validation: Ran pnpm generate, pnpm typecheck, pnpm test -- --run, pnpm scan:public-boundary, and pnpm build.
 follow-ups: Keep SDK examples and integration copy aligned with send-to channels being enabled by default for requesting apps.
+
+---
+
+## 2026-06-26-gpts-s5-t1
+
+agent: Codex
+branch: feature/globalpayto-resolver-migration
+todo: globalpayto-sdk:GPTS-S5-T1
+summary: Defined public route quote preview contracts for generic payor-app route option and payment-intent option flows, added schema-backed generated types, fixture coverage, validator exports, and docs that separate route queries, intent options, and final resolved intents.
+validation: Ran pnpm --filter @globalpayto/protocol generate, pnpm --filter @globalpayto/protocol typecheck, and pnpm --filter @globalpayto/protocol test; protocol validation now covers 37 passing workspace tests including quote preview privacy and sender-fee rules.
+follow-ups: Continue with backend generic route option resolution using the SDK quote preview contract as the public boundary.

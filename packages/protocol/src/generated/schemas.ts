@@ -979,6 +979,128 @@ export const ResolveResponseSchema = {
   }
 } as const;
 
+export const RouteQuotePreviewSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.globalpayto.dev/route-quote-preview.schema.json",
+  "title": "RouteQuotePreview",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "method",
+    "methodLabel",
+    "send",
+    "receive",
+    "fees",
+    "expiresAt",
+    "resolverReference"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "method": {
+      "enum": [
+        "direct_transfer",
+        "provider_exchange",
+        "provider_intent",
+        "bridge",
+        "cross_chain_intent"
+      ]
+    },
+    "methodLabel": {
+      "type": "string",
+      "minLength": 1
+    },
+    "send": {
+      "$ref": "#/$defs/routeAmount"
+    },
+    "receive": {
+      "$ref": "#/$defs/routeAmount"
+    },
+    "fees": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/fee"
+      }
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "resolverReference": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "routeAmount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "chain",
+        "network",
+        "asset",
+        "amount"
+      ],
+      "properties": {
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        }
+      }
+    },
+    "fee": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "amount",
+        "asset",
+        "chargedTo",
+        "source"
+      ],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chargedTo": {
+          "const": "sender"
+        },
+        "source": {
+          "enum": [
+            "payor_app",
+            "provider",
+            "resolver"
+          ]
+        }
+      }
+    }
+  }
+} as const;
+
 export const RouteRegistrationRequestSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.globalpayto.dev/route-registration-request.schema.json",
@@ -1224,6 +1346,7 @@ export const protocolSchemas = {
   "provider-response": ProviderResponseSchema,
   "resolve-request": ResolveRequestSchema,
   "resolve-response": ResolveResponseSchema,
+  "route-quote-preview": RouteQuotePreviewSchema,
   "route-registration-request": RouteRegistrationRequestSchema,
   "route-registration-response": RouteRegistrationResponseSchema,
   "status": StatusSchema,

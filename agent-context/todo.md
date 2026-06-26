@@ -310,10 +310,10 @@ Acceptance notes:
 
 ### GPTS-S5-T1 Define Route Quote Preview And Payor-App Request Contracts
 
-Status: TBD
-Feature branch: TBD
-Session log: TBD
-Depends on: globalpayto:GPTR-S5-T1
+Status: Complete
+Feature branch: feature/globalpayto-resolver-migration
+Session log: agent-context/session-log/main.md#2026-06-26-gpts-s5-t1
+Depends on: globalpayto-sdk:GPTS-S4-T4
 
 Define public SDK/protocol support for generic payor-app route option and quote preview flows.
 

@@ -63,6 +63,16 @@ Short list for SDK adapter support:
 
 `@globalpayto/sdk` should expose a provider interface for these quote sources. When a payor-app passes a preferred solver id, the SDK asks only that quote provider. When no preferred solver id is selected, the SDK fans out quote requests to every configured quote provider and returns the successful quotes for app-side display or resolver-side selection.
 
+## Route Query And Quote Contracts
+
+Generic payor-app flows distinguish three stages:
+
+- route availability query: the app asks what safe receive options can be considered for a pay-to tag and sender-supported path set;
+- payment intent option query: the app includes amount and exactness context so the resolver can return executable or selectable quote previews;
+- final resolved intent: the app receives one `globalpayto.intent.v1` instruction for execution or handoff.
+
+Route quote previews are public contract objects with method, send amount, receive amount, fee rows, expiry, and resolver reference. Fee rows identify whether the source is the payor app, provider, or resolver, and all MVP fees are charged to the sender. Quote previews must not include recipient wallet inventory, route preferences, unrelated PayToDapps, or wallet graph details.
+
 ## Public API Shapes
 
 The Sprint 1 finalized wire contracts live in [`mvp-api-contracts.md`](./mvp-api-contracts.md). This section summarizes the same public surface.

@@ -370,6 +370,48 @@ Matching rules:
 - Top-level `recipientAddress`, `address`, and `account` fields are rejected so integrators do not confuse route registration with provider-selected destinations.
 - Providers may add extension fields, but SDK validators must preserve unknown extension fields without allowing them to replace required keys.
 
+## Route Quote Preview
+
+Payor-app route option and intent option flows may return quote previews before a final intent is selected. A quote preview describes one executable candidate without revealing recipient wallet inventory or unrelated PayToDapps.
+
+```json
+{
+  "id": "gptr_quote_123",
+  "method": "cross_chain_intent",
+  "methodLabel": "Cross-chain intent route",
+  "send": {
+    "chain": "eip155",
+    "network": "1",
+    "asset": "USDC",
+    "amount": "25.25"
+  },
+  "receive": {
+    "chain": "eip155",
+    "network": "8453",
+    "asset": "USDC",
+    "amount": "25.00"
+  },
+  "fees": [
+    {
+      "label": "Provider cost",
+      "amount": "0.20",
+      "asset": "USDC",
+      "chargedTo": "sender",
+      "source": "provider"
+    }
+  ],
+  "expiresAt": "2026-06-24T20:00:00Z",
+  "resolverReference": "gptr_req_123"
+}
+```
+
+Rules:
+
+- `method` is one of `direct_transfer`, `provider_exchange`, `provider_intent`, `bridge`, or `cross_chain_intent`.
+- Fee `source` is one of `payor_app`, `provider`, or `resolver`.
+- MVP quote fees are charged to the sender.
+- Quote previews must not include route preferences, unrelated PayToDapps, wallet addresses, or wallet graph details.
+
 ## Cubid Comms Notification Events
 
 Notification delivery uses Cubid comms. GlobalPayTo defines public event payloads so backend, site, and SDK consumers agree on data shape.

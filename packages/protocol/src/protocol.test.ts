@@ -7,6 +7,7 @@ import {
   validateResolveRequest,
   validateResolveResponse,
   validateRouteRegistrationRequest,
+  validateRouteQuotePreview,
   validateStatus,
   validGlobalPayToIntent,
   validNoRouteResponse,
@@ -15,6 +16,7 @@ import {
   validResolveRequest,
   validResolvedResponse,
   validRouteRegistrationRequest,
+  validRouteQuotePreview,
   validRouteSelectionResponse,
 } from "./index.js";
 
@@ -48,6 +50,7 @@ describe("@globalpayto/protocol", () => {
     expect(validateProviderResponse(validProviderResponse)).toEqual(validProviderResponse);
     expect(validateGlobalPayToIntent(validGlobalPayToIntent)).toEqual(validGlobalPayToIntent);
     expect(validateNotificationEvent(validNotificationEvent)).toEqual(validNotificationEvent);
+    expect(validateRouteQuotePreview(validRouteQuotePreview)).toEqual(validRouteQuotePreview);
   });
 
   it("accepts every public status value and response shape", () => {
@@ -195,6 +198,27 @@ describe("@globalpayto/protocol", () => {
       validateNotificationEvent({
         ...validNotificationEvent,
         eventType: "payment_received",
+      }),
+    ).toThrow();
+  });
+
+  it("rejects quote previews that expose recipient inventory or charge receiver fees", () => {
+    expect(() =>
+      validateRouteQuotePreview({
+        ...validRouteQuotePreview,
+        payToDappOptions: ["smartrust-wallet", "other-wallet"],
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateRouteQuotePreview({
+        ...validRouteQuotePreview,
+        fees: [
+          {
+            ...validRouteQuotePreview.fees[0],
+            chargedTo: "receiver",
+          },
+        ],
       }),
     ).toThrow();
   });
