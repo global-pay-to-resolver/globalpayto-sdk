@@ -23,6 +23,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@globalpayto/protocol": "workspace:*"
+    "@globalpayto/protocol": "workspace:*",
+    "@globalpayto/sdk": "workspace:*"
   }
 }

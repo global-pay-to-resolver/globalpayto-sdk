@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  requestExecutionQuotes,
+} from "@globalpayto/sdk";
+
+import {
   createMockCubidValidator,
+  createMockExecutionQuoteProvider,
   createMockPayToDapp,
   createMockResolver,
   createPaymentIntentCreatedNotification,
@@ -15,6 +20,24 @@ describe("@globalpayto/testing", () => {
       "payment_intent_created",
     );
     expect(globalPayToFixtures.routeRegistration.forbiddenAddress).toHaveProperty("address");
+    expect(globalPayToFixtures.routeOptions.directTransfer.method).toBe("direct_transfer");
+    expect(globalPayToFixtures.routeOptions.sameChainExchange.method).toBe("provider_exchange");
+    expect(globalPayToFixtures.routeOptions.bridge.method).toBe("bridge");
+    expect(globalPayToFixtures.routeOptions.crossChainIntent.method).toBe("cross_chain_intent");
+    expect(globalPayToFixtures.routeOptions.noRoute.status).toBe("no_route");
+    expect(globalPayToFixtures.routeOptions.routeSelectionRequired.status).toBe(
+      "user_action_required",
+    );
+    expect(globalPayToFixtures.routeOptions.providerUnavailable.status).toBe(
+      "provider_unavailable",
+    );
+    expect(globalPayToFixtures.routeOptions.insufficientBalance.status).toBe("invalid_request");
+    expect(globalPayToFixtures.executionQuotes.exactSendRequest.reference).toBe(
+      "example-payor:exact-send",
+    );
+    expect(globalPayToFixtures.executionQuotes.exactReceiveRequest.reference).toBe(
+      "example-payor:exact-receive",
+    );
   });
 
   it("provides a mock Cubid validator", async () => {
@@ -40,5 +63,51 @@ describe("@globalpayto/testing", () => {
 
   it("creates intent-created notifications only", () => {
     expect(createPaymentIntentCreatedNotification().eventType).toBe("payment_intent_created");
+  });
+
+  it("provides mock quote providers for preferred-solver and fanout tests", async () => {
+    const providers = [
+      createMockExecutionQuoteProvider({ solverId: "near_intents_1click" }),
+      createMockExecutionQuoteProvider({ solverId: "lifi" }),
+      createMockExecutionQuoteProvider({ solverId: "squid", failWith: "provider_unavailable" }),
+    ];
+
+    await expect(requestExecutionQuotes({
+      preferredSolverId: "lifi",
+      providers,
+      request: globalPayToFixtures.executionQuotes.exactReceiveRequest,
+    })).resolves.toMatchObject([
+      {
+        solverId: "lifi",
+      },
+    ]);
+
+    await expect(requestExecutionQuotes({
+      providers,
+      request: globalPayToFixtures.executionQuotes.exactSendRequest,
+    })).resolves.toMatchObject([
+      {
+        solverId: "near_intents_1click",
+      },
+      {
+        solverId: "lifi",
+      },
+    ]);
+  });
+
+  it("can model all configured quote providers being unavailable", async () => {
+    await expect(requestExecutionQuotes({
+      providers: [
+        createMockExecutionQuoteProvider({
+          solverId: "near_intents_1click",
+          failWith: "provider_unavailable",
+        }),
+        createMockExecutionQuoteProvider({
+          solverId: "lifi",
+          failWith: "insufficient_balance",
+        }),
+      ],
+      request: globalPayToFixtures.executionQuotes.exactSendRequest,
+    })).rejects.toThrow("quote_providers_unavailable");
   });
 });

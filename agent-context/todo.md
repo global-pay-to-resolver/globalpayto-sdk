@@ -358,9 +358,9 @@ Acceptance notes:
 
 ### GPTS-S5-T4 Add Generic Quote And Resolver Fixtures
 
-Status: TBD
-Feature branch: TBD
-Session log: TBD
+Status: Complete
+Feature branch: feature/globalpayto-resolver-migration
+Session log: agent-context/session-log/main.md#2026-06-26-gpts-s5-t4
 Depends on: globalpayto-sdk:GPTS-S5-T1, globalpayto-sdk:GPTS-S5-T2
 
 Extend `@globalpayto/testing` with generic route option, quote, and solver fixtures.

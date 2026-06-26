@@ -237,3 +237,14 @@ todo: globalpayto-sdk:GPTS-S5-T3
 summary: Added generic payor-app request builders for supported paths, amount values, payor-app references, and exactness-aware resolve request inputs while keeping the generated protocol payload backward-compatible.
 validation: Ran pnpm --filter @globalpayto/sdk typecheck and pnpm --filter @globalpayto/sdk test; SDK tests now cover 42 passing workspace cases including payor-app builder validation.
 follow-ups: Extend the public testing package with generic route option, quote, solver, and SmarTrust-like public-safe fixtures.
+
+---
+
+## 2026-06-26-gpts-s5-t4
+
+agent: Codex
+branch: feature/globalpayto-resolver-migration
+todo: globalpayto-sdk:GPTS-S5-T4
+summary: Extended the public testing package with generic route option fixtures, direct/exchange/bridge/cross-chain quote previews, exact-send and exact-receive execution quote requests, and reusable mock execution quote providers for preferred-solver and fanout tests.
+validation: Ran pnpm --filter @globalpayto/protocol build, pnpm --filter @globalpayto/sdk build, pnpm install, pnpm --filter @globalpayto/testing typecheck, and pnpm --filter @globalpayto/testing test; testing package coverage now passes 44 workspace tests.
+follow-ups: Continue with the public site solver-adapter content and checks.
