@@ -215,3 +215,14 @@ todo: globalpayto-sdk:GPTS-S5-T1
 summary: Defined public route quote preview contracts for generic payor-app route option and payment-intent option flows, added schema-backed generated types, fixture coverage, validator exports, and docs that separate route queries, intent options, and final resolved intents.
 validation: Ran pnpm --filter @globalpayto/protocol generate, pnpm --filter @globalpayto/protocol typecheck, and pnpm --filter @globalpayto/protocol test; protocol validation now covers 37 passing workspace tests including quote preview privacy and sender-fee rules.
 follow-ups: Continue with backend generic route option resolution using the SDK quote preview contract as the public boundary.
+
+---
+
+## 2026-06-26-gpts-s5-t2
+
+agent: Codex
+branch: feature/globalpayto-resolver-migration
+todo: globalpayto-sdk:GPTS-S5-T2
+summary: Completed SDK execution solver quote provider interfaces by validating the existing solver id exports, quote provider interface, preferred-solver selection, quote fanout behavior, partial provider failure handling, and all-provider failure handling.
+validation: Ran pnpm --filter @globalpayto/sdk typecheck and pnpm --filter @globalpayto/sdk test; SDK tests now cover 39 passing workspace cases including quote fanout and failure behavior.
+follow-ups: Continue with backend solver adapter boundaries that can consume the SDK solver ids and quote-provider behavior.

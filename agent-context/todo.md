@@ -326,9 +326,9 @@ Acceptance notes:
 
 ### GPTS-S5-T2 Implement Execution Solver Quote Provider Interfaces
 
-Status: TBD
-Feature branch: TBD
-Session log: TBD
+Status: Complete
+Feature branch: feature/globalpayto-resolver-migration
+Session log: agent-context/session-log/main.md#2026-06-26-gpts-s5-t2
 Depends on: globalpayto-sdk:GPTS-S5-T1
 
 Implement SDK interfaces and helpers for crypto-native execution solver quote providers.

@@ -86,6 +86,33 @@ describe("@globalpayto/sdk", () => {
     expect(calls).toEqual(["lifi"]);
     expect(quotes.map((quote) => quote.solverId)).toEqual(["lifi"]);
   });
+
+  it("returns successful quotes when some configured solvers fail", async () => {
+    const calls: CryptoNativeExecutionSolverId[] = [];
+    const providers = [
+      createQuoteProvider("near_intents_1click", calls, { fail: true }),
+      createQuoteProvider("lifi", calls),
+      createQuoteProvider("squid", calls, { fail: true }),
+    ];
+
+    const quotes = await requestExecutionQuotes({
+      providers,
+      request: quoteRequest,
+    });
+
+    expect(calls).toEqual(["near_intents_1click", "lifi", "squid"]);
+    expect(quotes.map((quote) => quote.solverId)).toEqual(["lifi"]);
+  });
+
+  it("throws when every configured quote provider fails", async () => {
+    await expect(requestExecutionQuotes({
+      providers: [
+        createQuoteProvider("near_intents_1click", [], { fail: true }),
+        createQuoteProvider("lifi", [], { fail: true }),
+      ],
+      request: quoteRequest,
+    })).rejects.toThrow("quote_providers_unavailable");
+  });
 });
 
 const quoteRequest = {
@@ -101,11 +128,13 @@ const quoteRequest = {
 function createQuoteProvider(
   solverId: CryptoNativeExecutionSolverId,
   calls: CryptoNativeExecutionSolverId[],
+  options: { fail?: boolean } = {},
 ): ExecutionQuoteProvider {
   return {
     solverId,
     async requestQuote() {
       calls.push(solverId);
+      if (options.fail) throw new Error(`failed_${solverId}`);
       return {
         solverId,
         quoteId: `quote_${solverId}`,
