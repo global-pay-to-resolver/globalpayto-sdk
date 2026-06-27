@@ -14,6 +14,10 @@ This repo should become the source of truth for request and response contracts, 
 The public site publishes a copy of the OpenAPI contract at `/openapi.yaml`
 and renders it with Scalar at `/reference`.
 
+CI also generates `dist/postman_collection.json` from the OpenAPI contract and
+uploads it as a workflow artifact. Tagged `sdk-v*` publish runs attach the same
+collection to the GitHub release.
+
 ## Intended Packages
 
 - `@mypaytag/protocol`
@@ -63,6 +67,7 @@ Run individual checks:
 pnpm typecheck
 pnpm test
 pnpm scan:public-boundary
+pnpm generate:postman
 pnpm build
 ```
 

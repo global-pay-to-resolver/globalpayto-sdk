@@ -10,6 +10,7 @@
     "example:paying-dapp": "pnpm --filter @mypaytag/example-paying-dapp-basic start",
     "example:payto-dapp": "pnpm --filter @mypaytag/example-payto-dapp-modality-b start",
     "generate": "pnpm --filter @mypaytag/protocol generate",
+    "generate:postman": "node scripts/generate-postman-collection.mjs",
     "pack:dry-run": "pnpm -r --filter './packages/*' exec npm pack --dry-run",
     "scan:public-boundary": "node scripts/scan-public-boundary.mjs",
     "test": "pnpm -r test",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@types/node": "^20.19.1",
     "json-schema-to-typescript": "^15.0.4",
+    "openapi-to-postmanv2": "^6.1.0",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"
   }

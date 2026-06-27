@@ -29,5 +29,15 @@ jobs:
       - name: Validate
         run: pnpm run validate
 
+      - name: Generate Postman collection
+        run: pnpm generate:postman
+
+      - name: Upload Postman collection artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: postman_collection
+          path: dist/postman_collection.json
+          if-no-files-found: error
+
       - name: Package dry run
         run: pnpm pack:dry-run
