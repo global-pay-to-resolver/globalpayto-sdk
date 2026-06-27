@@ -17,15 +17,15 @@ const boundaryLanguage = /\b(must not|should not|do not|does not|intentionally|o
 
 const privatePatterns = [
   {
-    pattern: /myPayTag\/mypaytag-private\b/i,
+    pattern: /myPayTag\/mypaytag-backend\b/i,
     message: "links or references the private resolver repo",
   },
   {
-    pattern: /\.\.\/mypaytag-private\b/i,
+    pattern: /\.\.\/mypaytag-backend\b/i,
     message: "uses a relative link into the private resolver repo",
   },
   {
-    pattern: /\bmypaytag-private\/docs\//i,
+    pattern: /\bmypaytag-backend\/docs\//i,
     message: "references private resolver docs",
   },
   {
