@@ -1,5 +1,5 @@
 {
-  "name": "@globalpayto/provider-sdk",
+  "name": "@mypaytag/provider-sdk",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -23,6 +23,6 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@globalpayto/protocol": "workspace:*"
+    "@mypaytag/protocol": "workspace:*"
   }
 }

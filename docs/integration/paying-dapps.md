@@ -1,7 +1,7 @@
 # PayingDapp Integration
 
-PayingDapps ask GlobalPayTo to resolve a Cubid verified-stamp recipient into a
-one-time GlobalPayTo JSON intent.
+PayingDapps ask MyPayTag to resolve a Cubid verified-stamp recipient into a
+one-time MyPayTag JSON intent.
 
 ## Use The SDK
 
@@ -33,7 +33,7 @@ send users to per-request setup or requesting-app approval pages.
 
 ## Resolved Intents
 
-For `resolved`, present or hand off the returned `globalpayto.intent.v1` intent.
+For `resolved`, present or hand off the returned `mypaytag.intent.v1` intent.
 MVP payment instructions use `provider_json` with a typed provider destination:
 
 ```json
@@ -51,7 +51,7 @@ selected one-time provider intent.
 ## Crypto-Native Execution Quotes
 
 When a PayingDapp supports execution adapters, configure quote providers for the
-solver/router surfaces the app can use. The initial GlobalPayTo SDK solver ids
+solver/router surfaces the app can use. The initial MyPayTag SDK solver ids
 are:
 
 - `near_intents_1click`

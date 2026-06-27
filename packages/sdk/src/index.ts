@@ -6,7 +6,7 @@ import {
   type NotificationEvent,
   type ResolveRequest,
   type ResolveResponse,
-} from "@globalpayto/protocol";
+} from "@mypaytag/protocol";
 
 export type ResolveRequestInput = ResolveRequest;
 export type SupportedPath = ResolveRequest["supportedPaths"][number];
@@ -142,7 +142,7 @@ export function parseNotificationEvent(payload: unknown): NotificationEvent {
   return validateNotificationEvent(payload);
 }
 
-export function isGlobalPayToNotification(payload: unknown): payload is NotificationEvent {
+export function isMyPayTagNotification(payload: unknown): payload is NotificationEvent {
   return isNotificationEvent(payload);
 }
 

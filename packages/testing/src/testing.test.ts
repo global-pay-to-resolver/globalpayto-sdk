@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   requestExecutionQuotes,
-} from "@globalpayto/sdk";
+} from "@mypaytag/sdk";
 
 import {
   createMockCubidValidator,
@@ -10,32 +10,32 @@ import {
   createMockPayToDapp,
   createMockResolver,
   createPaymentIntentCreatedNotification,
-  globalPayToFixtures,
+  myPayTagFixtures,
 } from "./index.js";
 
-describe("@globalpayto/testing", () => {
+describe("@mypaytag/testing", () => {
   it("exports reusable MVP fixtures", () => {
-    expect(globalPayToFixtures.resolve.request.intentMode).toBe("one_time");
-    expect(globalPayToFixtures.notifications.paymentIntentCreated.eventType).toBe(
+    expect(myPayTagFixtures.resolve.request.intentMode).toBe("one_time");
+    expect(myPayTagFixtures.notifications.paymentIntentCreated.eventType).toBe(
       "payment_intent_created",
     );
-    expect(globalPayToFixtures.routeRegistration.forbiddenAddress).toHaveProperty("address");
-    expect(globalPayToFixtures.routeOptions.directTransfer.method).toBe("direct_transfer");
-    expect(globalPayToFixtures.routeOptions.sameChainExchange.method).toBe("provider_exchange");
-    expect(globalPayToFixtures.routeOptions.bridge.method).toBe("bridge");
-    expect(globalPayToFixtures.routeOptions.crossChainIntent.method).toBe("cross_chain_intent");
-    expect(globalPayToFixtures.routeOptions.noRoute.status).toBe("no_route");
-    expect(globalPayToFixtures.routeOptions.routeSelectionRequired.status).toBe(
+    expect(myPayTagFixtures.routeRegistration.forbiddenAddress).toHaveProperty("address");
+    expect(myPayTagFixtures.routeOptions.directTransfer.method).toBe("direct_transfer");
+    expect(myPayTagFixtures.routeOptions.sameChainExchange.method).toBe("provider_exchange");
+    expect(myPayTagFixtures.routeOptions.bridge.method).toBe("bridge");
+    expect(myPayTagFixtures.routeOptions.crossChainIntent.method).toBe("cross_chain_intent");
+    expect(myPayTagFixtures.routeOptions.noRoute.status).toBe("no_route");
+    expect(myPayTagFixtures.routeOptions.routeSelectionRequired.status).toBe(
       "user_action_required",
     );
-    expect(globalPayToFixtures.routeOptions.providerUnavailable.status).toBe(
+    expect(myPayTagFixtures.routeOptions.providerUnavailable.status).toBe(
       "provider_unavailable",
     );
-    expect(globalPayToFixtures.routeOptions.insufficientBalance.status).toBe("invalid_request");
-    expect(globalPayToFixtures.executionQuotes.exactSendRequest.reference).toBe(
+    expect(myPayTagFixtures.routeOptions.insufficientBalance.status).toBe("invalid_request");
+    expect(myPayTagFixtures.executionQuotes.exactSendRequest.reference).toBe(
       "example-payor:exact-send",
     );
-    expect(globalPayToFixtures.executionQuotes.exactReceiveRequest.reference).toBe(
+    expect(myPayTagFixtures.executionQuotes.exactReceiveRequest.reference).toBe(
       "example-payor:exact-receive",
     );
   });
@@ -53,12 +53,12 @@ describe("@globalpayto/testing", () => {
     const resolver = createMockResolver();
     const payToDapp = createMockPayToDapp();
 
-    await expect(resolver.resolve(globalPayToFixtures.resolve.request)).resolves.toEqual(
-      globalPayToFixtures.resolve.resolved,
+    await expect(resolver.resolve(myPayTagFixtures.resolve.request)).resolves.toEqual(
+      myPayTagFixtures.resolve.resolved,
     );
     await expect(
-      payToDapp.createPaymentIntent(globalPayToFixtures.provider.callback),
-    ).resolves.toEqual(globalPayToFixtures.provider.response);
+      payToDapp.createPaymentIntent(myPayTagFixtures.provider.callback),
+    ).resolves.toEqual(myPayTagFixtures.provider.response);
   });
 
   it("creates intent-created notifications only", () => {
@@ -75,7 +75,7 @@ describe("@globalpayto/testing", () => {
     await expect(requestExecutionQuotes({
       preferredSolverId: "lifi",
       providers,
-      request: globalPayToFixtures.executionQuotes.exactReceiveRequest,
+      request: myPayTagFixtures.executionQuotes.exactReceiveRequest,
     })).resolves.toMatchObject([
       {
         solverId: "lifi",
@@ -84,7 +84,7 @@ describe("@globalpayto/testing", () => {
 
     await expect(requestExecutionQuotes({
       providers,
-      request: globalPayToFixtures.executionQuotes.exactSendRequest,
+      request: myPayTagFixtures.executionQuotes.exactSendRequest,
     })).resolves.toMatchObject([
       {
         solverId: "near_intents_1click",
@@ -107,7 +107,7 @@ describe("@globalpayto/testing", () => {
           failWith: "insufficient_balance",
         }),
       ],
-      request: globalPayToFixtures.executionQuotes.exactSendRequest,
+      request: myPayTagFixtures.executionQuotes.exactSendRequest,
     })).rejects.toThrow("quote_providers_unavailable");
   });
 });

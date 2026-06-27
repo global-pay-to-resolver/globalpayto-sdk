@@ -1,11 +1,11 @@
 # Status And Hosted-Action Handling
 
-GlobalPayTo public statuses are the only statuses integrators should branch on.
+MyPayTag public statuses are the only statuses integrators should branch on.
 Private diagnostics are not part of the public contract.
 
 ## Success
 
-- `resolved`: a one-time GlobalPayTo intent is ready.
+- `resolved`: a one-time MyPayTag intent is ready.
 
 ## Hosted Action Required
 

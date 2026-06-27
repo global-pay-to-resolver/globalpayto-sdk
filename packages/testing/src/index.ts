@@ -1,5 +1,5 @@
 import {
-  validGlobalPayToIntent,
+  validMyPayTagIntent,
   validNoRouteResponse,
   validNotificationEvent,
   validProviderCallbackRequest,
@@ -9,7 +9,7 @@ import {
   validRouteRegistrationRequest,
   validRouteRegistrationResponse,
   validRouteSelectionResponse,
-  type GlobalPayToIntent,
+  type MyPayTagIntent,
   type NotificationEvent,
   type ProviderCallbackRequest,
   type ProviderResponse,
@@ -21,15 +21,15 @@ import {
   validateNotificationEvent,
   validateResolveRequest,
   validateRouteRegistrationRequest,
-} from "@globalpayto/protocol";
+} from "@mypaytag/protocol";
 import type {
   CryptoNativeExecutionSolverId,
   ExecutionQuote,
   ExecutionQuoteProvider,
   ExecutionQuoteRequest,
-} from "@globalpayto/sdk";
+} from "@mypaytag/sdk";
 
-export interface GlobalPayToFixtures {
+export interface MyPayTagFixtures {
   routeRegistration: {
     valid: RouteRegistrationRequest;
     forbiddenAddress: RouteRegistrationRequest & { address: string };
@@ -66,10 +66,10 @@ export interface GlobalPayToFixtures {
     near: ExecutionQuote;
     lifi: ExecutionQuote;
   };
-  intent: GlobalPayToIntent;
+  intent: MyPayTagIntent;
 }
 
-export const globalPayToFixtures: GlobalPayToFixtures = {
+export const myPayTagFixtures: MyPayTagFixtures = {
   routeRegistration: {
     valid: validRouteRegistrationRequest,
     forbiddenAddress: {
@@ -169,7 +169,7 @@ export const globalPayToFixtures: GlobalPayToFixtures = {
       },
     },
   },
-  intent: validGlobalPayToIntent,
+  intent: validMyPayTagIntent,
 };
 
 export interface MockCubidValidator {

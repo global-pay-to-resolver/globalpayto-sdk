@@ -1,5 +1,5 @@
 {
-  "name": "globalpayto-sdk-workspace",
+  "name": "mypaytag-sdk-workspace",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -7,9 +7,9 @@
   "scripts": {
     "build": "pnpm -r build",
     "clean": "pnpm -r --filter './packages/*' exec rm -rf dist",
-    "example:paying-dapp": "pnpm --filter @globalpayto/example-paying-dapp-basic start",
-    "example:payto-dapp": "pnpm --filter @globalpayto/example-payto-dapp-modality-b start",
-    "generate": "pnpm --filter @globalpayto/protocol generate",
+    "example:paying-dapp": "pnpm --filter @mypaytag/example-paying-dapp-basic start",
+    "example:payto-dapp": "pnpm --filter @mypaytag/example-payto-dapp-modality-b start",
+    "generate": "pnpm --filter @mypaytag/protocol generate",
     "pack:dry-run": "pnpm -r --filter './packages/*' exec npm pack --dry-run",
     "scan:public-boundary": "node scripts/scan-public-boundary.mjs",
     "test": "pnpm -r test",

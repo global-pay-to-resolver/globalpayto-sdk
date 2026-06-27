@@ -47,7 +47,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true'
         # REVIEW: `npm publish` does not rewrite `workspace:*` dependencies the way `pnpm publish`
         # does. The SDK/provider/testing package manifests currently depend on
-        # `@globalpayto/protocol: workspace:*`; verify the packed manifests replace those with real
+        # `@mypaytag/protocol: workspace:*`; verify the packed manifests replace those with real
         # semver ranges before using this workflow for public npm releases.
         run: pnpm -r --filter './packages/*' exec npm publish --dry-run --access public
 

@@ -3,7 +3,7 @@
 
 export interface NotificationEvent {
   eventType: "payment_intent_created";
-  schema: "globalpayto.notification.v1";
+  schema: "mypaytag.notification.v1";
   recipient: {
     identifierType: "verified_stamp";
     maskedDisplay: string;

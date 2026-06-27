@@ -1,6 +1,6 @@
 # Notifications And Test Fixtures
 
-MVP notifications use Cubid comms. GlobalPayTo defines the public event payload
+MVP notifications use Cubid comms. MyPayTag defines the public event payload
 shape so integrators, the resolver, and hosted actions agree on data.
 
 ## MVP Event
@@ -10,7 +10,7 @@ The only MVP notification event is:
 - `payment_intent_created`
 
 Provider-reported receipt events are reserved for a later status-tracking phase.
-Do not use notification copy that implies GlobalPayTo has settlement
+Do not use notification copy that implies MyPayTag has settlement
 responsibility.
 
 ## Payload Boundaries
@@ -28,7 +28,7 @@ settlement claims.
 
 ## Fixtures
 
-Use `@globalpayto/testing` for reusable fixtures and mocks:
+Use `@mypaytag/testing` for reusable fixtures and mocks:
 
 - valid route registration,
 - forbidden address registration,

@@ -1,4 +1,4 @@
-# GlobalPayTo Public Integration Guides
+# MyPayTag Public Integration Guides
 
 Use these guides with the SDK packages and runnable examples:
 

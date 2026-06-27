@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  validateGlobalPayToIntent,
-  validGlobalPayToIntent,
+  validateMyPayTagIntent,
+  validMyPayTagIntent,
   validProviderCallbackRequest,
   validProviderResponse,
   type ProviderResponse,
-} from "@globalpayto/protocol";
+} from "@mypaytag/protocol";
 
 import {
   assertProviderResponseMatchesCallback,
@@ -175,19 +175,19 @@ describe("PayToDapp provider conformance", () => {
     }
   });
 
-  it("keeps provider payloads inside the GlobalPayTo intent envelope", () => {
+  it("keeps provider payloads inside the MyPayTag intent envelope", () => {
     const intent = {
-      ...validGlobalPayToIntent,
+      ...validMyPayTagIntent,
       paymentInstruction: validProviderResponse.paymentInstruction,
       references: {
-        ...validGlobalPayToIntent.references,
+        ...validMyPayTagIntent.references,
         providerReference: validProviderResponse.providerIntentId,
       },
     };
 
-    expect(validateGlobalPayToIntent(intent)).toEqual(intent);
+    expect(validateMyPayTagIntent(intent)).toEqual(intent);
     expect(() =>
-      validateGlobalPayToIntent({
+      validateMyPayTagIntent({
         ...intent,
         paymentInstruction: {
           ...intent.paymentInstruction,

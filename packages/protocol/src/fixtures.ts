@@ -1,5 +1,5 @@
 import type {
-  GlobalPayToIntent,
+  MyPayTagIntent,
   NotificationEvent,
   ProviderCallbackRequest,
   ProviderResponse,
@@ -103,9 +103,9 @@ export const validProviderResponse: ProviderResponse = {
   },
 };
 
-export const validGlobalPayToIntent: GlobalPayToIntent = {
+export const validMyPayTagIntent: MyPayTagIntent = {
   id: "gptr_pi_123",
-  schema: "globalpayto.intent.v1",
+  schema: "mypaytag.intent.v1",
   status: "ready",
   modality: "provider_intent",
   recipient: {
@@ -134,7 +134,7 @@ export const validGlobalPayToIntent: GlobalPayToIntent = {
 
 export const validResolvedResponse: ResolveResponse = {
   status: "resolved",
-  intent: validGlobalPayToIntent,
+  intent: validMyPayTagIntent,
 };
 
 export const validNoRouteResponse: ResolveResponse = {
@@ -145,14 +145,14 @@ export const validRouteSelectionResponse: ResolveResponse = {
   status: "user_action_required",
   action: {
     type: "route_selection",
-    url: "https://globalpayto.example/actions/route-selection/gptr_act_789",
+    url: "https://mypaytag.com/actions/route-selection/gptr_act_789",
     expiresAt: "2026-06-24T20:00:00Z",
   },
 };
 
 export const validNotificationEvent: NotificationEvent = {
   eventType: "payment_intent_created",
-  schema: "globalpayto.notification.v1",
+  schema: "mypaytag.notification.v1",
   recipient: {
     identifierType: "verified_stamp",
     maskedDisplay: "n***@example.com",

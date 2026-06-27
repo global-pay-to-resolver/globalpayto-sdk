@@ -1,26 +1,26 @@
-# GlobalPayTo Protocol And SDK Architecture
+# MyPayTag Protocol And SDK Architecture
 
 Date: 2026-06-24  
 Status: MVP architecture  
-Repo: `globalpayto-sdk`
+Repo: `mypaytag-sdk`
 
 ## Scope
 
-This public repo owns the developer-facing GlobalPayTo contract. It should become the source of truth for request and response schemas, TypeScript types, SDK helpers, provider integration helpers, examples, mocks, and test vectors.
+This public repo owns the developer-facing MyPayTag contract. It should become the source of truth for request and response schemas, TypeScript types, SDK helpers, provider integration helpers, examples, mocks, and test vectors.
 
 This repo must not contain private resolver implementation details, production database access, private deployment assumptions, provider secrets, audit internals, or admin tooling.
 
-For hosted user-action UX, see the public GlobalPayTo site repository docs, especially `docs/engineering/hosted-user-actions-architecture.md` and `docs/engineering/hosted-action-contract.md`.
+For hosted user-action UX, see the public MyPayTag site repository docs, especially `docs/engineering/hosted-user-actions-architecture.md` and `docs/engineering/hosted-action-contract.md`.
 
 ## Package Responsibilities
 
 Planned packages:
 
-- `@globalpayto/protocol`: schemas, TypeScript types, enums, OpenAPI source, error/status codes, and test vectors.
-- `@globalpayto/sdk`: client helpers for PayingDapp and resolver integrations.
-- `@globalpayto/provider-sdk`: helpers for PayToDapp route registration and Modality B intent callbacks.
-- `@globalpayto/testing`: mock resolver, mock Cubid validator, mock PayToDapp, fixtures, and conformance test vectors.
-- Notification-related public event types belong in `@globalpayto/protocol`; delivery uses Cubid comms rather than a GlobalPayTo notification provider SDK.
+- `@mypaytag/protocol`: schemas, TypeScript types, enums, OpenAPI source, error/status codes, and test vectors.
+- `@mypaytag/sdk`: client helpers for PayingDapp and resolver integrations.
+- `@mypaytag/provider-sdk`: helpers for PayToDapp route registration and Modality B intent callbacks.
+- `@mypaytag/testing`: mock resolver, mock Cubid validator, mock PayToDapp, fixtures, and conformance test vectors.
+- Notification-related public event types belong in `@mypaytag/protocol`; delivery uses Cubid comms rather than a MyPayTag notification provider SDK.
 
 The public protocol package should be importable by both integrators and the private resolver backend.
 
@@ -32,7 +32,7 @@ The MVP protocol supports:
 - PayToDapp route registration using supported routes only,
 - PayingDapp resolution requests,
 - resolver-to-PayToDapp Modality B payment-intent callback schemas,
-- GlobalPayTo JSON intent responses,
+- MyPayTag JSON intent responses,
 - public notification event types for Cubid comms payloads,
 - safe action/status responses.
 
@@ -61,7 +61,7 @@ Short list for SDK adapter support:
 | Across | Fast bridge-focused EVM/L2 stablecoin transfers where supported. |
 | LayerZero Value Transfer API / Stargate | Cross-chain token transfer for OFT, LayerZero ecosystem assets, and routes where Stargate coverage is strong. |
 
-`@globalpayto/sdk` should expose a provider interface for these quote sources. When a payor-app passes a preferred solver id, the SDK asks only that quote provider. When no preferred solver id is selected, the SDK fans out quote requests to every configured quote provider and returns the successful quotes for app-side display or resolver-side selection.
+`@mypaytag/sdk` should expose a provider interface for these quote sources. When a payor-app passes a preferred solver id, the SDK asks only that quote provider. When no preferred solver id is selected, the SDK fans out quote requests to every configured quote provider and returns the successful quotes for app-side display or resolver-side selection.
 
 ## Route Query And Quote Contracts
 
@@ -69,7 +69,7 @@ Generic payor-app flows distinguish three stages:
 
 - route availability query: the app asks what safe receive options can be considered for a pay-to tag and sender-supported path set;
 - payment intent option query: the app includes amount and exactness context so the resolver can return executable or selectable quote previews;
-- final resolved intent: the app receives one `globalpayto.intent.v1` instruction for execution or handoff.
+- final resolved intent: the app receives one `mypaytag.intent.v1` instruction for execution or handoff.
 
 Route quote previews are public contract objects with method, send amount, receive amount, fee rows, expiry, and resolver reference. Fee rows identify whether the source is the payor app, provider, or resolver, and all MVP fees are charged to the sender. Quote previews must not include recipient wallet inventory, route preferences, unrelated PayToDapps, or wallet graph details.
 
@@ -173,7 +173,7 @@ The callback contract must document authentication and replay-protection require
 
 Provider SDK helpers must expose concrete verification interfaces for signed requests or equivalent auth metadata, nonce/timestamp checks, expiry skew, and repeated `resolverRequestId` idempotency so conformance tests can prove callbacks are accepted or rejected consistently.
 
-## GlobalPayTo JSON Intent
+## MyPayTag JSON Intent
 
 Resolved response shape:
 
@@ -182,7 +182,7 @@ Resolved response shape:
   "status": "resolved",
   "intent": {
     "id": "gptr_pi_123",
-    "schema": "globalpayto.intent.v1",
+    "schema": "mypaytag.intent.v1",
     "status": "ready",
     "modality": "provider_intent",
     "recipient": {
@@ -227,7 +227,7 @@ Resolved response shape:
 }
 ```
 
-The protocol validates the GlobalPayTo envelope and the required `provider_json.payload` keys defined in `mvp-api-contracts.md`, including `providerIntentId`, `chain`, `network`, `asset`, `destination`, `amount`, `reference`, and `expiresAt`. MVP provider destinations use `destination.kind = "blockchain_address"` with a nested `recipientAddress`; top-level address fields are rejected. The protocol does not render external protocol formats in the MVP.
+The protocol validates the MyPayTag envelope and the required `provider_json.payload` keys defined in `mvp-api-contracts.md`, including `providerIntentId`, `chain`, `network`, `asset`, `destination`, `amount`, `reference`, and `expiresAt`. MVP provider destinations use `destination.kind = "blockchain_address"` with a nested `recipientAddress`; top-level address fields are rejected. The protocol does not render external protocol formats in the MVP.
 
 ## Status Values
 
@@ -259,7 +259,7 @@ Notification payloads must use masked display values, public references, and act
 
 ## SDK Helpers
 
-`@globalpayto/sdk` should provide:
+`@mypaytag/sdk` should provide:
 
 - request builders for PayingDapp resolution,
 - quote helpers for crypto-native execution solvers,
@@ -270,14 +270,14 @@ Notification payloads must use masked display values, public references, and act
 - typed handling for `user_action_required` route-selection URLs and status-only
   `no_route` / `authorization_required` outcomes.
 
-`@globalpayto/provider-sdk` should provide:
+`@mypaytag/provider-sdk` should provide:
 
 - route registration request builders,
 - provider intent callback validation,
 - replay-protection helper interfaces,
 - conformance tests for provider intent responses.
 
-`@globalpayto/testing` should provide:
+`@mypaytag/testing` should provide:
 
 - mock resolver responses for each public status,
 - mock Cubid comms notification events,

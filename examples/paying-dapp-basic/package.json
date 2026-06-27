@@ -1,5 +1,5 @@
 {
-  "name": "@globalpayto/example-paying-dapp-basic",
+  "name": "@mypaytag/example-paying-dapp-basic",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -7,7 +7,7 @@
     "start": "node index.mjs"
   },
   "dependencies": {
-    "@globalpayto/sdk": "workspace:*",
-    "@globalpayto/testing": "workspace:*"
+    "@mypaytag/sdk": "workspace:*",
+    "@mypaytag/testing": "workspace:*"
   }
 }

@@ -5,11 +5,11 @@ import {
   isResolved,
   isRetryable,
   parseResolveResponse,
-} from "@globalpayto/sdk";
-import { createMockResolver, globalPayToFixtures } from "@globalpayto/testing";
+} from "@mypaytag/sdk";
+import { createMockResolver, myPayTagFixtures } from "@mypaytag/testing";
 
 const request = buildResolveRequest({
-  ...globalPayToFixtures.resolve.request,
+  ...myPayTagFixtures.resolve.request,
   payingDappReference: "example:payout_001",
 });
 
@@ -51,10 +51,10 @@ async function runScenario(label, resolverResponse) {
 }
 
 const scenarios = [
-  ["resolved", globalPayToFixtures.resolve.resolved],
-  ["no route", globalPayToFixtures.resolve.noRoute],
-  ["route selection required", globalPayToFixtures.resolve.routeSelectionRequired],
-  ["provider failure", globalPayToFixtures.resolve.providerFailure],
+  ["resolved", myPayTagFixtures.resolve.resolved],
+  ["no route", myPayTagFixtures.resolve.noRoute],
+  ["route selection required", myPayTagFixtures.resolve.routeSelectionRequired],
+  ["provider failure", myPayTagFixtures.resolve.providerFailure],
 ];
 
 for (const [label, response] of scenarios) {

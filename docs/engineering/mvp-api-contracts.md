@@ -1,14 +1,14 @@
-# GlobalPayTo MVP API Contracts
+# MyPayTag MVP API Contracts
 
 Date: 2026-06-24  
 Status: Sprint 1 finalized design  
-Repo: `globalpayto-sdk`
+Repo: `mypaytag-sdk`
 
 ## Scope
 
-This document finalizes the MVP public contract for GlobalPayTo integrations. It is a design artifact only; Sprint 2 will turn these shapes into package schemas, TypeScript types, validators, fixtures, and SDK helpers.
+This document finalizes the MVP public contract for MyPayTag integrations. It is a design artifact only; Sprint 2 will turn these shapes into package schemas, TypeScript types, validators, fixtures, and SDK helpers.
 
-The contract intentionally covers only verified-stamp identity, Modality B route registration, one-time GlobalPayTo JSON intents, safe action statuses, and Cubid comms notification event payloads.
+The contract intentionally covers only verified-stamp identity, Modality B route registration, one-time MyPayTag JSON intents, safe action statuses, and Cubid comms notification event payloads.
 
 ## Shared Primitives
 
@@ -64,7 +64,7 @@ Public statuses:
 
 | Status | Meaning | Integrator handling |
 | --- | --- | --- |
-| `resolved` | A GlobalPayTo intent is ready. | Present or execute the returned payment instruction. |
+| `resolved` | A MyPayTag intent is ready. | Present or execute the returned payment instruction. |
 | `no_route` | No authorized compatible PayToDapp route exists. | Show safe no-route copy; do not infer recipient existence or route details. |
 | `user_action_required` | A route-selection step is required. | Send the signed-in user to the route-selection action URL when present. |
 | `authorization_required` | The dapp does not have required user authorization. | Show safe authorization-required copy or use a Cubid-owned grant path when available. |
@@ -142,7 +142,7 @@ Route selection required response:
   "status": "user_action_required",
   "action": {
     "type": "route_selection",
-    "url": "https://globalpayto.example/actions/route-selection/gptr_act_123",
+    "url": "https://mypaytag.com/actions/route-selection/gptr_act_123",
     "expiresAt": "2026-06-24T20:00:00Z"
   }
 }
@@ -206,13 +206,13 @@ User action response:
   "status": "user_action_required",
   "action": {
     "type": "route_selection",
-    "url": "https://globalpayto.example/actions/route-selection/gptr_act_789",
+    "url": "https://mypaytag.com/actions/route-selection/gptr_act_789",
     "expiresAt": "2026-06-24T20:00:00Z"
   }
 }
 ```
 
-Resolved response returns the GlobalPayTo intent shape below.
+Resolved response returns the MyPayTag intent shape below.
 
 Rules:
 
@@ -290,14 +290,14 @@ Rules:
 - Provider response payloads are preserved inside `paymentInstruction.payload`.
 - External payment protocol rendering is out of scope for MVP.
 
-## GlobalPayTo Intent
+## MyPayTag Intent
 
 ```json
 {
   "status": "resolved",
   "intent": {
     "id": "gptr_pi_123",
-    "schema": "globalpayto.intent.v1",
+    "schema": "mypaytag.intent.v1",
     "status": "ready",
     "modality": "provider_intent",
     "recipient": {
@@ -344,7 +344,7 @@ Rules:
 
 Rules:
 
-- `schema` is `globalpayto.intent.v1` for MVP.
+- `schema` is `mypaytag.intent.v1` for MVP.
 - `singleUse` defaults to `true`.
 - `paymentInstruction.type` is `provider_json`.
 - The resolver validates the envelope and the required provider payload fields below.
@@ -364,7 +364,7 @@ Matching rules:
 
 - `chain`, `network`, and `asset` must match the selected route/path.
 - `amount` must match `intent.amount.value`.
-- `expiresAt` must not exceed the GlobalPayTo intent expiry.
+- `expiresAt` must not exceed the MyPayTag intent expiry.
 - `destination.kind` is `blockchain_address` in the MVP.
 - `destination.recipientAddress` is the provider-selected destination for this intent and must not appear in route registration.
 - Top-level `recipientAddress`, `address`, and `account` fields are rejected so integrators do not confuse route registration with provider-selected destinations.
@@ -414,14 +414,14 @@ Rules:
 
 ## Cubid Comms Notification Events
 
-Notification delivery uses Cubid comms. GlobalPayTo defines public event payloads so backend, site, and SDK consumers agree on data shape.
+Notification delivery uses Cubid comms. MyPayTag defines public event payloads so backend, site, and SDK consumers agree on data shape.
 
 Common payload fields:
 
 ```json
 {
   "eventType": "payment_intent_created",
-  "schema": "globalpayto.notification.v1",
+  "schema": "mypaytag.notification.v1",
   "recipient": {
     "identifierType": "verified_stamp",
     "maskedDisplay": "n***@example.com"
@@ -451,14 +451,14 @@ Rules:
 
 - Notification payloads may include masked display values, public references, amounts, and action URLs when allowed by the event contract.
 - Notification payloads must omit wallet graphs, unrelated PayToDapps, route preferences, provider internals, raw identifiers, and private backend diagnostics.
-- GlobalPayTo does not define a separate notification provider SDK in MVP.
+- MyPayTag does not define a separate notification provider SDK in MVP.
 
 ## Versioning And Compatibility
 
 MVP schema names:
 
-- `globalpayto.intent.v1`
-- `globalpayto.notification.v1`
+- `mypaytag.intent.v1`
+- `mypaytag.notification.v1`
 
 Rules:
 

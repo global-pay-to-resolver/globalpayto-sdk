@@ -1,9 +1,9 @@
 /* eslint-disable */
-// Generated from packages/protocol/schemas/globalpayto-intent.schema.json. Do not edit by hand.
+// Generated from packages/protocol/schemas/mypaytag-intent.schema.json. Do not edit by hand.
 
-export interface GlobalPayToIntent {
+export interface MyPayTagIntent {
   id: string;
-  schema: "globalpayto.intent.v1";
+  schema: "mypaytag.intent.v1";
   status: "ready";
   modality: "provider_intent";
   recipient: {

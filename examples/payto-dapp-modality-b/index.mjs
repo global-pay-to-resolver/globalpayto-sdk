@@ -4,8 +4,8 @@ import {
   parseProviderCallbackRequest,
   parseProviderResponse,
   verifyCallbackAuth,
-} from "@globalpayto/provider-sdk";
-import { createMockPayToDapp, globalPayToFixtures } from "@globalpayto/testing";
+} from "@mypaytag/provider-sdk";
+import { createMockPayToDapp, myPayTagFixtures } from "@mypaytag/testing";
 
 function createMemoryReplayStore() {
   const seen = new Set();
@@ -18,18 +18,18 @@ function createMemoryReplayStore() {
   };
 }
 
-const routeRegistration = buildRouteRegistrationRequest(globalPayToFixtures.routeRegistration.valid);
+const routeRegistration = buildRouteRegistrationRequest(myPayTagFixtures.routeRegistration.valid);
 
 const callbackAuthEnvelope = {
   method: "POST",
   url: "https://smartrust.example.test/payment-intents",
   bodyDigest: "sha256:example-body",
-  resolverRequestId: globalPayToFixtures.provider.callback.resolverRequestId,
+  resolverRequestId: myPayTagFixtures.provider.callback.resolverRequestId,
   signature: await hmacSignature("modality-b-test-key", [
     "POST",
     "https://smartrust.example.test/payment-intents",
     "sha256:example-body",
-    globalPayToFixtures.provider.callback.resolverRequestId,
+    myPayTagFixtures.provider.callback.resolverRequestId,
     "example-nonce",
     "2026-06-24T20:00:00Z",
   ].join("\n")),
@@ -60,8 +60,8 @@ const replayAuthCheck = await verifyCallbackAuth(callbackAuthEnvelope, verifier,
   now: new Date("2026-06-24T20:01:00Z"),
 });
 
-const callback = parseProviderCallbackRequest(globalPayToFixtures.provider.callback);
-const payToDapp = createMockPayToDapp(globalPayToFixtures.provider.response);
+const callback = parseProviderCallbackRequest(myPayTagFixtures.provider.callback);
+const payToDapp = createMockPayToDapp(myPayTagFixtures.provider.response);
 const providerResponse = parseProviderResponse(await payToDapp.createPaymentIntent(callback));
 const matchedResponse = assertProviderResponseMatchesCallback(callback, providerResponse);
 

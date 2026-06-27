@@ -1,6 +1,6 @@
-# GlobalPayTo SDK
+# MyPayTag SDK
 
-Public developer-facing protocol and SDK workspace for GlobalPayTo.
+Public developer-facing protocol and SDK workspace for MyPayTag.
 
 This repo should become the source of truth for request and response contracts, client SDKs, provider helpers, mocks, examples, and integration documentation.
 
@@ -8,14 +8,14 @@ This repo should become the source of truth for request and response contracts, 
 
 - [Protocol and SDK architecture](docs/engineering/protocol-and-sdk-architecture.md)
 - [Public integration guides](docs/integration/README.md)
-- Hosted user-action UX lives in the sibling `globalpayto-site` repo.
+- Hosted user-action UX lives in the sibling `mypaytag-site` repo.
 
 ## Intended Packages
 
-- `@globalpayto/protocol`
-- `@globalpayto/sdk`
-- `@globalpayto/provider-sdk`
-- `@globalpayto/testing`
+- `@mypaytag/protocol`
+- `@mypaytag/sdk`
+- `@mypaytag/provider-sdk`
+- `@mypaytag/testing`
 
 ## Initial Layout
 

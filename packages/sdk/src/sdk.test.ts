@@ -6,7 +6,7 @@ import {
   validResolvedResponse,
   validResolveRequest,
   validRouteSelectionResponse,
-} from "@globalpayto/protocol";
+} from "@mypaytag/protocol";
 
 import {
   buildResolveRequest,
@@ -16,7 +16,7 @@ import {
   buildSupportedPath,
   getActionUrl,
   isActionRequired,
-  isGlobalPayToNotification,
+  isMyPayTagNotification,
   isResolved,
   parseNotificationEvent,
   parseResolveResponse,
@@ -25,7 +25,7 @@ import {
   type ExecutionQuoteProvider,
 } from "./index.js";
 
-describe("@globalpayto/sdk", () => {
+describe("@mypaytag/sdk", () => {
   it("builds and validates resolve requests", () => {
     expect(buildResolveRequest(validResolveRequest)).toEqual(validResolveRequest);
   });
@@ -110,7 +110,7 @@ describe("@globalpayto/sdk", () => {
     const response = parseResolveResponse(validRouteSelectionResponse);
 
     expect(isActionRequired(response)).toBe(true);
-    expect(getActionUrl(response)).toBe("https://globalpayto.example/actions/route-selection/gptr_act_789");
+    expect(getActionUrl(response)).toBe("https://mypaytag.com/actions/route-selection/gptr_act_789");
   });
 
   it("treats no-route responses as status-only", () => {
@@ -121,7 +121,7 @@ describe("@globalpayto/sdk", () => {
   });
 
   it("guards Cubid comms notification payloads", () => {
-    expect(isGlobalPayToNotification(validNotificationEvent)).toBe(true);
+    expect(isMyPayTagNotification(validNotificationEvent)).toBe(true);
     expect(parseNotificationEvent(validNotificationEvent)).toEqual(validNotificationEvent);
   });
 

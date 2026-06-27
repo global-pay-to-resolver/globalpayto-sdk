@@ -1,6 +1,6 @@
 # PayToDapp Modality B Example
 
-Runnable example for a PayToDapp integrating with GlobalPayTo MVP.
+Runnable example for a PayToDapp integrating with MyPayTag MVP.
 
 Run from the repository root after building packages:
 

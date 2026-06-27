@@ -23,19 +23,19 @@ importers:
 
   examples/paying-dapp-basic:
     dependencies:
-      '@globalpayto/sdk':
+      '@mypaytag/sdk':
         specifier: workspace:*
         version: link:../../packages/sdk
-      '@globalpayto/testing':
+      '@mypaytag/testing':
         specifier: workspace:*
         version: link:../../packages/testing
 
   examples/payto-dapp-modality-b:
     dependencies:
-      '@globalpayto/provider-sdk':
+      '@mypaytag/provider-sdk':
         specifier: workspace:*
         version: link:../../packages/provider-sdk
-      '@globalpayto/testing':
+      '@mypaytag/testing':
         specifier: workspace:*
         version: link:../../packages/testing
 
@@ -50,22 +50,22 @@ importers:
 
   packages/provider-sdk:
     dependencies:
-      '@globalpayto/protocol':
+      '@mypaytag/protocol':
         specifier: workspace:*
         version: link:../protocol
 
   packages/sdk:
     dependencies:
-      '@globalpayto/protocol':
+      '@mypaytag/protocol':
         specifier: workspace:*
         version: link:../protocol
 
   packages/testing:
     dependencies:
-      '@globalpayto/protocol':
+      '@mypaytag/protocol':
         specifier: workspace:*
         version: link:../protocol
-      '@globalpayto/sdk':
+      '@mypaytag/sdk':
         specifier: workspace:*
         version: link:../sdk
 

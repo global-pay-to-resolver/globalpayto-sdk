@@ -2,7 +2,7 @@
 
 ## Repository Role
 
-`globalpayto-sdk` is the public developer-facing contract for GlobalPayTo. It should own protocol schemas, TypeScript SDK packages, provider helpers, mock services, test vectors, examples, and integration docs.
+`mypaytag-sdk` is the public developer-facing contract for MyPayTag. It should own protocol schemas, TypeScript SDK packages, provider helpers, mock services, test vectors, examples, and integration docs.
 
 The private backend should import public protocol packages from here once they exist.
 
