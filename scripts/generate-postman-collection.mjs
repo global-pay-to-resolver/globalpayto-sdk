@@ -2,8 +2,8 @@ import { mkdirSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { execFileSync } from "node:child_process";
 
-const specPath = resolve("openapi/openapi.yaml");
-const outputPath = resolve("dist/postman_collection.json");
+const specPath = resolve("api/openapi.yaml");
+const outputPath = resolve("api/postman_collection.json");
 
 mkdirSync(dirname(outputPath), { recursive: true });
 

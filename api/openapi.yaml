@@ -16,12 +16,17 @@ info:
     url: https://mypaytag.com
   license:
     name: Proprietary
+    identifier: LicenseRef-Proprietary
 servers:
-  - url: https://api.mypaytag.com/functions/v1
-    description: Production API
   - url: http://localhost:54321/functions/v1
     description: Local Supabase functions
+  - url: https://staging-api.mypaytag.com/functions/v1
+    description: Staging API
+  - url: https://api.mypaytag.com/functions/v1
+    description: Production API
 tags:
+  - name: Health
+    description: Availability checks.
   - name: Resolve
     description: Sending-app payment resolution.
   - name: Routes
@@ -33,6 +38,29 @@ tags:
 security:
   - MyPayTagSignature: []
 paths:
+  /health:
+    get:
+      tags:
+        - Health
+      operationId: getHealth
+      summary: Check API availability.
+      security: []
+      responses:
+        "200":
+          description: API is available.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+              examples:
+                ok:
+                  value:
+                    status: ok
+                    service: mypaytag-api
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
   /resolve:
     post:
       tags:
@@ -108,17 +136,9 @@ paths:
                   value:
                     status: no_route
         "400":
-          description: Invalid public request shape or unsupported request.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          $ref: "#/components/responses/BadRequest"
         "401":
-          description: Missing or invalid app authentication signature.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          $ref: "#/components/responses/Unauthorized"
   /payto-routes:
     post:
       tags:
@@ -174,17 +194,9 @@ paths:
                       url: https://mypaytag.com/actions/route-selection/mpt_act_123
                       expiresAt: "2026-06-24T20:00:00Z"
         "400":
-          description: Invalid public request shape.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          $ref: "#/components/responses/BadRequest"
         "401":
-          description: Missing or invalid app authentication signature.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          $ref: "#/components/responses/Unauthorized"
   /payto-routes/{routeId}:
     get:
       tags:
@@ -201,11 +213,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/PayToRoute"
         "404":
-          description: Route unavailable or not visible to the authenticated app.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          $ref: "#/components/responses/NotFound"
     patch:
       tags:
         - Routes
@@ -226,6 +234,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PayToRoute"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
     delete:
       tags:
         - Routes
@@ -240,6 +254,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeleteRouteResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /hosted-actions/{actionId}:
     get:
       tags:
@@ -258,6 +276,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HostedActionView"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
     post:
       tags:
         - Hosted Actions
@@ -278,6 +300,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HostedActionCompletion"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
   /notifications:
     post:
       tags:
@@ -311,6 +337,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotificationAccepted"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
 webhooks:
   providerPaymentIntent:
     post:
@@ -336,6 +366,37 @@ webhooks:
               schema:
                 $ref: "#/components/schemas/ProviderResponse"
 components:
+  responses:
+    BadRequest:
+      description: Invalid public request shape or unsupported request.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Unauthorized:
+      description: Missing or invalid app authentication signature.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: Resource unavailable or not visible to the authenticated app.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    TooManyRequests:
+      description: Request throttled.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    ServiceUnavailable:
+      description: Service temporarily unavailable.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
   securitySchemes:
     MyPayTagSignature:
       type: apiKey
@@ -362,6 +423,19 @@ components:
         type: string
         pattern: "^mpt_act_[A-Za-z0-9_-]+$"
   schemas:
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+        - service
+      properties:
+        status:
+          type: string
+          const: ok
+        service:
+          type: string
+          const: mypaytag-api
     PublicStatus:
       type: string
       enum:
