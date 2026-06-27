@@ -8,7 +8,11 @@ This repo should become the source of truth for request and response contracts, 
 
 - [Protocol and SDK architecture](docs/engineering/protocol-and-sdk-architecture.md)
 - [Public integration guides](docs/integration/README.md)
+- [Canonical OpenAPI 3.1 contract](openapi/openapi.yaml)
 - Hosted user-action UX lives in the sibling `mypaytag-site` repo.
+
+The public site publishes a copy of the OpenAPI contract at `/openapi.yaml`
+and renders it with Scalar at `/reference`.
 
 ## Intended Packages
 
@@ -26,6 +30,7 @@ This repo should become the source of truth for request and response contracts, 
 - `examples/paying-dapp-basic/`
 - `examples/payto-dapp-modality-b/`
 - `examples/payto-dapp-modality-a/` - future/out-of-scope note only; not an MVP integration path.
+- `openapi/`
 - `docs/`
 
 ## Development Status
