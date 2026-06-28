@@ -5,6 +5,13 @@ import { describe, expect, it } from "vitest";
 import { parse as parseYaml } from "yaml";
 
 import {
+  denyHostedActionDecision,
+  expiredHostedActionView,
+  replayedHostedActionCompletion,
+  restartRequiredHostedActionCompletion,
+  validateHostedActionCompletion,
+  validateHostedActionDecision,
+  validateHostedActionView,
   validateMyPayTagIntent,
   validateNearOneClickPayableInstruction,
   validateNotificationEvent,
@@ -23,6 +30,9 @@ import {
   validateRouteQuotePreview,
   validateRouteUpdateRequest,
   validateStatus,
+  validHostedActionCompletion,
+  validHostedActionDecision,
+  validHostedActionView,
   validMyPayTagIntent,
   validNearOneClickPayableInstruction,
   validNoRouteResponse,
@@ -103,6 +113,11 @@ describe("@mypaytag/protocol", () => {
     expect(validateRouteReadResponse(validRouteReadResponse)).toEqual(validRouteReadResponse);
     expect(validateRouteUpdateRequest(validRouteUpdateRequest)).toEqual(validRouteUpdateRequest);
     expect(validateRouteDeleteResponse(validRouteDeleteResponse)).toEqual(validRouteDeleteResponse);
+    expect(validateHostedActionView(validHostedActionView)).toEqual(validHostedActionView);
+    expect(validateHostedActionDecision(validHostedActionDecision)).toEqual(validHostedActionDecision);
+    expect(validateHostedActionCompletion(validHostedActionCompletion)).toEqual(
+      validHostedActionCompletion,
+    );
     expect(validateProviderResponse(validProviderResponse)).toEqual(validProviderResponse);
     expect(validateMyPayTagIntent(validMyPayTagIntent)).toEqual(validMyPayTagIntent);
     expect(validateNotificationEvent(validNotificationEvent)).toEqual(validNotificationEvent);
@@ -183,6 +198,78 @@ describe("@mypaytag/protocol", () => {
         }),
       ).toThrow();
     }
+  });
+
+  it("accepts hosted route-selection action view, decision, and completion states", () => {
+    expect(validateHostedActionView(validHostedActionView)).toEqual(validHostedActionView);
+    expect(validateHostedActionView(expiredHostedActionView)).toEqual(expiredHostedActionView);
+    expect(validateHostedActionDecision(validHostedActionDecision)).toEqual(validHostedActionDecision);
+    expect(validateHostedActionDecision(denyHostedActionDecision)).toEqual(denyHostedActionDecision);
+    expect(validateHostedActionCompletion(validHostedActionCompletion)).toEqual(
+      validHostedActionCompletion,
+    );
+    expect(validateHostedActionCompletion(replayedHostedActionCompletion)).toEqual(
+      replayedHostedActionCompletion,
+    );
+    expect(validateHostedActionCompletion(restartRequiredHostedActionCompletion)).toEqual(
+      restartRequiredHostedActionCompletion,
+    );
+  });
+
+  it("rejects hosted action payloads with private route, wallet, provider, or diagnostic data", () => {
+    for (const [field, value] of [
+      ["address", "0xabc123"],
+      ["recipientAddress", "0xabc123"],
+      ["rawIdentifier", "abd123@cubid.mypaytag"],
+      ["routePreference", "default"],
+      ["unrelatedPayToDapps", ["other-wallet"]],
+      ["walletGraph", { connectedWallets: ["0xabc123"] }],
+      ["providerPayload", validProviderResponse.paymentInstruction.payload],
+      ["privateDiagnostics", { reason: "rls_miss" }],
+    ] as const) {
+      expect(() =>
+        validateHostedActionView({
+          ...validHostedActionView,
+          [field]: value,
+        }),
+      ).toThrow();
+
+      expect(() =>
+        validateHostedActionDecision({
+          ...validHostedActionDecision,
+          [field]: value,
+        }),
+      ).toThrow();
+
+      expect(() =>
+        validateHostedActionCompletion({
+          ...validHostedActionCompletion,
+          [field]: value,
+        }),
+      ).toThrow();
+    }
+  });
+
+  it("requires selected hosted route decisions and completions to name the selected option", () => {
+    expect(() =>
+      validateHostedActionDecision({
+        decision: "select_route",
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateHostedActionDecision({
+        decision: "deny",
+        selectedOptionId: "mpt_route_option_123",
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateHostedActionCompletion({
+        status: "selected_route",
+        actionId: "mpt_act_789",
+      }),
+    ).toThrow();
   });
 
   it("rejects paths that omit network", () => {
@@ -479,6 +566,12 @@ describe("@mypaytag/protocol", () => {
       openApi.paths["/payto-routes/{routeId}"].patch.responses["200"].content["application/json"].examples.route.value;
     const routeDeleteResponseExample =
       openApi.paths["/payto-routes/{routeId}"].delete.responses["200"].content["application/json"].examples.revoked.value;
+    const hostedActionViewExample =
+      openApi.paths["/hosted-actions/{actionId}"].get.responses["200"].content["application/json"].examples.readyRouteSelection.value;
+    const hostedActionDecisionExample =
+      openApi.paths["/hosted-actions/{actionId}"].post.requestBody.content["application/json"].examples.selectRoute.value;
+    const hostedActionCompletionExample =
+      openApi.paths["/hosted-actions/{actionId}"].post.responses["200"].content["application/json"].examples.selectedRoute.value;
     const notificationExample =
       openApi.paths["/notifications"].post.requestBody.content["application/json"].examples.paymentIntentCreated.value;
     const providerCallbackExample =
@@ -498,6 +591,13 @@ describe("@mypaytag/protocol", () => {
     expect(validateRouteUpdateRequest(routeUpdateRequestExample)).toEqual(routeUpdateRequestExample);
     expect(validateRouteReadResponse(routeUpdateResponseExample)).toEqual(routeUpdateResponseExample);
     expect(validateRouteDeleteResponse(routeDeleteResponseExample)).toEqual(routeDeleteResponseExample);
+    expect(validateHostedActionView(hostedActionViewExample)).toEqual(hostedActionViewExample);
+    expect(validateHostedActionDecision(hostedActionDecisionExample)).toEqual(
+      hostedActionDecisionExample,
+    );
+    expect(validateHostedActionCompletion(hostedActionCompletionExample)).toEqual(
+      hostedActionCompletionExample,
+    );
     expect(validateNotificationEvent(notificationExample)).toEqual(notificationExample);
     expect(validateProviderCallbackRequest(providerCallbackExample)).toEqual(providerCallbackExample);
     expect(validateProviderResponse(providerResponseExample)).toEqual(providerResponseExample);

@@ -3,6 +3,9 @@ import addFormats from "ajv-formats";
 
 import { protocolSchemas } from "./generated/schemas.js";
 import type {
+  HostedActionCompletion,
+  HostedActionDecision,
+  HostedActionView,
   MyPayTagIntent,
   NearOneClickPayableInstruction,
   NearOneClickQuoteOption,
@@ -66,6 +69,15 @@ export function isProtocolPayload<T>(schemaName: ProtocolSchemaName, payload: un
 
 export const validateStatus = (payload: unknown) =>
   validateProtocolPayload<MyPayTagStatus>("status", payload);
+
+export const validateHostedActionView = (payload: unknown) =>
+  validateProtocolPayload<HostedActionView>("hosted-action-view", payload);
+
+export const validateHostedActionDecision = (payload: unknown) =>
+  validateProtocolPayload<HostedActionDecision>("hosted-action-decision", payload);
+
+export const validateHostedActionCompletion = (payload: unknown) =>
+  validateProtocolPayload<HostedActionCompletion>("hosted-action-completion", payload);
 
 export const validateRouteRegistrationRequest = (payload: unknown) =>
   validateProtocolPayload<RouteRegistrationRequest>("route-registration-request", payload);

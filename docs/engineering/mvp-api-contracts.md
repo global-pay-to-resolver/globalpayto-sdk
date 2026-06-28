@@ -265,6 +265,42 @@ Rules:
 - Action URLs must not embed recipient, route, provider, authorization, wallet, preference, or diagnostic data.
 - Unauthenticated action pages must remain safe even when opened by the wrong user, crawler, browser preview, or expired session.
 
+### Hosted Route Selection Action
+
+Hosted route-selection actions hydrate an action-scoped browser view only after validation and user context checks:
+
+```json
+{
+  "status": "ready",
+  "actionId": "mpt_act_789",
+  "actionType": "route_selection",
+  "expiresAt": "2026-06-24T20:00:00Z",
+  "options": [
+    {
+      "optionId": "mpt_route_option_123",
+      "chain": "base",
+      "network": "mainnet",
+      "asset": "USDC",
+      "payToDappId": "smartrust-wallet",
+      "displayName": "SmarTrust Wallet - Base USDC"
+    }
+  ]
+}
+```
+
+Decisions either select an action-scoped route option, leave the current choice unchanged, or deny the action:
+
+```json
+{
+  "decision": "select_route",
+  "selectedOptionId": "mpt_route_option_123"
+}
+```
+
+Completion states include `selected_route`, `unchanged`, `denied`, `completed`, `expired`, `invalid`, `replayed`, and `restart_required`.
+
+Hosted action payloads must not expose raw identifiers, wallet addresses, route preferences, unrelated PayToDapps, provider internals, wallet graphs, private diagnostics, or broader route inventory.
+
 ### NEAR 1Click Quote Confirmation
 
 The MVP crypto-native execution contract is a NEAR Intents / 1Click quote flow. The resolver may return a `mypaytag.near_1click.quote_option.v1` object when a PayingDapp needs to confirm a concrete cross-chain execution route before receiving payable instructions.

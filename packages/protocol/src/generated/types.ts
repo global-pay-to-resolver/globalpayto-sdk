@@ -1,6 +1,9 @@
 /* eslint-disable */
 // Generated from packages/protocol/schemas. Do not edit by hand.
 
+export type { HostedActionCompletion } from "./types/hosted-action-completion.js";
+export type { HostedActionDecision } from "./types/hosted-action-decision.js";
+export type { HostedActionView } from "./types/hosted-action-view.js";
 export type { MyPayTagIntent } from "./types/mypaytag-intent.js";
 export type { NearOneClickPayableInstruction } from "./types/near-one-click-payable-instruction.js";
 export type { NearOneClickQuoteOption } from "./types/near-one-click-quote-option.js";

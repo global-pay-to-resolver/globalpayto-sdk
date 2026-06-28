@@ -912,7 +912,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"state\": 5128.764344395074\n}",
+                  "raw": "{\n  \"state\": true\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",
@@ -969,7 +969,7 @@
                     "method": "PATCH",
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"state\": 5128.764344395074\n}",
+                      "raw": "{\n  \"state\": true\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -1036,7 +1036,7 @@
                     "method": "PATCH",
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"state\": 5128.764344395074\n}",
+                      "raw": "{\n  \"state\": true\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -1103,7 +1103,7 @@
                     "method": "PATCH",
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"state\": 5128.764344395074\n}",
+                      "raw": "{\n  \"state\": true\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -1170,7 +1170,7 @@
                     "method": "PATCH",
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"state\": 5128.764344395074\n}",
+                      "raw": "{\n  \"state\": true\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -1506,7 +1506,7 @@
                       "value": "application/json"
                     }
                   ],
-                  "body": "{\n  \"status\": \"<string>\",\n  \"actionId\": \"<string>\",\n  \"actionType\": \"<string>\",\n  \"options\": [\n    {\n      \"optionId\": \"<string>\",\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\",\n      \"payToDappId\": \"<string>\",\n      \"displayName\": \"<string>\"\n    },\n    {\n      \"optionId\": \"<string>\",\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\",\n      \"payToDappId\": \"<string>\",\n      \"displayName\": \"<string>\"\n    }\n  ]\n}",
+                  "body": "{\n  \"status\": \"<string>\",\n  \"actionId\": \"<string>\",\n  \"actionType\": \"<string>\",\n  \"expiresAt\": \"<string>\",\n  \"options\": [\n    {\n      \"optionId\": \"<string>\",\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\",\n      \"payToDappId\": \"<string>\",\n      \"displayName\": \"<string>\"\n    },\n    {\n      \"optionId\": \"<string>\",\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\",\n      \"payToDappId\": \"<string>\",\n      \"displayName\": \"<string>\"\n    }\n  ]\n}",
                   "cookie": [],
                   "_postman_previewlanguage": "json"
                 },
@@ -1738,7 +1738,7 @@
                       "value": "application/json"
                     }
                   ],
-                  "body": "{\n  \"status\": \"<string>\"\n}",
+                  "body": "{\n  \"status\": \"<string>\",\n  \"actionId\": \"<string>\",\n  \"selectedOptionId\": \"<string>\"\n}",
                   "cookie": [],
                   "_postman_previewlanguage": "json"
                 },

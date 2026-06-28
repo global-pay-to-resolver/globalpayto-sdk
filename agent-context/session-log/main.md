@@ -380,3 +380,14 @@ todo: mypaytag-sdk:GPTS-S7-T6
 summary: Added canonical PayToRoute, route list/read, route update, and route delete schemas with generated exports, fixtures, validators, OpenAPI route CRUD envelopes/examples, provider SDK helpers, and tests for scoped route data plus forbidden wallet/private fields.
 validation: Ran pnpm generate, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/provider-sdk typecheck, pnpm --filter @mypaytag/provider-sdk test, pnpm api:validate, pnpm api:postman, and pnpm scan:public-boundary; focused tests passed with 56 workspace cases and OpenAPI/Postman/public-boundary checks passed.
 follow-ups: Continue Sprint 7 by adding hosted route-selection action schemas.
+
+---
+
+## 2026-06-28-gpts-s7-t7
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T7
+summary: Added hosted route-selection action view, decision, and completion protocol schemas with generated exports, fixtures, validators, OpenAPI examples/components, and privacy/decision-state tests.
+validation: Ran pnpm generate, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm api:validate, pnpm api:postman, and pnpm scan:public-boundary; focused tests passed with 59 workspace cases and OpenAPI/Postman/public-boundary checks passed.
+follow-ups: Continue Sprint 7 by deciding/documenting public placement for paytag availability contracts.

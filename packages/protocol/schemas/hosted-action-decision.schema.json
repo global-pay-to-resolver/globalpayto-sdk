@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/hosted-action-decision.schema.json",
+  "title": "HostedActionDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["decision"],
+  "properties": {
+    "decision": { "enum": ["select_route", "leave_unchanged", "deny"] },
+    "selectedOptionId": { "type": "string", "minLength": 1 }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "decision": { "const": "select_route" } },
+        "required": ["decision"]
+      },
+      "then": { "required": ["selectedOptionId"] }
+    },
+    {
+      "if": {
+        "properties": { "decision": { "enum": ["leave_unchanged", "deny"] } },
+        "required": ["decision"]
+      },
+      "then": {
+        "not": { "required": ["selectedOptionId"] }
+      }
+    }
+  ],
+  "not": {
+    "anyOf": [
+      { "required": ["account"] },
+      { "required": ["address"] },
+      { "required": ["recipientAddress"] },
+      { "required": ["rawIdentifier"] },
+      { "required": ["routePreference"] },
+      { "required": ["walletGraph"] },
+      { "required": ["providerPayload"] },
+      { "required": ["privateDiagnostics"] }
+    ]
+  }
+}

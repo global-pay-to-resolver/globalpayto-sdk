@@ -120,6 +120,11 @@ as `no_route` or `provider_unavailable`. They must not expose route
 preferences, unrelated PayToDapps, wallet graphs, raw identifiers, or payment
 instructions.
 
+Hosted route-selection action contracts expose only action-scoped route options
+after validation and user context checks. Decisions can select an option, leave
+the choice unchanged, or deny the action. Completion states include expired,
+invalid, replayed, and restart-required outcomes without private diagnostics.
+
 ### PayingDapp Resolve
 
 ```http

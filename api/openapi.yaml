@@ -356,6 +356,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HostedActionView"
+              examples:
+                readyRouteSelection:
+                  value:
+                    status: ready
+                    actionId: mpt_act_789
+                    actionType: route_selection
+                    expiresAt: "2026-06-24T20:00:00Z"
+                    options:
+                      - optionId: mpt_route_option_123
+                        chain: base
+                        network: mainnet
+                        asset: USDC
+                        payToDappId: smartrust-wallet
+                        displayName: SmarTrust Wallet - Base USDC
         "400":
           $ref: "#/components/responses/BadRequest"
         "404":
@@ -373,6 +387,11 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/HostedActionDecision"
+            examples:
+              selectRoute:
+                value:
+                  decision: select_route
+                  selectedOptionId: mpt_route_option_123
       responses:
         "200":
           description: Completion state.
@@ -380,6 +399,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HostedActionCompletion"
+              examples:
+                selectedRoute:
+                  value:
+                    status: selected_route
+                    actionId: mpt_act_789
+                    selectedOptionId: mpt_route_option_123
         "400":
           $ref: "#/components/responses/BadRequest"
         "404":
@@ -711,14 +736,6 @@ components:
           const: user_action_required
         action:
           $ref: "#/components/schemas/HostedAction"
-    StatusOnlyResponse:
-      type: object
-      additionalProperties: false
-      required:
-        - status
-      properties:
-        status:
-          $ref: "#/components/schemas/PublicStatus"
     HostedAction:
       type: object
       additionalProperties: false
@@ -1021,7 +1038,16 @@ components:
               const: resolved
             route:
               $ref: "#/components/schemas/PayToRoute"
-        - $ref: "#/components/schemas/StatusOnlyResponse"
+        - type: object
+          additionalProperties: false
+          required:
+            - status
+          properties:
+            status:
+              type: string
+              enum:
+                - no_route
+                - provider_unavailable
     RouteUpdateRequest:
       type: object
       additionalProperties: false
@@ -1056,7 +1082,16 @@ components:
             routeId:
               type: string
               minLength: 1
-        - $ref: "#/components/schemas/StatusOnlyResponse"
+        - type: object
+          additionalProperties: false
+          required:
+            - status
+          properties:
+            status:
+              type: string
+              enum:
+                - no_route
+                - provider_unavailable
     HostedActionView:
       type: object
       additionalProperties: false
@@ -1072,13 +1107,18 @@ components:
             - expired
             - invalid
             - completed
+            - replayed
             - restart_required
         actionId:
           type: string
+          minLength: 1
         actionType:
           type: string
           enum:
             - route_selection
+        expiresAt:
+          type: string
+          format: date-time
         options:
           type: array
           items:
@@ -1096,16 +1136,22 @@ components:
       properties:
         optionId:
           type: string
+          minLength: 1
         chain:
           type: string
+          minLength: 1
         network:
           type: string
+          minLength: 1
         asset:
           type: string
+          minLength: 1
         payToDappId:
           type: string
+          minLength: 1
         displayName:
           type: string
+          minLength: 1
     HostedActionDecision:
       type: object
       additionalProperties: false
@@ -1115,25 +1161,36 @@ components:
         decision:
           type: string
           enum:
-            - approve
-            - deny
             - select_route
+            - leave_unchanged
+            - deny
         selectedOptionId:
           type: string
+          minLength: 1
     HostedActionCompletion:
       type: object
       additionalProperties: false
       required:
         - status
+        - actionId
       properties:
         status:
           type: string
           enum:
-            - approved
+            - unchanged
             - denied
             - selected_route
             - completed
+            - expired
+            - invalid
+            - replayed
             - restart_required
+        actionId:
+          type: string
+          minLength: 1
+        selectedOptionId:
+          type: string
+          minLength: 1
     ProviderCallbackRequest:
       type: object
       additionalProperties: false

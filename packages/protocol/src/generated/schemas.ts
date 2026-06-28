@@ -1,6 +1,368 @@
 /* eslint-disable */
 // Generated from packages/protocol/schemas. Do not edit by hand.
 
+export const HostedActionCompletionSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/hosted-action-completion.schema.json",
+  "title": "HostedActionCompletion",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "actionId"
+  ],
+  "properties": {
+    "status": {
+      "enum": [
+        "selected_route",
+        "unchanged",
+        "denied",
+        "completed",
+        "expired",
+        "invalid",
+        "replayed",
+        "restart_required"
+      ]
+    },
+    "actionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selectedOptionId": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "selected_route"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "selectedOptionId"
+        ]
+      }
+    }
+  ],
+  "not": {
+    "anyOf": [
+      {
+        "required": [
+          "account"
+        ]
+      },
+      {
+        "required": [
+          "address"
+        ]
+      },
+      {
+        "required": [
+          "recipientAddress"
+        ]
+      },
+      {
+        "required": [
+          "rawIdentifier"
+        ]
+      },
+      {
+        "required": [
+          "routePreference"
+        ]
+      },
+      {
+        "required": [
+          "walletGraph"
+        ]
+      },
+      {
+        "required": [
+          "providerPayload"
+        ]
+      },
+      {
+        "required": [
+          "privateDiagnostics"
+        ]
+      }
+    ]
+  }
+} as const;
+
+export const HostedActionDecisionSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/hosted-action-decision.schema.json",
+  "title": "HostedActionDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision"
+  ],
+  "properties": {
+    "decision": {
+      "enum": [
+        "select_route",
+        "leave_unchanged",
+        "deny"
+      ]
+    },
+    "selectedOptionId": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "const": "select_route"
+          }
+        },
+        "required": [
+          "decision"
+        ]
+      },
+      "then": {
+        "required": [
+          "selectedOptionId"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "enum": [
+              "leave_unchanged",
+              "deny"
+            ]
+          }
+        },
+        "required": [
+          "decision"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "selectedOptionId"
+          ]
+        }
+      }
+    }
+  ],
+  "not": {
+    "anyOf": [
+      {
+        "required": [
+          "account"
+        ]
+      },
+      {
+        "required": [
+          "address"
+        ]
+      },
+      {
+        "required": [
+          "recipientAddress"
+        ]
+      },
+      {
+        "required": [
+          "rawIdentifier"
+        ]
+      },
+      {
+        "required": [
+          "routePreference"
+        ]
+      },
+      {
+        "required": [
+          "walletGraph"
+        ]
+      },
+      {
+        "required": [
+          "providerPayload"
+        ]
+      },
+      {
+        "required": [
+          "privateDiagnostics"
+        ]
+      }
+    ]
+  }
+} as const;
+
+export const HostedActionViewSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/hosted-action-view.schema.json",
+  "title": "HostedActionView",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "actionId",
+    "actionType"
+  ],
+  "properties": {
+    "status": {
+      "enum": [
+        "ready",
+        "expired",
+        "invalid",
+        "completed",
+        "replayed",
+        "restart_required"
+      ]
+    },
+    "actionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actionType": {
+      "const": "route_selection"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/routeOption"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "ready"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "expiresAt",
+          "options"
+        ],
+        "properties": {
+          "options": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "not": {
+    "anyOf": [
+      {
+        "required": [
+          "account"
+        ]
+      },
+      {
+        "required": [
+          "address"
+        ]
+      },
+      {
+        "required": [
+          "recipientAddress"
+        ]
+      },
+      {
+        "required": [
+          "rawIdentifier"
+        ]
+      },
+      {
+        "required": [
+          "routePreference"
+        ]
+      },
+      {
+        "required": [
+          "unrelatedPayToDapps"
+        ]
+      },
+      {
+        "required": [
+          "walletGraph"
+        ]
+      },
+      {
+        "required": [
+          "providerPayload"
+        ]
+      },
+      {
+        "required": [
+          "privateDiagnostics"
+        ]
+      }
+    ]
+  },
+  "$defs": {
+    "routeOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "optionId",
+        "chain",
+        "network",
+        "asset",
+        "payToDappId",
+        "displayName"
+      ],
+      "properties": {
+        "optionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payToDappId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+} as const;
+
 export const MypaytagIntentSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.mypaytag.com/mypaytag-intent.schema.json",
@@ -2026,6 +2388,9 @@ export const StatusSchema = {
 } as const;
 
 export const protocolSchemas = {
+  "hosted-action-completion": HostedActionCompletionSchema,
+  "hosted-action-decision": HostedActionDecisionSchema,
+  "hosted-action-view": HostedActionViewSchema,
   "mypaytag-intent": MypaytagIntentSchema,
   "near-one-click-payable-instruction": NearOneClickPayableInstructionSchema,
   "near-one-click-quote-option": NearOneClickQuoteOptionSchema,

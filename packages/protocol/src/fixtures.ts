@@ -1,4 +1,7 @@
 import type {
+  HostedActionCompletion,
+  HostedActionDecision,
+  HostedActionView,
   MyPayTagIntent,
   NearOneClickPayableInstruction,
   NearOneClickQuoteOption,
@@ -82,6 +85,54 @@ export const validRouteNotFoundResponse: RouteReadResponse = {
 
 export const validRouteUnavailableResponse: RouteDeleteResponse = {
   status: "provider_unavailable",
+};
+
+export const validHostedActionView: HostedActionView = {
+  status: "ready",
+  actionId: "mpt_act_789",
+  actionType: "route_selection",
+  expiresAt: "2026-06-24T20:00:00Z",
+  options: [
+    {
+      optionId: "mpt_route_option_123",
+      chain: "base",
+      network: "mainnet",
+      asset: "USDC",
+      payToDappId: "smartrust-wallet",
+      displayName: "SmarTrust Wallet - Base USDC",
+    },
+  ],
+};
+
+export const expiredHostedActionView: HostedActionView = {
+  status: "expired",
+  actionId: "mpt_act_expired",
+  actionType: "route_selection",
+};
+
+export const replayedHostedActionCompletion: HostedActionCompletion = {
+  status: "replayed",
+  actionId: "mpt_act_replayed",
+};
+
+export const restartRequiredHostedActionCompletion: HostedActionCompletion = {
+  status: "restart_required",
+  actionId: "mpt_act_restart",
+};
+
+export const validHostedActionDecision: HostedActionDecision = {
+  decision: "select_route",
+  selectedOptionId: "mpt_route_option_123",
+};
+
+export const denyHostedActionDecision: HostedActionDecision = {
+  decision: "deny",
+};
+
+export const validHostedActionCompletion: HostedActionCompletion = {
+  status: "selected_route",
+  actionId: "mpt_act_789",
+  selectedOptionId: "mpt_route_option_123",
 };
 
 export const validResolveRequest: ResolveRequest = {
