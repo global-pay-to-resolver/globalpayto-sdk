@@ -2,6 +2,7 @@
 // Generated from packages/protocol/schemas. Do not edit by hand.
 
 export type { MyPayTagIntent } from "./types/mypaytag-intent.js";
+export type { NearOneClickQuoteOption } from "./types/near-one-click-quote-option.js";
 export type { NotificationEvent } from "./types/notification-event.js";
 export type { ProviderCallbackRequest } from "./types/provider-callback-request.js";
 export type { ProviderResponse } from "./types/provider-response.js";

@@ -233,6 +233,134 @@ export const MypaytagIntentSchema = {
   }
 } as const;
 
+export const NearOneClickQuoteOptionSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/near-one-click-quote-option.schema.json",
+  "title": "NearOneClickQuoteOption",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "quoteId",
+    "adapter",
+    "send",
+    "receive",
+    "fees",
+    "expiresAt",
+    "resolverReference",
+    "selectedRouteReference"
+  ],
+  "properties": {
+    "schema": {
+      "const": "mypaytag.near_1click.quote_option.v1"
+    },
+    "quoteId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "adapter": {
+      "const": "near_intents_1click"
+    },
+    "send": {
+      "$ref": "#/$defs/routeAmount"
+    },
+    "receive": {
+      "$ref": "#/$defs/routeAmount"
+    },
+    "fees": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/fee"
+      }
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "resolverReference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selectedRouteReference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nearQuoteReference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "estimatedDurationSeconds": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "$defs": {
+    "routeAmount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "chain",
+        "network",
+        "asset",
+        "amount"
+      ],
+      "properties": {
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        }
+      }
+    },
+    "fee": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "amount",
+        "asset",
+        "chargedTo",
+        "source"
+      ],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chargedTo": {
+          "const": "sender"
+        },
+        "source": {
+          "enum": [
+            "near_1click",
+            "resolver",
+            "paying_dapp"
+          ]
+        }
+      }
+    }
+  }
+} as const;
+
 export const NotificationEventSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.mypaytag.com/notification-event.schema.json",
@@ -1341,6 +1469,7 @@ export const StatusSchema = {
 
 export const protocolSchemas = {
   "mypaytag-intent": MypaytagIntentSchema,
+  "near-one-click-quote-option": NearOneClickQuoteOptionSchema,
   "notification-event": NotificationEventSchema,
   "provider-callback-request": ProviderCallbackRequestSchema,
   "provider-response": ProviderResponseSchema,

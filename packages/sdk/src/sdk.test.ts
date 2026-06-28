@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   validNoRouteResponse,
+  validNearOneClickQuoteOption,
   validNotificationEvent,
   validResolvedResponse,
   validResolveRequest,
@@ -21,6 +22,7 @@ import {
   parseNotificationEvent,
   parseResolveResponse,
   requestExecutionQuotes,
+  parseNearOneClickQuoteOption,
   type CryptoNativeExecutionSolverId,
   type ExecutionQuoteProvider,
 } from "./index.js";
@@ -123,6 +125,12 @@ describe("@mypaytag/sdk", () => {
   it("guards Cubid comms notification payloads", () => {
     expect(isMyPayTagNotification(validNotificationEvent)).toBe(true);
     expect(parseNotificationEvent(validNotificationEvent)).toEqual(validNotificationEvent);
+  });
+
+  it("parses the Phase 1 NEAR 1Click MVP quote option", () => {
+    expect(parseNearOneClickQuoteOption(validNearOneClickQuoteOption)).toEqual(
+      validNearOneClickQuoteOption,
+    );
   });
 
   it("requests execution quotes from every configured solver when none is preferred", async () => {

@@ -1,5 +1,6 @@
 import type {
   MyPayTagIntent,
+  NearOneClickQuoteOption,
   NotificationEvent,
   ProviderCallbackRequest,
   ProviderResponse,
@@ -205,4 +206,43 @@ export const validRouteQuotePreview: RouteQuotePreview = {
   ],
   expiresAt: "2026-06-24T20:00:00Z",
   resolverReference: "mpt_req_123",
+};
+
+export const validNearOneClickQuoteOption: NearOneClickQuoteOption = {
+  schema: "mypaytag.near_1click.quote_option.v1",
+  quoteId: "near_1click_quote_123",
+  adapter: "near_intents_1click",
+  send: {
+    chain: "near",
+    network: "mainnet",
+    asset: "USDC",
+    amount: "25.18",
+  },
+  receive: {
+    chain: "base",
+    network: "mainnet",
+    asset: "USDC",
+    amount: "25.00",
+  },
+  fees: [
+    {
+      label: "NEAR 1Click execution",
+      amount: "0.16",
+      asset: "USDC",
+      chargedTo: "sender",
+      source: "near_1click",
+    },
+    {
+      label: "MyPayTag resolver fee",
+      amount: "0.02",
+      asset: "USDC",
+      chargedTo: "sender",
+      source: "resolver",
+    },
+  ],
+  expiresAt: "2026-06-24T20:00:00Z",
+  resolverReference: "mpt_req_123",
+  selectedRouteReference: "mpt_route_123",
+  nearQuoteReference: "near_quote_ref_123",
+  estimatedDurationSeconds: 20,
 };

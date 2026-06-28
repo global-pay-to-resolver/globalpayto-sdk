@@ -48,7 +48,9 @@ The MVP protocol does not support:
 
 ## Future Extension: Crypto-Native Execution Solvers
 
-Crypto-native execution adapters are a future extension, not part of the core MVP resolve flow. These adapters consume a resolved receive requirement and produce quotes or transaction requests; they do not decide which PayToDapp the recipient prefers.
+NEAR Intents / 1Click is the Phase 1/MVP execution adapter for SmarTrust swap/bridge Paytag payments. It consumes a resolved receive requirement and returns a NEAR 1Click quote option scoped to the selected PayToDapp route. It does not decide which PayToDapp the recipient prefers.
+
+LI.FI, Squid, 0x, Across, LayerZero/Stargate, broad solver fanout, and generic external adapter support are Phase 2 extensions. They remain useful architecture context, but they are not required for the MVP resolve path.
 
 Short list for SDK adapter support:
 

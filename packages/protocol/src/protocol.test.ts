@@ -6,6 +6,7 @@ import { describe, expect, it } from "vitest";
 import {
   validateMyPayTagIntent,
   validateNotificationEvent,
+  validateNearOneClickQuoteOption,
   validateProviderResponse,
   validateResolveRequest,
   validateResolveResponse,
@@ -15,6 +16,7 @@ import {
   validMyPayTagIntent,
   validNoRouteResponse,
   validNotificationEvent,
+  validNearOneClickQuoteOption,
   validProviderResponse,
   validResolveRequest,
   validResolvedResponse,
@@ -65,6 +67,9 @@ describe("@mypaytag/protocol", () => {
     expect(validateMyPayTagIntent(validMyPayTagIntent)).toEqual(validMyPayTagIntent);
     expect(validateNotificationEvent(validNotificationEvent)).toEqual(validNotificationEvent);
     expect(validateRouteQuotePreview(validRouteQuotePreview)).toEqual(validRouteQuotePreview);
+    expect(validateNearOneClickQuoteOption(validNearOneClickQuoteOption)).toEqual(
+      validNearOneClickQuoteOption,
+    );
   });
 
   it("accepts every public status value and response shape", () => {
@@ -247,6 +252,34 @@ describe("@mypaytag/protocol", () => {
         fees: [
           {
             ...validRouteQuotePreview.fees[0],
+            chargedTo: "receiver",
+          },
+        ],
+      }),
+    ).toThrow();
+  });
+
+  it("treats NEAR 1Click quote options as the only MVP execution quote contract", () => {
+    expect(() =>
+      validateNearOneClickQuoteOption({
+        ...validNearOneClickQuoteOption,
+        adapter: "lifi",
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateNearOneClickQuoteOption({
+        ...validNearOneClickQuoteOption,
+        payToDappOptions: ["smartrust-wallet", "other-wallet"],
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateNearOneClickQuoteOption({
+        ...validNearOneClickQuoteOption,
+        fees: [
+          {
+            ...validNearOneClickQuoteOption.fees[0],
             chargedTo: "receiver",
           },
         ],

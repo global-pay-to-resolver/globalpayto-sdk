@@ -1,14 +1,17 @@
 import {
+  validateNearOneClickQuoteOption,
   isNotificationEvent,
   validateNotificationEvent,
   validateResolveRequest,
   validateResolveResponse,
   type NotificationEvent,
+  type NearOneClickQuoteOption,
   type ResolveRequest,
   type ResolveResponse,
 } from "@mypaytag/protocol";
 
 export type ResolveRequestInput = ResolveRequest;
+export type NearOneClickMvpQuoteOption = NearOneClickQuoteOption;
 export type SupportedPath = ResolveRequest["supportedPaths"][number];
 export type ResolveAmount = ResolveRequest["amount"];
 export type PayorAmountExactness = "exact_send" | "exact_receive";
@@ -36,9 +39,8 @@ export type ActionRequiredStatus = "user_action_required";
 export type ActionRequiredResponse = Extract<ResolveResponse, { action: unknown }>;
 
 /**
- * Future extension solver ids. These are not required for the MVP MyPayTag
- * resolve flow, route registration flow, provider callback flow, or hosted
- * route-selection flow.
+ * Phase 2 extension solver ids. NEAR Intents / 1Click has a dedicated Phase 1
+ * MVP quote-option contract exported as NearOneClickMvpQuoteOption.
  */
 export const cryptoNativeExecutionSolvers = [
   "near_intents_1click",
@@ -148,6 +150,10 @@ export function parseResolveResponse(payload: unknown): ResolveResponse {
 
 export function parseNotificationEvent(payload: unknown): NotificationEvent {
   return validateNotificationEvent(payload);
+}
+
+export function parseNearOneClickQuoteOption(payload: unknown): NearOneClickMvpQuoteOption {
+  return validateNearOneClickQuoteOption(payload);
 }
 
 export function isMyPayTagNotification(payload: unknown): payload is NotificationEvent {

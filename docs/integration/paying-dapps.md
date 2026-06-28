@@ -48,7 +48,7 @@ selected one-time provider intent.
 
 ## Future Extension: Crypto-Native Execution Quotes
 
-The MVP resolve flow does not require execution quote helpers. When a PayingDapp supports future execution adapters, configure quote providers for the
+The MVP resolve flow can return a NEAR Intents / 1Click quote option for SmarTrust swap/bridge Paytag payments. Broad execution quote fanout is Phase 2. When a PayingDapp supports future execution adapters, configure quote providers for the
 solver/router surfaces the app can use. The initial MyPayTag SDK solver ids
 are:
 
