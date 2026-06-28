@@ -1,2065 +1,2028 @@
 {
-    "item": [
+  "item": [
+    {
+      "name": "health",
+      "description": "",
+      "item": [
         {
-            "name": "health",
-            "description": "",
-            "item": [
-                {
-                    "id": "b2d7fa5c-94f5-443f-ba5a-bf3f296e5bb7",
-                    "name": "Check API availability.",
-                    "request": {
-                        "name": "Check API availability.",
-                        "description": {},
-                        "url": {
-                            "path": [
-                                "health"
-                            ],
-                            "host": [
-                                "{{baseUrl}}"
-                            ],
-                            "query": [],
-                            "variable": []
-                        },
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            }
-                        ],
-                        "method": "GET",
-                        "body": {},
-                        "auth": null
+          "name": "Check API availability.",
+          "request": {
+            "name": "Check API availability.",
+            "description": {},
+            "url": {
+              "path": [
+                "health"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {},
+            "auth": null
+          },
+          "response": [
+            {
+              "name": "API is available.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "health"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
                     },
-                    "response": [
-                        {
-                            "id": "b7a6a2eb-664b-4670-adef-f8e0e1ec7259",
-                            "name": "API is available.",
-                            "originalRequest": {
-                                "url": {
-                                    "path": [
-                                        "health"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "description": {
-                                            "content": "Added as a part of security scheme: apikey",
-                                            "type": "text/plain"
-                                        },
-                                        "key": "x-mypaytag-signature",
-                                        "value": "<API Key>"
-                                    }
-                                ],
-                                "method": "GET",
-                                "body": {}
-                            },
-                            "status": "OK",
-                            "code": 200,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n  \"status\": \"<string>\",\n  \"service\": \"<string>\"\n}",
-                            "cookie": [],
-                            "_postman_previewlanguage": "json"
-                        },
-                        {
-                            "id": "fcbabf29-2060-4eca-9a3b-8a05ce6a549b",
-                            "name": "Request throttled.",
-                            "originalRequest": {
-                                "url": {
-                                    "path": [
-                                        "health"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "description": {
-                                            "content": "Added as a part of security scheme: apikey",
-                                            "type": "text/plain"
-                                        },
-                                        "key": "x-mypaytag-signature",
-                                        "value": "<API Key>"
-                                    }
-                                ],
-                                "method": "GET",
-                                "body": {}
-                            },
-                            "status": "Too Many Requests",
-                            "code": 429,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                            "cookie": [],
-                            "_postman_previewlanguage": "json"
-                        },
-                        {
-                            "id": "c63f200d-0f87-44e7-bc54-dacb241fecd2",
-                            "name": "Service temporarily unavailable.",
-                            "originalRequest": {
-                                "url": {
-                                    "path": [
-                                        "health"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "description": {
-                                            "content": "Added as a part of security scheme: apikey",
-                                            "type": "text/plain"
-                                        },
-                                        "key": "x-mypaytag-signature",
-                                        "value": "<API Key>"
-                                    }
-                                ],
-                                "method": "GET",
-                                "body": {}
-                            },
-                            "status": "Service Unavailable",
-                            "code": 503,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                            "cookie": [],
-                            "_postman_previewlanguage": "json"
-                        }
-                    ],
-                    "event": [],
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
-                    }
+                    "key": "x-mypaytag-signature",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
                 }
-            ]
+              ],
+              "body": "{\n  \"status\": \"<string>\",\n  \"service\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "Request throttled.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "health"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mypaytag-signature",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "Service temporarily unavailable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "health"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mypaytag-signature",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "resolve",
+      "description": "",
+      "item": [
+        {
+          "name": "Resolve a pay-to tag into a payment intent or safe next action.",
+          "request": {
+            "name": "Resolve a pay-to tag into a payment intent or safe next action.",
+            "description": {
+              "content": "Sending apps submit a Cubid verified-stamp recipient, supported payment\npaths, amount, purpose, and reconciliation reference. The response is a\nresolved one-time MyPayTag intent, a hosted action, or a public safe\nstatus.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "resolve"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"supportedPaths\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"purpose\": \"<string>\",\n  \"intentMode\": \"<string>\",\n  \"payingDappReference\": \"<string>\",\n  \"preferredSolverId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "auth": null
+          },
+          "response": [
+            {
+              "name": "Public resolver outcome.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "resolve"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mypaytag-signature",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"supportedPaths\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"purpose\": \"<string>\",\n  \"intentMode\": \"<string>\",\n  \"payingDappReference\": \"<string>\",\n  \"preferredSolverId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"<string>\",\n  \"intent\": {\n    \"type\": \"<string>\",\n    \"resolverRequestId\": \"<string>\",\n    \"selectedPath\": {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    },\n    \"paymentInstruction\": {\n      \"kind\": \"<string>\",\n      \"payload\": {\n        \"destination\": {\n          \"kind\": \"<string>\",\n          \"recipientAddress\": \"<string>\"\n        }\n      }\n    },\n    \"amount\": {\n      \"value\": \"<string>\",\n      \"currency\": \"<string>\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "Invalid public request shape or unsupported request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "resolve"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mypaytag-signature",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"supportedPaths\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"purpose\": \"<string>\",\n  \"intentMode\": \"<string>\",\n  \"payingDappReference\": \"<string>\",\n  \"preferredSolverId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "Missing or invalid app authentication signature.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "resolve"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mypaytag-signature",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"supportedPaths\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"purpose\": \"<string>\",\n  \"intentMode\": \"<string>\",\n  \"payingDappReference\": \"<string>\",\n  \"preferredSolverId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "payto-routes",
+      "description": "",
+      "item": [
+        {
+          "name": "Register supported receive routes for a receiving app.",
+          "request": {
+            "name": "Register supported receive routes for a receiving app.",
+            "description": {
+              "content": "Receiving apps register route availability for a signed-in user.\nRegistration must not include wallet addresses, accounts, memos,\npayment links, or chain-specific payment instructions.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "payto-routes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"consentToken\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "auth": null
+          },
+          "response": [
+            {
+              "name": "Route registration outcome.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payto-routes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mypaytag-signature",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"consentToken\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"<string>\",\n  \"routes\": [\n    {\n      \"id\": \"<string>\",\n      \"payToDappId\": \"<string>\",\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\",\n      \"state\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"payToDappId\": \"<string>\",\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\",\n      \"state\": \"<string>\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "Invalid public request shape or unsupported request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payto-routes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mypaytag-signature",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"consentToken\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "Missing or invalid app authentication signature.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payto-routes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mypaytag-signature",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"consentToken\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
         },
         {
-            "name": "resolve",
-            "description": "",
-            "item": [
-                {
-                    "id": "5b796291-4d9b-40d0-9e2f-03f4d3d847ef",
-                    "name": "Resolve a pay-to tag into a payment intent or safe next action.",
-                    "request": {
-                        "name": "Resolve a pay-to tag into a payment intent or safe next action.",
-                        "description": {
-                            "content": "Sending apps submit a Cubid verified-stamp recipient, supported payment\npaths, amount, purpose, and reconciliation reference. The response is a\nresolved one-time MyPayTag intent, a hosted action, or a public safe\nstatus.\n",
-                            "type": "text/plain"
-                        },
-                        "url": {
-                            "path": [
-                                "resolve"
-                            ],
-                            "host": [
-                                "{{baseUrl}}"
-                            ],
-                            "query": [],
-                            "variable": []
-                        },
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            }
-                        ],
-                        "method": "POST",
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"supportedPaths\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"amount\": {\n    \"value\": \"1775134344\",\n    \"currency\": \"<string>\"\n  },\n  \"purpose\": \"<string>\",\n  \"intentMode\": \"<string>\",\n  \"payingDappReference\": \"<string>\",\n  \"preferredSolverId\": \"zero_x_cross_chain\"\n}",
-                            "options": {
-                                "raw": {
-                                    "headerFamily": "json",
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "auth": null
-                    },
-                    "response": [
-                        {
-                            "id": "8558f5aa-b10e-46c2-8a70-235a7fab030a",
-                            "name": "Public resolver outcome.",
-                            "originalRequest": {
-                                "url": {
-                                    "path": [
-                                        "resolve"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "description": {
-                                            "content": "Added as a part of security scheme: apikey",
-                                            "type": "text/plain"
-                                        },
-                                        "key": "x-mypaytag-signature",
-                                        "value": "<API Key>"
-                                    }
-                                ],
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"supportedPaths\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"amount\": {\n    \"value\": \"1775134344\",\n    \"currency\": \"<string>\"\n  },\n  \"purpose\": \"<string>\",\n  \"intentMode\": \"<string>\",\n  \"payingDappReference\": \"<string>\",\n  \"preferredSolverId\": \"zero_x_cross_chain\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "headerFamily": "json",
-                                            "language": "json"
-                                        }
-                                    }
-                                }
-                            },
-                            "status": "OK",
-                            "code": 200,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n  \"status\": \"<string>\",\n  \"intent\": {\n    \"type\": \"<string>\",\n    \"resolverRequestId\": \"<string>\",\n    \"selectedPath\": {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    },\n    \"paymentInstruction\": {\n      \"kind\": \"<string>\",\n      \"payload\": {\n        \"destination\": {\n          \"kind\": \"<string>\",\n          \"recipientAddress\": \"<string>\"\n        }\n      }\n    },\n    \"amount\": {\n      \"value\": \"6016175.84772261798\",\n      \"currency\": \"<string>\"\n    }\n  }\n}",
-                            "cookie": [],
-                            "_postman_previewlanguage": "json"
-                        },
-                        {
-                            "id": "d1316c49-99ed-4aea-878f-a55ca4a5bb00",
-                            "name": "Invalid public request shape or unsupported request.",
-                            "originalRequest": {
-                                "url": {
-                                    "path": [
-                                        "resolve"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "description": {
-                                            "content": "Added as a part of security scheme: apikey",
-                                            "type": "text/plain"
-                                        },
-                                        "key": "x-mypaytag-signature",
-                                        "value": "<API Key>"
-                                    }
-                                ],
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"supportedPaths\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"amount\": {\n    \"value\": \"1775134344\",\n    \"currency\": \"<string>\"\n  },\n  \"purpose\": \"<string>\",\n  \"intentMode\": \"<string>\",\n  \"payingDappReference\": \"<string>\",\n  \"preferredSolverId\": \"zero_x_cross_chain\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "headerFamily": "json",
-                                            "language": "json"
-                                        }
-                                    }
-                                }
-                            },
-                            "status": "Bad Request",
-                            "code": 400,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                            "cookie": [],
-                            "_postman_previewlanguage": "json"
-                        },
-                        {
-                            "id": "61bdc411-894d-4c2b-ad06-a66524ecdd78",
-                            "name": "Missing or invalid app authentication signature.",
-                            "originalRequest": {
-                                "url": {
-                                    "path": [
-                                        "resolve"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "description": {
-                                            "content": "Added as a part of security scheme: apikey",
-                                            "type": "text/plain"
-                                        },
-                                        "key": "x-mypaytag-signature",
-                                        "value": "<API Key>"
-                                    }
-                                ],
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"supportedPaths\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"amount\": {\n    \"value\": \"1775134344\",\n    \"currency\": \"<string>\"\n  },\n  \"purpose\": \"<string>\",\n  \"intentMode\": \"<string>\",\n  \"payingDappReference\": \"<string>\",\n  \"preferredSolverId\": \"zero_x_cross_chain\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "headerFamily": "json",
-                                            "language": "json"
-                                        }
-                                    }
-                                }
-                            },
-                            "status": "Unauthorized",
-                            "code": 401,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                            "cookie": [],
-                            "_postman_previewlanguage": "json"
-                        }
-                    ],
-                    "event": [],
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
+          "name": "{routeId}",
+          "description": "",
+          "item": [
+            {
+              "name": "Read a receiving-app route scoped to the authenticated app.",
+              "request": {
+                "name": "Read a receiving-app route scoped to the authenticated app.",
+                "description": {},
+                "url": {
+                  "path": [
+                    "payto-routes",
+                    ":routeId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "type": "any",
+                      "value": "<routeId>",
+                      "key": "routeId",
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      }
                     }
-                }
-            ]
-        },
-        {
-            "name": "payto-routes",
-            "description": "",
-            "item": [
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {},
+                "auth": null
+              },
+              "response": [
                 {
-                    "id": "db859e04-44c1-4e11-8749-07ac9acfe928",
-                    "name": "Register supported receive routes for a receiving app.",
-                    "request": {
-                        "name": "Register supported receive routes for a receiving app.",
-                        "description": {
-                            "content": "Receiving apps register route availability for a signed-in user.\nRegistration must not include wallet addresses, accounts, memos,\npayment links, or chain-specific payment instructions.\n",
+                  "name": "Route details scoped to the authenticated app.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "payto-routes",
+                        ":routeId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
                             "type": "text/plain"
-                        },
-                        "url": {
-                            "path": [
-                                "payto-routes"
-                            ],
-                            "host": [
-                                "{{baseUrl}}"
-                            ],
-                            "query": [],
-                            "variable": []
-                        },
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            }
-                        ],
-                        "method": "POST",
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"consentToken\": \"<string>\"\n}",
-                            "options": {
-                                "raw": {
-                                    "headerFamily": "json",
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "auth": null
-                    },
-                    "response": [
-                        {
-                            "id": "5378697e-34c8-44f1-af50-30a08937c3bf",
-                            "name": "Route registration outcome.",
-                            "originalRequest": {
-                                "url": {
-                                    "path": [
-                                        "payto-routes"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "description": {
-                                            "content": "Added as a part of security scheme: apikey",
-                                            "type": "text/plain"
-                                        },
-                                        "key": "x-mypaytag-signature",
-                                        "value": "<API Key>"
-                                    }
-                                ],
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"consentToken\": \"<string>\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "headerFamily": "json",
-                                            "language": "json"
-                                        }
-                                    }
-                                }
-                            },
-                            "status": "OK",
-                            "code": 200,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n  \"status\": \"<string>\",\n  \"routes\": [\n    {\n      \"id\": \"<string>\",\n      \"payToDappId\": \"<string>\",\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\",\n      \"state\": \"revoked\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"payToDappId\": \"<string>\",\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\",\n      \"state\": \"revoked\"\n    }\n  ]\n}",
-                            "cookie": [],
-                            "_postman_previewlanguage": "json"
-                        },
-                        {
-                            "id": "e95b9895-4e17-4d07-a340-938b33a8f3df",
-                            "name": "Invalid public request shape or unsupported request.",
-                            "originalRequest": {
-                                "url": {
-                                    "path": [
-                                        "payto-routes"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "description": {
-                                            "content": "Added as a part of security scheme: apikey",
-                                            "type": "text/plain"
-                                        },
-                                        "key": "x-mypaytag-signature",
-                                        "value": "<API Key>"
-                                    }
-                                ],
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"consentToken\": \"<string>\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "headerFamily": "json",
-                                            "language": "json"
-                                        }
-                                    }
-                                }
-                            },
-                            "status": "Bad Request",
-                            "code": 400,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                            "cookie": [],
-                            "_postman_previewlanguage": "json"
-                        },
-                        {
-                            "id": "b475616c-e0c5-422d-b2fe-ba49a16b8a21",
-                            "name": "Missing or invalid app authentication signature.",
-                            "originalRequest": {
-                                "url": {
-                                    "path": [
-                                        "payto-routes"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "description": {
-                                            "content": "Added as a part of security scheme: apikey",
-                                            "type": "text/plain"
-                                        },
-                                        "key": "x-mypaytag-signature",
-                                        "value": "<API Key>"
-                                    }
-                                ],
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"consentToken\": \"<string>\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "headerFamily": "json",
-                                            "language": "json"
-                                        }
-                                    }
-                                }
-                            },
-                            "status": "Unauthorized",
-                            "code": 401,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                            "cookie": [],
-                            "_postman_previewlanguage": "json"
+                          },
+                          "type": "any",
+                          "value": "<routeId>",
+                          "key": "routeId"
                         }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
                     ],
-                    "event": [],
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
+                    "method": "GET",
+                    "body": {}
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
                     }
+                  ],
+                  "body": "{\n  \"id\": \"<string>\",\n  \"payToDappId\": \"<string>\",\n  \"chain\": \"<string>\",\n  \"network\": \"<string>\",\n  \"asset\": \"<string>\",\n  \"state\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
                 },
                 {
-                    "name": "{routeId}",
-                    "description": "",
-                    "item": [
+                  "name": "Resource unavailable or not visible to the authenticated app.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "payto-routes",
+                        ":routeId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
                         {
-                            "id": "7ba0fc07-53f5-4e33-9b24-2fc2865dc8b1",
-                            "name": "Read a receiving-app route scoped to the authenticated app.",
-                            "request": {
-                                "name": "Read a receiving-app route scoped to the authenticated app.",
-                                "description": {},
-                                "url": {
-                                    "path": [
-                                        "payto-routes",
-                                        ":routeId"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": [
-                                        {
-                                            "type": "any",
-                                            "value": "mpt_route_p6USB-d2",
-                                            "key": "routeId",
-                                            "disabled": false,
-                                            "description": {
-                                                "content": "(Required) ",
-                                                "type": "text/plain"
-                                            }
-                                        }
-                                    ]
-                                },
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "method": "GET",
-                                "body": {},
-                                "auth": null
-                            },
-                            "response": [
-                                {
-                                    "id": "75848edb-e9ad-456f-beba-c3ceb444c9b0",
-                                    "name": "Route details scoped to the authenticated app.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "payto-routes",
-                                                ":routeId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_route_p6USB-d2",
-                                                    "key": "routeId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "GET",
-                                        "body": {}
-                                    },
-                                    "status": "OK",
-                                    "code": 200,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"id\": \"<string>\",\n  \"payToDappId\": \"<string>\",\n  \"chain\": \"<string>\",\n  \"network\": \"<string>\",\n  \"asset\": \"<string>\",\n  \"state\": \"active\"\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                },
-                                {
-                                    "id": "80f57cfc-f8ef-4661-8481-50d40a7e0ab7",
-                                    "name": "Resource unavailable or not visible to the authenticated app.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "payto-routes",
-                                                ":routeId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_route_p6USB-d2",
-                                                    "key": "routeId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "GET",
-                                        "body": {}
-                                    },
-                                    "status": "Not Found",
-                                    "code": 404,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                }
-                            ],
-                            "event": [],
-                            "protocolProfileBehavior": {
-                                "disableBodyPruning": true
-                            }
-                        },
-                        {
-                            "id": "f93fd5eb-6933-4a73-8741-7f6ba672f827",
-                            "name": "Update a receiving-app route.",
-                            "request": {
-                                "name": "Update a receiving-app route.",
-                                "description": {},
-                                "url": {
-                                    "path": [
-                                        "payto-routes",
-                                        ":routeId"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": [
-                                        {
-                                            "type": "any",
-                                            "value": "mpt_route_p6USB-d2",
-                                            "key": "routeId",
-                                            "disabled": false,
-                                            "description": {
-                                                "content": "(Required) ",
-                                                "type": "text/plain"
-                                            }
-                                        }
-                                    ]
-                                },
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "method": "PATCH",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"state\": \"revoked\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
-                                    "options": {
-                                        "raw": {
-                                            "headerFamily": "json",
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "auth": null
-                            },
-                            "response": [
-                                {
-                                    "id": "703ce4fa-0b3d-4ff5-adad-16c26e0ca0a6",
-                                    "name": "Updated route.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "payto-routes",
-                                                ":routeId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_route_p6USB-d2",
-                                                    "key": "routeId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Content-Type",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "PATCH",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\n  \"state\": \"revoked\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
-                                            "options": {
-                                                "raw": {
-                                                    "headerFamily": "json",
-                                                    "language": "json"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "status": "OK",
-                                    "code": 200,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"id\": \"<string>\",\n  \"payToDappId\": \"<string>\",\n  \"chain\": \"<string>\",\n  \"network\": \"<string>\",\n  \"asset\": \"<string>\",\n  \"state\": \"active\"\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                },
-                                {
-                                    "id": "94cd55f4-cd1b-4f99-a1a9-80d62c554aff",
-                                    "name": "Invalid public request shape or unsupported request.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "payto-routes",
-                                                ":routeId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_route_p6USB-d2",
-                                                    "key": "routeId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Content-Type",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "PATCH",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\n  \"state\": \"revoked\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
-                                            "options": {
-                                                "raw": {
-                                                    "headerFamily": "json",
-                                                    "language": "json"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "status": "Bad Request",
-                                    "code": 400,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                },
-                                {
-                                    "id": "c358c0ec-02f8-480d-b9ef-b62e1ce1e235",
-                                    "name": "Missing or invalid app authentication signature.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "payto-routes",
-                                                ":routeId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_route_p6USB-d2",
-                                                    "key": "routeId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Content-Type",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "PATCH",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\n  \"state\": \"revoked\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
-                                            "options": {
-                                                "raw": {
-                                                    "headerFamily": "json",
-                                                    "language": "json"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "status": "Unauthorized",
-                                    "code": 401,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                },
-                                {
-                                    "id": "24f4c554-5a80-4600-a0f8-c0f0579aa45d",
-                                    "name": "Resource unavailable or not visible to the authenticated app.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "payto-routes",
-                                                ":routeId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_route_p6USB-d2",
-                                                    "key": "routeId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Content-Type",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "PATCH",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\n  \"state\": \"revoked\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
-                                            "options": {
-                                                "raw": {
-                                                    "headerFamily": "json",
-                                                    "language": "json"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "status": "Not Found",
-                                    "code": 404,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                }
-                            ],
-                            "event": [],
-                            "protocolProfileBehavior": {
-                                "disableBodyPruning": true
-                            }
-                        },
-                        {
-                            "id": "104be814-e3ca-4621-bc61-f500cb005f28",
-                            "name": "Revoke a receiving-app route.",
-                            "request": {
-                                "name": "Revoke a receiving-app route.",
-                                "description": {},
-                                "url": {
-                                    "path": [
-                                        "payto-routes",
-                                        ":routeId"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": [
-                                        {
-                                            "type": "any",
-                                            "value": "mpt_route_p6USB-d2",
-                                            "key": "routeId",
-                                            "disabled": false,
-                                            "description": {
-                                                "content": "(Required) ",
-                                                "type": "text/plain"
-                                            }
-                                        }
-                                    ]
-                                },
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "method": "DELETE",
-                                "body": {},
-                                "auth": null
-                            },
-                            "response": [
-                                {
-                                    "id": "51c2a4b4-5b69-4220-91a5-d63c8ec00c4b",
-                                    "name": "Route revoked.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "payto-routes",
-                                                ":routeId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_route_p6USB-d2",
-                                                    "key": "routeId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "DELETE",
-                                        "body": {}
-                                    },
-                                    "status": "OK",
-                                    "code": 200,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"status\": \"<string>\",\n  \"routeId\": \"<string>\"\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                },
-                                {
-                                    "id": "41c699c5-932b-48a8-b7f8-ba65cac1eeca",
-                                    "name": "Missing or invalid app authentication signature.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "payto-routes",
-                                                ":routeId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_route_p6USB-d2",
-                                                    "key": "routeId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "DELETE",
-                                        "body": {}
-                                    },
-                                    "status": "Unauthorized",
-                                    "code": 401,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                },
-                                {
-                                    "id": "4d00a246-d1e2-4c74-8337-ebac447e3a60",
-                                    "name": "Resource unavailable or not visible to the authenticated app.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "payto-routes",
-                                                ":routeId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_route_p6USB-d2",
-                                                    "key": "routeId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "DELETE",
-                                        "body": {}
-                                    },
-                                    "status": "Not Found",
-                                    "code": 404,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                }
-                            ],
-                            "event": [],
-                            "protocolProfileBehavior": {
-                                "disableBodyPruning": true
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "hosted-actions",
-            "description": "",
-            "item": [
-                {
-                    "name": "{actionId}",
-                    "description": "",
-                    "item": [
-                        {
-                            "id": "5b253517-6b65-48f9-b0f6-6547bc93b839",
-                            "name": "Hydrate a browser-safe hosted action view model.",
-                            "request": {
-                                "name": "Hydrate a browser-safe hosted action view model.",
-                                "description": {
-                                    "content": "Hosted action URLs are opaque and short-lived. Details are hydrated only\nafter action validation and signed-in user context checks.\n",
-                                    "type": "text/plain"
-                                },
-                                "url": {
-                                    "path": [
-                                        "hosted-actions",
-                                        ":actionId"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": [
-                                        {
-                                            "type": "any",
-                                            "value": "mpt_act_8fp8Wg0j",
-                                            "key": "actionId",
-                                            "disabled": false,
-                                            "description": {
-                                                "content": "(Required) ",
-                                                "type": "text/plain"
-                                            }
-                                        }
-                                    ]
-                                },
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "method": "GET",
-                                "body": {},
-                                "auth": null
-                            },
-                            "response": [
-                                {
-                                    "id": "5c7a0998-4e2a-4cf3-a863-d9c057124fba",
-                                    "name": "Browser-safe hosted action view model.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "hosted-actions",
-                                                ":actionId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_act_8fp8Wg0j",
-                                                    "key": "actionId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "GET",
-                                        "body": {}
-                                    },
-                                    "status": "OK",
-                                    "code": 200,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"status\": \"completed\",\n  \"actionId\": \"<string>\",\n  \"actionType\": \"route_selection\",\n  \"options\": [\n    {\n      \"optionId\": \"<string>\",\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\",\n      \"payToDappId\": \"<string>\",\n      \"displayName\": \"<string>\"\n    },\n    {\n      \"optionId\": \"<string>\",\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\",\n      \"payToDappId\": \"<string>\",\n      \"displayName\": \"<string>\"\n    }\n  ]\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                },
-                                {
-                                    "id": "841f5278-7a23-41ad-b4cc-37e7360f622b",
-                                    "name": "Invalid public request shape or unsupported request.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "hosted-actions",
-                                                ":actionId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_act_8fp8Wg0j",
-                                                    "key": "actionId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "GET",
-                                        "body": {}
-                                    },
-                                    "status": "Bad Request",
-                                    "code": 400,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                },
-                                {
-                                    "id": "43846e5b-6e5e-4882-abb7-7e69a5ab7a67",
-                                    "name": "Resource unavailable or not visible to the authenticated app.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "hosted-actions",
-                                                ":actionId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_act_8fp8Wg0j",
-                                                    "key": "actionId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "GET",
-                                        "body": {}
-                                    },
-                                    "status": "Not Found",
-                                    "code": 404,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                }
-                            ],
-                            "event": [],
-                            "protocolProfileBehavior": {
-                                "disableBodyPruning": true
-                            }
-                        },
-                        {
-                            "id": "d3e2fccb-035f-400a-a69f-dc802e5e7af9",
-                            "name": "Complete a hosted action decision.",
-                            "request": {
-                                "name": "Complete a hosted action decision.",
-                                "description": {},
-                                "url": {
-                                    "path": [
-                                        "hosted-actions",
-                                        ":actionId"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": [
-                                        {
-                                            "type": "any",
-                                            "value": "mpt_act_8fp8Wg0j",
-                                            "key": "actionId",
-                                            "disabled": false,
-                                            "description": {
-                                                "content": "(Required) ",
-                                                "type": "text/plain"
-                                            }
-                                        }
-                                    ]
-                                },
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"decision\": \"deny\",\n  \"selectedOptionId\": \"<string>\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "headerFamily": "json",
-                                            "language": "json"
-                                        }
-                                    }
-                                },
-                                "auth": null
-                            },
-                            "response": [
-                                {
-                                    "id": "d87d3235-c50c-4947-bc10-c668b3b535e7",
-                                    "name": "Completion state.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "hosted-actions",
-                                                ":actionId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_act_8fp8Wg0j",
-                                                    "key": "actionId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Content-Type",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\n  \"decision\": \"deny\",\n  \"selectedOptionId\": \"<string>\"\n}",
-                                            "options": {
-                                                "raw": {
-                                                    "headerFamily": "json",
-                                                    "language": "json"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "status": "OK",
-                                    "code": 200,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"status\": \"restart_required\"\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                },
-                                {
-                                    "id": "4a500fc7-b74d-4450-9f75-833768b7580c",
-                                    "name": "Invalid public request shape or unsupported request.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "hosted-actions",
-                                                ":actionId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_act_8fp8Wg0j",
-                                                    "key": "actionId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Content-Type",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\n  \"decision\": \"deny\",\n  \"selectedOptionId\": \"<string>\"\n}",
-                                            "options": {
-                                                "raw": {
-                                                    "headerFamily": "json",
-                                                    "language": "json"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "status": "Bad Request",
-                                    "code": 400,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                },
-                                {
-                                    "id": "d8cd2d23-ba1d-459d-936c-7f6366544edf",
-                                    "name": "Resource unavailable or not visible to the authenticated app.",
-                                    "originalRequest": {
-                                        "url": {
-                                            "path": [
-                                                "hosted-actions",
-                                                ":actionId"
-                                            ],
-                                            "host": [
-                                                "{{baseUrl}}"
-                                            ],
-                                            "query": [],
-                                            "variable": [
-                                                {
-                                                    "disabled": false,
-                                                    "description": {
-                                                        "content": "(Required) ",
-                                                        "type": "text/plain"
-                                                    },
-                                                    "type": "any",
-                                                    "value": "mpt_act_8fp8Wg0j",
-                                                    "key": "actionId"
-                                                }
-                                            ]
-                                        },
-                                        "header": [
-                                            {
-                                                "key": "Content-Type",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "key": "Accept",
-                                                "value": "application/json"
-                                            },
-                                            {
-                                                "description": {
-                                                    "content": "Added as a part of security scheme: apikey",
-                                                    "type": "text/plain"
-                                                },
-                                                "key": "x-mypaytag-signature",
-                                                "value": "<API Key>"
-                                            }
-                                        ],
-                                        "method": "POST",
-                                        "body": {
-                                            "mode": "raw",
-                                            "raw": "{\n  \"decision\": \"deny\",\n  \"selectedOptionId\": \"<string>\"\n}",
-                                            "options": {
-                                                "raw": {
-                                                    "headerFamily": "json",
-                                                    "language": "json"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "status": "Not Found",
-                                    "code": 404,
-                                    "header": [
-                                        {
-                                            "key": "Content-Type",
-                                            "value": "application/json"
-                                        }
-                                    ],
-                                    "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                                    "cookie": [],
-                                    "_postman_previewlanguage": "json"
-                                }
-                            ],
-                            "event": [],
-                            "protocolProfileBehavior": {
-                                "disableBodyPruning": true
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "notifications",
-            "description": "",
-            "item": [
-                {
-                    "id": "f4f064c7-23bd-49ca-b81a-94710863a41b",
-                    "name": "Accept an MVP notification event payload.",
-                    "request": {
-                        "name": "Accept an MVP notification event payload.",
-                        "description": {
-                            "content": "MVP notification delivery uses Cubid comms. The only MVP event is\npayment_intent_created. Do not use payment-received language unless a\nfuture provider receipt callback contract exists.\n",
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
                             "type": "text/plain"
-                        },
-                        "url": {
-                            "path": [
-                                "notifications"
-                            ],
-                            "host": [
-                                "{{baseUrl}}"
-                            ],
-                            "query": [],
-                            "variable": []
-                        },
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application/json"
-                            }
-                        ],
-                        "method": "POST",
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"event\": \"<string>\",\n  \"recipientDisplay\": \"<string>\",\n  \"amount\": {\n    \"value\": \"670018624.06599\",\n    \"currency\": \"<string>\"\n  },\n  \"resolverRequestId\": \"<string>\",\n  \"payingDappReference\": \"<string>\"\n}",
-                            "options": {
-                                "raw": {
-                                    "headerFamily": "json",
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "auth": null
-                    },
-                    "response": [
-                        {
-                            "id": "eedb2dd2-630c-4d68-b8e9-aaedd104f1e9",
-                            "name": "Notification accepted for delivery.",
-                            "originalRequest": {
-                                "url": {
-                                    "path": [
-                                        "notifications"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "description": {
-                                            "content": "Added as a part of security scheme: apikey",
-                                            "type": "text/plain"
-                                        },
-                                        "key": "x-mypaytag-signature",
-                                        "value": "<API Key>"
-                                    }
-                                ],
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"event\": \"<string>\",\n  \"recipientDisplay\": \"<string>\",\n  \"amount\": {\n    \"value\": \"670018624.06599\",\n    \"currency\": \"<string>\"\n  },\n  \"resolverRequestId\": \"<string>\",\n  \"payingDappReference\": \"<string>\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "headerFamily": "json",
-                                            "language": "json"
-                                        }
-                                    }
-                                }
-                            },
-                            "status": "Accepted",
-                            "code": 202,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n  \"status\": \"<string>\"\n}",
-                            "cookie": [],
-                            "_postman_previewlanguage": "json"
-                        },
-                        {
-                            "id": "28b24c1f-5e48-4547-a3c3-466343039d1b",
-                            "name": "Invalid public request shape or unsupported request.",
-                            "originalRequest": {
-                                "url": {
-                                    "path": [
-                                        "notifications"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "description": {
-                                            "content": "Added as a part of security scheme: apikey",
-                                            "type": "text/plain"
-                                        },
-                                        "key": "x-mypaytag-signature",
-                                        "value": "<API Key>"
-                                    }
-                                ],
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"event\": \"<string>\",\n  \"recipientDisplay\": \"<string>\",\n  \"amount\": {\n    \"value\": \"670018624.06599\",\n    \"currency\": \"<string>\"\n  },\n  \"resolverRequestId\": \"<string>\",\n  \"payingDappReference\": \"<string>\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "headerFamily": "json",
-                                            "language": "json"
-                                        }
-                                    }
-                                }
-                            },
-                            "status": "Bad Request",
-                            "code": 400,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                            "cookie": [],
-                            "_postman_previewlanguage": "json"
-                        },
-                        {
-                            "id": "b72b409f-327e-4397-96e2-bd54fd57d353",
-                            "name": "Missing or invalid app authentication signature.",
-                            "originalRequest": {
-                                "url": {
-                                    "path": [
-                                        "notifications"
-                                    ],
-                                    "host": [
-                                        "{{baseUrl}}"
-                                    ],
-                                    "query": [],
-                                    "variable": []
-                                },
-                                "header": [
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "description": {
-                                            "content": "Added as a part of security scheme: apikey",
-                                            "type": "text/plain"
-                                        },
-                                        "key": "x-mypaytag-signature",
-                                        "value": "<API Key>"
-                                    }
-                                ],
-                                "method": "POST",
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n  \"event\": \"<string>\",\n  \"recipientDisplay\": \"<string>\",\n  \"amount\": {\n    \"value\": \"670018624.06599\",\n    \"currency\": \"<string>\"\n  },\n  \"resolverRequestId\": \"<string>\",\n  \"payingDappReference\": \"<string>\"\n}",
-                                    "options": {
-                                        "raw": {
-                                            "headerFamily": "json",
-                                            "language": "json"
-                                        }
-                                    }
-                                }
-                            },
-                            "status": "Unauthorized",
-                            "code": 401,
-                            "header": [
-                                {
-                                    "key": "Content-Type",
-                                    "value": "application/json"
-                                }
-                            ],
-                            "body": "{\n  \"status\": \"user_action_required\",\n  \"message\": \"<string>\"\n}",
-                            "cookie": [],
-                            "_postman_previewlanguage": "json"
+                          },
+                          "type": "any",
+                          "value": "<routeId>",
+                          "key": "routeId"
                         }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
                     ],
-                    "event": [],
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
+                    "method": "GET",
+                    "body": {}
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
                     }
+                  ],
+                  "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
                 }
-            ]
-        }
-    ],
-    "auth": {
-        "type": "apikey",
-        "apikey": [
-            {
-                "type": "any",
-                "value": "x-mypaytag-signature",
-                "key": "key"
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
             },
             {
-                "type": "any",
-                "value": "{{apiKey}}",
-                "key": "value"
+              "name": "Update a receiving-app route.",
+              "request": {
+                "name": "Update a receiving-app route.",
+                "description": {},
+                "url": {
+                  "path": [
+                    "payto-routes",
+                    ":routeId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "type": "any",
+                      "value": "<routeId>",
+                      "key": "routeId",
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      }
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"state\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "auth": null
+              },
+              "response": [
+                {
+                  "name": "Updated route.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "payto-routes",
+                        ":routeId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "<routeId>",
+                          "key": "routeId"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "method": "PATCH",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"state\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"id\": \"<string>\",\n  \"payToDappId\": \"<string>\",\n  \"chain\": \"<string>\",\n  \"network\": \"<string>\",\n  \"asset\": \"<string>\",\n  \"state\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "name": "Invalid public request shape or unsupported request.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "payto-routes",
+                        ":routeId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "<routeId>",
+                          "key": "routeId"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "method": "PATCH",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"state\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "name": "Missing or invalid app authentication signature.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "payto-routes",
+                        ":routeId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "<routeId>",
+                          "key": "routeId"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "method": "PATCH",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"state\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "name": "Resource unavailable or not visible to the authenticated app.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "payto-routes",
+                        ":routeId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "<routeId>",
+                          "key": "routeId"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "method": "PATCH",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"state\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                }
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
             },
             {
-                "type": "any",
-                "value": "header",
-                "key": "in"
+              "name": "Revoke a receiving-app route.",
+              "request": {
+                "name": "Revoke a receiving-app route.",
+                "description": {},
+                "url": {
+                  "path": [
+                    "payto-routes",
+                    ":routeId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "type": "any",
+                      "value": "<routeId>",
+                      "key": "routeId",
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      }
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {},
+                "auth": null
+              },
+              "response": [
+                {
+                  "name": "Route revoked.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "payto-routes",
+                        ":routeId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "<routeId>",
+                          "key": "routeId"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "method": "DELETE",
+                    "body": {}
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"status\": \"<string>\",\n  \"routeId\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "name": "Missing or invalid app authentication signature.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "payto-routes",
+                        ":routeId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "<routeId>",
+                          "key": "routeId"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "method": "DELETE",
+                    "body": {}
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "name": "Resource unavailable or not visible to the authenticated app.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "payto-routes",
+                        ":routeId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "<routeId>",
+                          "key": "routeId"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "method": "DELETE",
+                    "body": {}
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                }
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
             }
-        ]
+          ]
+        }
+      ]
     },
-    "event": [],
-    "variable": [
+    {
+      "name": "hosted-actions",
+      "description": "",
+      "item": [
         {
-            "key": "baseUrl",
-            "value": "http://localhost:54321/functions/v1"
+          "name": "{actionId}",
+          "description": "",
+          "item": [
+            {
+              "name": "Hydrate a browser-safe hosted action view model.",
+              "request": {
+                "name": "Hydrate a browser-safe hosted action view model.",
+                "description": {
+                  "content": "Hosted action URLs are opaque and short-lived. Details are hydrated only\nafter action validation and signed-in user context checks.\n",
+                  "type": "text/plain"
+                },
+                "url": {
+                  "path": [
+                    "hosted-actions",
+                    ":actionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "type": "any",
+                      "value": "<actionId>",
+                      "key": "actionId",
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      }
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {},
+                "auth": null
+              },
+              "response": [
+                {
+                  "name": "Browser-safe hosted action view model.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "hosted-actions",
+                        ":actionId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "<actionId>",
+                          "key": "actionId"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "method": "GET",
+                    "body": {}
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"status\": \"<string>\",\n  \"actionId\": \"<string>\",\n  \"actionType\": \"<string>\",\n  \"options\": [\n    {\n      \"optionId\": \"<string>\",\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\",\n      \"payToDappId\": \"<string>\",\n      \"displayName\": \"<string>\"\n    },\n    {\n      \"optionId\": \"<string>\",\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\",\n      \"payToDappId\": \"<string>\",\n      \"displayName\": \"<string>\"\n    }\n  ]\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "name": "Invalid public request shape or unsupported request.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "hosted-actions",
+                        ":actionId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "<actionId>",
+                          "key": "actionId"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "method": "GET",
+                    "body": {}
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "name": "Resource unavailable or not visible to the authenticated app.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "hosted-actions",
+                        ":actionId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "<actionId>",
+                          "key": "actionId"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "method": "GET",
+                    "body": {}
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                }
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
+            },
+            {
+              "name": "Complete a hosted action decision.",
+              "request": {
+                "name": "Complete a hosted action decision.",
+                "description": {},
+                "url": {
+                  "path": [
+                    "hosted-actions",
+                    ":actionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "type": "any",
+                      "value": "<actionId>",
+                      "key": "actionId",
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      }
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"decision\": \"<string>\",\n  \"selectedOptionId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "auth": null
+              },
+              "response": [
+                {
+                  "name": "Completion state.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "hosted-actions",
+                        ":actionId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "<actionId>",
+                          "key": "actionId"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "method": "POST",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"decision\": \"<string>\",\n  \"selectedOptionId\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"status\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "name": "Invalid public request shape or unsupported request.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "hosted-actions",
+                        ":actionId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "<actionId>",
+                          "key": "actionId"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "method": "POST",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"decision\": \"<string>\",\n  \"selectedOptionId\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                },
+                {
+                  "name": "Resource unavailable or not visible to the authenticated app.",
+                  "originalRequest": {
+                    "url": {
+                      "path": [
+                        "hosted-actions",
+                        ":actionId"
+                      ],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "query": [],
+                      "variable": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "(Required) ",
+                            "type": "text/plain"
+                          },
+                          "type": "any",
+                          "value": "<actionId>",
+                          "key": "actionId"
+                        }
+                      ]
+                    },
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": {
+                          "content": "Added as a part of security scheme: apikey",
+                          "type": "text/plain"
+                        },
+                        "key": "x-mypaytag-signature",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "method": "POST",
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"decision\": \"<string>\",\n  \"selectedOptionId\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+                  "cookie": [],
+                  "_postman_previewlanguage": "json"
+                }
+              ],
+              "event": [],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              }
+            }
+          ]
         }
-    ],
-    "info": {
-        "_postman_id": "107b7e6b-138c-49c6-b365-8e1d6f8aa6cb",
-        "name": "MyPayTag Public API",
-        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-        "description": {
-            "content": "MyPayTag lets sending apps resolve a user pay-to tag into a one-time payment\nintent, while receiving apps register supported routes and create dynamic\nprovider intents only after selection.\n\nThis public OpenAPI document describes integration-facing contracts only.\nIt does not expose private resolver storage, deployment wiring, audit\ninternals, admin APIs, service-role behavior, or provider credentials.\n\n\nContact Support:\n Name: MyPayTag",
-            "type": "text/plain"
+      ]
+    },
+    {
+      "name": "notifications",
+      "description": "",
+      "item": [
+        {
+          "name": "Accept an MVP notification event payload.",
+          "request": {
+            "name": "Accept an MVP notification event payload.",
+            "description": {
+              "content": "MVP notification delivery uses Cubid comms. The only MVP event is\npayment_intent_created. Do not use payment-received language unless a\nfuture provider receipt callback contract exists.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "notifications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event\": \"<string>\",\n  \"recipientDisplay\": \"<string>\",\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"resolverRequestId\": \"<string>\",\n  \"payingDappReference\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "auth": null
+          },
+          "response": [
+            {
+              "name": "Notification accepted for delivery.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mypaytag-signature",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event\": \"<string>\",\n  \"recipientDisplay\": \"<string>\",\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"resolverRequestId\": \"<string>\",\n  \"payingDappReference\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "Invalid public request shape or unsupported request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mypaytag-signature",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event\": \"<string>\",\n  \"recipientDisplay\": \"<string>\",\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"resolverRequestId\": \"<string>\",\n  \"payingDappReference\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "Missing or invalid app authentication signature.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "notifications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mypaytag-signature",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event\": \"<string>\",\n  \"recipientDisplay\": \"<string>\",\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"resolverRequestId\": \"<string>\",\n  \"payingDappReference\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
         }
+      ]
     }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "type": "any",
+        "value": "<key>",
+        "key": "key"
+      },
+      {
+        "type": "any",
+        "value": "<value>",
+        "key": "value"
+      },
+      {
+        "type": "any",
+        "value": "<in>",
+        "key": "in"
+      }
+    ]
+  },
+  "event": [],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:54321/functions/v1"
+    }
+  ],
+  "info": {
+    "name": "MyPayTag Public API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "MyPayTag lets sending apps resolve a user pay-to tag into a one-time payment\nintent, while receiving apps register supported routes and create dynamic\nprovider intents only after selection.\n\nThis public OpenAPI document describes integration-facing contracts only.\nIt does not expose private resolver storage, deployment wiring, audit\ninternals, admin APIs, service-role behavior, or provider credentials.\n\n\nContact Support:\n Name: MyPayTag",
+      "type": "text/plain"
+    }
+  }
 }
