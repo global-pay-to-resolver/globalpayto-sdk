@@ -87,7 +87,12 @@ export function assertProviderResponseMatchesCallback(
     payload.network !== callback.selectedPath.network ||
     payload.asset !== callback.selectedPath.asset ||
     payload.amount !== callback.amount.value ||
-    payload.providerIntentId !== response.providerIntentId
+    payload.providerIntentId !== response.providerIntentId ||
+    payload.resolverReference !== callback.resolverRequestId ||
+    payload.payingDappId !== callback.payingDappId ||
+    payload.payingDappReference !== callback.payingDappReference ||
+    payload.purpose !== callback.purpose ||
+    payload.expiresAt !== callback.expiresAt
   ) {
     throw new Error("Provider response does not match callback request");
   }

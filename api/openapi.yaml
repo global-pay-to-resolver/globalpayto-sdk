@@ -130,6 +130,9 @@ paths:
                         provider: example-wallet
                         payload:
                           providerIntentId: provider_pi_456
+                          resolverReference: mpt_req_123
+                          payingDappId: sender
+                          payingDappReference: sender:payout_987
                           chain: base
                           network: mainnet
                           asset: USDC
@@ -137,6 +140,7 @@ paths:
                             kind: blockchain_address
                             recipientAddress: "0xabc0000000000000000000000000000000000000"
                           amount: "25.00"
+                          purpose: payout
                           reference: example-wallet:provider_pi_456
                           expiresAt: "2026-06-24T20:00:00Z"
                       references:
@@ -722,15 +726,28 @@ components:
       additionalProperties: true
       required:
         - providerIntentId
+        - resolverReference
+        - payingDappId
+        - payingDappReference
         - chain
         - network
         - asset
         - destination
         - amount
+        - purpose
         - reference
         - expiresAt
       properties:
         providerIntentId:
+          type: string
+          minLength: 1
+        resolverReference:
+          type: string
+          minLength: 1
+        payingDappId:
+          type: string
+          minLength: 1
+        payingDappReference:
           type: string
           minLength: 1
         chain:
@@ -747,6 +764,9 @@ components:
         amount:
           type: string
           pattern: "^[0-9]+(\\.[0-9]+)?$"
+        purpose:
+          type: string
+          minLength: 1
         reference:
           type: string
           minLength: 1
@@ -956,8 +976,11 @@ components:
         - resolverRequestId
         - recipient
         - payingDappId
+        - payingDappReference
         - selectedPath
         - amount
+        - purpose
+        - expiresAt
       properties:
         resolverRequestId:
           type: string
@@ -965,10 +988,17 @@ components:
           $ref: "#/components/schemas/RecipientAlias"
         payingDappId:
           type: string
+        payingDappReference:
+          type: string
         selectedPath:
           $ref: "#/components/schemas/RoutePath"
         amount:
           $ref: "#/components/schemas/Amount"
+        purpose:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
     ProviderResponse:
       type: object
       additionalProperties: false

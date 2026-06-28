@@ -21,6 +21,7 @@ import {
   validNotificationEvent,
   validNearOneClickQuoteOption,
   validNearOneClickQuoteSelectionRequest,
+  validProviderCallbackRequest,
   validProviderResponse,
   validResolveRequest,
   validResolvedResponse,
@@ -47,12 +48,27 @@ const actionStatusFixtures = [
 
 const providerPayloadRequiredFields = [
   "providerIntentId",
+  "resolverReference",
+  "payingDappId",
+  "payingDappReference",
   "chain",
   "network",
   "asset",
   "destination",
   "amount",
+  "purpose",
   "reference",
+  "expiresAt",
+] as const;
+
+const providerCallbackRequiredFields = [
+  "resolverRequestId",
+  "recipient",
+  "payingDappId",
+  "payingDappReference",
+  "selectedPath",
+  "amount",
+  "purpose",
   "expiresAt",
 ] as const;
 
@@ -201,6 +217,15 @@ describe("@mypaytag/protocol", () => {
           },
         }),
       ).toThrow();
+    }
+  });
+
+  it("rejects provider callbacks missing binding fields", () => {
+    for (const field of providerCallbackRequiredFields) {
+      const callback = { ...validProviderCallbackRequest };
+      delete callback[field];
+
+      expect(() => validateProviderCallbackRequest(callback)).toThrow();
     }
   });
 

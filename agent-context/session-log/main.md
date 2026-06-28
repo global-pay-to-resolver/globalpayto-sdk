@@ -347,3 +347,14 @@ todo: mypaytag-sdk:GPTS-S7-T3
 summary: Moved generic execution quote fanout to Phase 2 by removing NEAR 1Click from the generic solver id list, keeping NEAR on the dedicated MVP quote/selection/payable contracts, and updating tests, fixtures, and docs to describe fanout as non-MVP extension behavior.
 validation: Ran pnpm --filter @mypaytag/sdk typecheck, pnpm --filter @mypaytag/sdk test, pnpm --filter @mypaytag/testing typecheck, pnpm --filter @mypaytag/testing test, and pnpm scan:public-boundary; focused tests passed with 51 workspace cases and the public-boundary scan passed.
 follow-ups: Continue Sprint 7 by completing provider callback binding fields and conformance checks.
+
+---
+
+## 2026-06-28-gpts-s7-t4
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T4
+summary: Added PayingDapp reference to provider callbacks, added resolver/purpose/PayingDapp binding fields to provider payloads, tightened provider SDK response matching, refreshed OpenAPI/Postman surfaces, and expanded protocol/provider conformance tests for required fields and mismatch rejection.
+validation: Ran pnpm generate, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/provider-sdk typecheck, pnpm --filter @mypaytag/provider-sdk test, pnpm --filter @mypaytag/protocol test, pnpm api:validate, pnpm scan:public-boundary, and pnpm api:postman; focused tests passed with 53 workspace cases and OpenAPI/public-boundary checks passed.
+follow-ups: Continue Sprint 7 by closing the remaining OpenAPI/protocol fixture drift, especially notification event schema parity.

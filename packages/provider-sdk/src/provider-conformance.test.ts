@@ -136,7 +136,7 @@ describe("PayToDapp provider conformance", () => {
     }
   });
 
-  it("rejects provider responses that do not match callback path, amount, or idempotency identity", () => {
+  it("rejects provider responses that do not match callback route, amount, or binding identity", () => {
     const malformedResponses: ProviderResponse[] = [
       {
         ...validProviderResponse,
@@ -165,6 +165,46 @@ describe("PayToDapp provider conformance", () => {
           payload: {
             ...validProviderResponse.paymentInstruction.payload,
             providerIntentId: "different_provider_intent",
+          },
+        },
+      },
+      {
+        ...validProviderResponse,
+        paymentInstruction: {
+          ...validProviderResponse.paymentInstruction,
+          payload: {
+            ...validProviderResponse.paymentInstruction.payload,
+            resolverReference: "mpt_req_other",
+          },
+        },
+      },
+      {
+        ...validProviderResponse,
+        paymentInstruction: {
+          ...validProviderResponse.paymentInstruction,
+          payload: {
+            ...validProviderResponse.paymentInstruction.payload,
+            payingDappReference: "chaincrew:payout_other",
+          },
+        },
+      },
+      {
+        ...validProviderResponse,
+        paymentInstruction: {
+          ...validProviderResponse.paymentInstruction,
+          payload: {
+            ...validProviderResponse.paymentInstruction.payload,
+            purpose: "refund",
+          },
+        },
+      },
+      {
+        ...validProviderResponse,
+        paymentInstruction: {
+          ...validProviderResponse.paymentInstruction,
+          payload: {
+            ...validProviderResponse.paymentInstruction.payload,
+            expiresAt: "2026-06-24T21:00:00Z",
           },
         },
       },

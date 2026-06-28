@@ -71,6 +71,7 @@ export const validProviderCallbackRequest: ProviderCallbackRequest = {
     paytagReference: "paytag_ref_abc",
   },
   payingDappId: "chaincrew",
+  payingDappReference: "chaincrew:payout_987",
   selectedPath: {
     chain: "base",
     network: "mainnet",
@@ -92,6 +93,9 @@ export const validProviderResponse: ProviderResponse = {
     provider: "smartrust-wallet",
     payload: {
       providerIntentId: "st_pi_456",
+      resolverReference: "mpt_req_123",
+      payingDappId: "chaincrew",
+      payingDappReference: "chaincrew:payout_987",
       chain: "base",
       network: "mainnet",
       asset: "USDC",
@@ -100,6 +104,7 @@ export const validProviderResponse: ProviderResponse = {
         recipientAddress: "0xabc123",
       },
       amount: "25.00",
+      purpose: "payout",
       reference: "smartrust:st_pi_456",
       expiresAt: "2026-06-24T20:00:00Z",
     },

@@ -292,6 +292,7 @@ Request:
     "paytagReference": "paytag_ref_abc"
   },
   "payingDappId": "chaincrew",
+  "payingDappReference": "chaincrew:payout_987",
   "selectedPath": {
     "chain": "base",
     "network": "mainnet",
@@ -317,6 +318,9 @@ Expected provider response:
     "provider": "smartrust-wallet",
     "payload": {
       "providerIntentId": "st_pi_456",
+      "resolverReference": "mpt_req_123",
+      "payingDappId": "chaincrew",
+      "payingDappReference": "chaincrew:payout_987",
       "chain": "base",
       "network": "mainnet",
       "asset": "USDC",
@@ -325,6 +329,7 @@ Expected provider response:
         "recipientAddress": "0xabc..."
       },
       "amount": "25.00",
+      "purpose": "payout",
       "reference": "smartrust:st_pi_456",
       "expiresAt": "2026-06-24T20:00:00Z"
     }
@@ -338,6 +343,7 @@ Rules:
 - Public conformance requires signature or equivalent auth metadata, timestamp, nonce, request expiry, and `resolverRequestId`.
 - Providers must reject callbacks outside the allowed clock-skew window, repeated nonce/timestamp combinations, and expired requests.
 - Repeated callbacks with the same `resolverRequestId` must be handled idempotently.
+- Provider responses must bind back to the callback through resolver reference, PayingDapp id, PayingDapp reference, selected route, amount, purpose, expiry, and provider intent id.
 - Provider response payloads are preserved inside `paymentInstruction.payload`.
 - External payment protocol rendering is out of scope for MVP.
 
@@ -372,6 +378,9 @@ Rules:
       "provider": "smartrust-wallet",
       "payload": {
         "providerIntentId": "st_pi_456",
+        "resolverReference": "mpt_req_123",
+        "payingDappId": "chaincrew",
+        "payingDappReference": "chaincrew:payout_987",
         "chain": "base",
         "network": "mainnet",
         "asset": "USDC",
@@ -380,6 +389,7 @@ Rules:
           "recipientAddress": "0xabc..."
         },
         "amount": "25.00",
+        "purpose": "payout",
         "reference": "smartrust:st_pi_456",
         "expiresAt": "2026-06-24T20:00:00Z"
       }
@@ -403,11 +413,15 @@ Rules:
 Required `provider_json.payload` keys:
 
 - `providerIntentId`
+- `resolverReference`
+- `payingDappId`
+- `payingDappReference`
 - `chain`
 - `network`
 - `asset`
 - `destination`
 - `amount`
+- `purpose`
 - `reference`
 - `expiresAt`
 

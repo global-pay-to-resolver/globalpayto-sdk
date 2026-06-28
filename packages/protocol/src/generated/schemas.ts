@@ -616,6 +616,7 @@ export const ProviderCallbackRequestSchema = {
     "resolverRequestId",
     "recipient",
     "payingDappId",
+    "payingDappReference",
     "selectedPath",
     "amount",
     "purpose",
@@ -644,6 +645,10 @@ export const ProviderCallbackRequestSchema = {
       }
     },
     "payingDappId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payingDappReference": {
       "type": "string",
       "minLength": 1
     },
@@ -754,11 +759,15 @@ export const ProviderResponseSchema = {
       "additionalProperties": true,
       "required": [
         "providerIntentId",
+        "resolverReference",
+        "payingDappId",
+        "payingDappReference",
         "chain",
         "network",
         "asset",
         "destination",
         "amount",
+        "purpose",
         "reference",
         "expiresAt"
       ],
@@ -783,6 +792,18 @@ export const ProviderResponseSchema = {
       },
       "properties": {
         "providerIntentId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resolverReference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payingDappId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payingDappReference": {
           "type": "string",
           "minLength": 1
         },
@@ -818,6 +839,10 @@ export const ProviderResponseSchema = {
         "amount": {
           "type": "string",
           "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
         },
         "reference": {
           "type": "string",

@@ -67,6 +67,29 @@ describe("@mypaytag/provider-sdk", () => {
     ).toThrow();
   });
 
+  it("rejects provider response binding mismatches", () => {
+    for (const payloadOverride of [
+      { resolverReference: "mpt_req_other" },
+      { payingDappId: "other-paying-dapp" },
+      { payingDappReference: "chaincrew:payout_other" },
+      { purpose: "refund" },
+      { expiresAt: "2026-06-24T21:00:00Z" },
+    ] as const) {
+      expect(() =>
+        assertProviderResponseMatchesCallback(validProviderCallbackRequest, {
+          ...validProviderResponse,
+          paymentInstruction: {
+            ...validProviderResponse.paymentInstruction,
+            payload: {
+              ...validProviderResponse.paymentInstruction.payload,
+              ...payloadOverride,
+            },
+          },
+        }),
+      ).toThrow();
+    }
+  });
+
   it("exposes auth and replay integration hooks", async () => {
     const replayStore = createMemoryReplayStore();
     const verifier = { verify: () => true };

@@ -8,6 +8,7 @@ export interface ProviderCallbackRequest {
     paytagReference: string;
   };
   payingDappId: string;
+  payingDappReference: string;
   selectedPath: Path;
   amount: Amount;
   purpose: string;

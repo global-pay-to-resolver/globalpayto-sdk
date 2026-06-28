@@ -160,6 +160,7 @@ Callback request:
     "paytagReference": "paytag_ref_abc"
   },
   "payingDappId": "chaincrew",
+  "payingDappReference": "chaincrew:payout_987",
   "selectedPath": {
     "chain": "base",
     "network": "mainnet",
@@ -211,6 +212,9 @@ Resolved response shape:
       "provider": "smartrust-wallet",
       "payload": {
         "providerIntentId": "st_pi_456",
+        "resolverReference": "mpt_req_123",
+        "payingDappId": "chaincrew",
+        "payingDappReference": "chaincrew:payout_987",
         "chain": "base",
         "network": "mainnet",
         "asset": "USDC",
@@ -219,6 +223,7 @@ Resolved response shape:
           "recipientAddress": "0xabc..."
         },
         "amount": "25.00",
+        "purpose": "payout",
         "reference": "smartrust:st_pi_456",
         "expiresAt": "2026-06-24T20:00:00Z"
       }
@@ -232,7 +237,7 @@ Resolved response shape:
 }
 ```
 
-The protocol validates the MyPayTag envelope and the required `provider_json.payload` keys defined in `mvp-api-contracts.md`, including `providerIntentId`, `chain`, `network`, `asset`, `destination`, `amount`, `reference`, and `expiresAt`. MVP provider destinations use `destination.kind = "blockchain_address"` with a nested `recipientAddress`; top-level address fields are rejected. The protocol does not render external protocol formats in the MVP.
+The protocol validates the MyPayTag envelope and the required `provider_json.payload` keys defined in `mvp-api-contracts.md`, including `providerIntentId`, `resolverReference`, `payingDappId`, `payingDappReference`, `chain`, `network`, `asset`, `destination`, `amount`, `purpose`, `reference`, and `expiresAt`. MVP provider destinations use `destination.kind = "blockchain_address"` with a nested `recipientAddress`; top-level address fields are rejected. The protocol does not render external protocol formats in the MVP.
 
 ## Status Values
 
