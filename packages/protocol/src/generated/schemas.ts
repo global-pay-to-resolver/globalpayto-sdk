@@ -1,10 +1,10 @@
 /* eslint-disable */
 // Generated from packages/protocol/schemas. Do not edit by hand.
 
-export const GlobalpaytoIntentSchema = {
+export const MypaytagIntentSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.globalpayto.dev/globalpayto-intent.schema.json",
-  "title": "GlobalPayToIntent",
+  "$id": "https://schemas.mypaytag.com/mypaytag-intent.schema.json",
+  "title": "MyPayTagIntent",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -26,7 +26,7 @@ export const GlobalpaytoIntentSchema = {
       "minLength": 1
     },
     "schema": {
-      "const": "globalpayto.intent.v1"
+      "const": "mypaytag.intent.v1"
     },
     "status": {
       "const": "ready"
@@ -235,7 +235,7 @@ export const GlobalpaytoIntentSchema = {
 
 export const NotificationEventSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.globalpayto.dev/notification-event.schema.json",
+  "$id": "https://schemas.mypaytag.com/notification-event.schema.json",
   "title": "NotificationEvent",
   "type": "object",
   "additionalProperties": false,
@@ -252,7 +252,7 @@ export const NotificationEventSchema = {
       "const": "payment_intent_created"
     },
     "schema": {
-      "const": "globalpayto.notification.v1"
+      "const": "mypaytag.notification.v1"
     },
     "recipient": {
       "type": "object",
@@ -329,7 +329,7 @@ export const NotificationEventSchema = {
 
 export const ProviderCallbackRequestSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.globalpayto.dev/provider-callback-request.schema.json",
+  "$id": "https://schemas.mypaytag.com/provider-callback-request.schema.json",
   "title": "ProviderCallbackRequest",
   "type": "object",
   "additionalProperties": false,
@@ -430,7 +430,7 @@ export const ProviderCallbackRequestSchema = {
 
 export const ProviderResponseSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.globalpayto.dev/provider-response.schema.json",
+  "$id": "https://schemas.mypaytag.com/provider-response.schema.json",
   "title": "ProviderResponse",
   "type": "object",
   "additionalProperties": false,
@@ -555,7 +555,7 @@ export const ProviderResponseSchema = {
 
 export const ResolveRequestSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.globalpayto.dev/resolve-request.schema.json",
+  "$id": "https://schemas.mypaytag.com/resolve-request.schema.json",
   "title": "ResolveRequest",
   "type": "object",
   "additionalProperties": false,
@@ -657,7 +657,7 @@ export const ResolveRequestSchema = {
 
 export const ResolveResponseSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.globalpayto.dev/resolve-response.schema.json",
+  "$id": "https://schemas.mypaytag.com/resolve-response.schema.json",
   "title": "ResolveResponse",
   "oneOf": [
     {
@@ -760,7 +760,7 @@ export const ResolveResponseSchema = {
           "minLength": 1
         },
         "schema": {
-          "const": "globalpayto.intent.v1"
+          "const": "mypaytag.intent.v1"
         },
         "status": {
           "const": "ready"
@@ -979,9 +979,131 @@ export const ResolveResponseSchema = {
   }
 } as const;
 
+export const RouteQuotePreviewSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/route-quote-preview.schema.json",
+  "title": "RouteQuotePreview",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "method",
+    "methodLabel",
+    "send",
+    "receive",
+    "fees",
+    "expiresAt",
+    "resolverReference"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "method": {
+      "enum": [
+        "direct_transfer",
+        "provider_exchange",
+        "provider_intent",
+        "bridge",
+        "cross_chain_intent"
+      ]
+    },
+    "methodLabel": {
+      "type": "string",
+      "minLength": 1
+    },
+    "send": {
+      "$ref": "#/$defs/routeAmount"
+    },
+    "receive": {
+      "$ref": "#/$defs/routeAmount"
+    },
+    "fees": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/fee"
+      }
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "resolverReference": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "routeAmount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "chain",
+        "network",
+        "asset",
+        "amount"
+      ],
+      "properties": {
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        }
+      }
+    },
+    "fee": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "amount",
+        "asset",
+        "chargedTo",
+        "source"
+      ],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chargedTo": {
+          "const": "sender"
+        },
+        "source": {
+          "enum": [
+            "payor_app",
+            "provider",
+            "resolver"
+          ]
+        }
+      }
+    }
+  }
+} as const;
+
 export const RouteRegistrationRequestSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.globalpayto.dev/route-registration-request.schema.json",
+  "$id": "https://schemas.mypaytag.com/route-registration-request.schema.json",
   "title": "RouteRegistrationRequest",
   "type": "object",
   "additionalProperties": false,
@@ -1091,7 +1213,7 @@ export const RouteRegistrationRequestSchema = {
 
 export const RouteRegistrationResponseSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.globalpayto.dev/route-registration-response.schema.json",
+  "$id": "https://schemas.mypaytag.com/route-registration-response.schema.json",
   "title": "RouteRegistrationResponse",
   "oneOf": [
     {
@@ -1199,8 +1321,8 @@ export const RouteRegistrationResponseSchema = {
 
 export const StatusSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.globalpayto.dev/status.schema.json",
-  "title": "GlobalPayToStatus",
+  "$id": "https://schemas.mypaytag.com/status.schema.json",
+  "title": "MyPayTagStatus",
   "type": "string",
   "enum": [
     "resolved",
@@ -1218,12 +1340,13 @@ export const StatusSchema = {
 } as const;
 
 export const protocolSchemas = {
-  "globalpayto-intent": GlobalpaytoIntentSchema,
+  "mypaytag-intent": MypaytagIntentSchema,
   "notification-event": NotificationEventSchema,
   "provider-callback-request": ProviderCallbackRequestSchema,
   "provider-response": ProviderResponseSchema,
   "resolve-request": ResolveRequestSchema,
   "resolve-response": ResolveResponseSchema,
+  "route-quote-preview": RouteQuotePreviewSchema,
   "route-registration-request": RouteRegistrationRequestSchema,
   "route-registration-response": RouteRegistrationResponseSchema,
   "status": StatusSchema,

@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/sdk-v')
     permissions:
-      contents: read
+      contents: write
       id-token: write
     steps:
       - name: Checkout
@@ -43,11 +43,21 @@ jobs:
       - name: Validate
         run: pnpm run validate
 
+      - name: Generate Postman collection
+        run: pnpm api:postman
+
+      - name: Upload Postman collection artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: postman_collection
+          path: api/postman_collection.json
+          if-no-files-found: error
+
       - name: Publish dry run
         if: github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true'
         # REVIEW: `npm publish` does not rewrite `workspace:*` dependencies the way `pnpm publish`
         # does. The SDK/provider/testing package manifests currently depend on
-        # `@globalpayto/protocol: workspace:*`; verify the packed manifests replace those with real
+        # `@mypaytag/protocol: workspace:*`; verify the packed manifests replace those with real
         # semver ranges before using this workflow for public npm releases.
         run: pnpm -r --filter './packages/*' exec npm publish --dry-run --access public
 
@@ -64,3 +74,11 @@ jobs:
           # or add a tarball inspection step that fails if any published package.json still contains
           # `workspace:*`, otherwise downstream npm consumers may receive uninstallable packages.
           pnpm -r --filter './packages/*' exec npm publish --access public
+
+      - name: Attach Postman collection to GitHub release
+        if: startsWith(github.ref, 'refs/tags/sdk-v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || gh release create "$GITHUB_REF_NAME" --verify-tag --title "$GITHUB_REF_NAME"
+          gh release upload "$GITHUB_REF_NAME" api/postman_collection.json --clobber

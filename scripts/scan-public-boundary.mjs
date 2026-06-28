@@ -17,19 +17,19 @@ const boundaryLanguage = /\b(must not|should not|do not|does not|intentionally|o
 
 const privatePatterns = [
   {
-    pattern: /global-pay-to-resolver\/globalpayto(?!-sdk|-site)\b/i,
+    pattern: /myPayTag\/mypaytag-backend\b/i,
     message: "links or references the private resolver repo",
   },
   {
-    pattern: /\.\.\/globalpayto(?!-sdk|-site)\b/i,
+    pattern: /\.\.\/mypaytag-backend\b/i,
     message: "uses a relative link into the private resolver repo",
   },
   {
-    pattern: /\bglobalpayto\/docs\//i,
+    pattern: /\bmypaytag-backend\/docs\//i,
     message: "references private resolver docs",
   },
   {
-    pattern: /\b(SUPABASE_SERVICE_ROLE_KEY|SERVICE_ROLE_KEY|DATABASE_URL|GLOBALPAYTO_INTERNAL_API_SECRET)\b/,
+    pattern: /\b(SUPABASE_SERVICE_ROLE_KEY|SERVICE_ROLE_KEY|DATABASE_URL|MYPAYTAG_INTERNAL_API_SECRET)\b/,
     message: "names private backend secret variables",
   },
   {

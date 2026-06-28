@@ -1,5 +1,5 @@
 {
-  "name": "@globalpayto/example-payto-dapp-modality-b",
+  "name": "@mypaytag/example-payto-dapp-modality-b",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -7,7 +7,7 @@
     "start": "node index.mjs"
   },
   "dependencies": {
-    "@globalpayto/provider-sdk": "workspace:*",
-    "@globalpayto/testing": "workspace:*"
+    "@mypaytag/provider-sdk": "workspace:*",
+    "@mypaytag/testing": "workspace:*"
   }
 }

@@ -5,7 +5,7 @@ import {
   type ProviderCallbackRequest,
   type ProviderResponse,
   type RouteRegistrationRequest,
-} from "@globalpayto/protocol";
+} from "@mypaytag/protocol";
 
 export interface CallbackAuthEnvelope {
   method: string;

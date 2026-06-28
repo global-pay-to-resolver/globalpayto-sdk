@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.globalpayto.dev/status.schema.json",
-  "title": "GlobalPayToStatus",
+  "$id": "https://schemas.mypaytag.com/status.schema.json",
+  "title": "MyPayTagStatus",
   "type": "string",
   "enum": [
     "resolved",

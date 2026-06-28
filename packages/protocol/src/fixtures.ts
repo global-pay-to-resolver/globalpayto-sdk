@@ -1,8 +1,9 @@
 import type {
-  GlobalPayToIntent,
+  MyPayTagIntent,
   NotificationEvent,
   ProviderCallbackRequest,
   ProviderResponse,
+  RouteQuotePreview,
   ResolveRequest,
   ResolveResponse,
   RouteRegistrationRequest,
@@ -102,9 +103,9 @@ export const validProviderResponse: ProviderResponse = {
   },
 };
 
-export const validGlobalPayToIntent: GlobalPayToIntent = {
+export const validMyPayTagIntent: MyPayTagIntent = {
   id: "gptr_pi_123",
-  schema: "globalpayto.intent.v1",
+  schema: "mypaytag.intent.v1",
   status: "ready",
   modality: "provider_intent",
   recipient: {
@@ -133,7 +134,7 @@ export const validGlobalPayToIntent: GlobalPayToIntent = {
 
 export const validResolvedResponse: ResolveResponse = {
   status: "resolved",
-  intent: validGlobalPayToIntent,
+  intent: validMyPayTagIntent,
 };
 
 export const validNoRouteResponse: ResolveResponse = {
@@ -144,14 +145,14 @@ export const validRouteSelectionResponse: ResolveResponse = {
   status: "user_action_required",
   action: {
     type: "route_selection",
-    url: "https://globalpayto.example/actions/route-selection/gptr_act_789",
+    url: "https://mypaytag.com/actions/route-selection/gptr_act_789",
     expiresAt: "2026-06-24T20:00:00Z",
   },
 };
 
 export const validNotificationEvent: NotificationEvent = {
   eventType: "payment_intent_created",
-  schema: "globalpayto.notification.v1",
+  schema: "mypaytag.notification.v1",
   recipient: {
     identifierType: "verified_stamp",
     maskedDisplay: "n***@example.com",
@@ -168,4 +169,40 @@ export const validNotificationEvent: NotificationEvent = {
   action: {
     type: "none",
   },
+};
+
+export const validRouteQuotePreview: RouteQuotePreview = {
+  id: "gptr_quote_123",
+  method: "cross_chain_intent",
+  methodLabel: "Cross-chain intent route",
+  send: {
+    chain: "eip155",
+    network: "1",
+    asset: "USDC",
+    amount: "25.25",
+  },
+  receive: {
+    chain: "eip155",
+    network: "8453",
+    asset: "USDC",
+    amount: "25.00",
+  },
+  fees: [
+    {
+      label: "Provider cost",
+      amount: "0.20",
+      asset: "USDC",
+      chargedTo: "sender",
+      source: "provider",
+    },
+    {
+      label: "Payor app fee",
+      amount: "0.05",
+      asset: "USDC",
+      chargedTo: "sender",
+      source: "payor_app",
+    },
+  ],
+  expiresAt: "2026-06-24T20:00:00Z",
+  resolverReference: "gptr_req_123",
 };

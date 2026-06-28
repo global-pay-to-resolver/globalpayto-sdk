@@ -1,7 +1,7 @@
 /* eslint-disable */
 // Generated from packages/protocol/schemas/status.schema.json. Do not edit by hand.
 
-export type GlobalPayToStatus =
+export type MyPayTagStatus =
   | "resolved"
   | "no_route"
   | "user_action_required"

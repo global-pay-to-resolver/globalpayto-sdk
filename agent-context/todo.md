@@ -1,4 +1,4 @@
-# GlobalPayTo SDK TODO
+# MyPayTag SDK TODO
 
 This document tracks MVP implementation work for the public developer-facing protocol and SDK repo.
 
@@ -66,18 +66,18 @@ Acceptance notes:
 - Contract defines provider-facing verification requirements for signature or equivalent auth metadata, timestamp/nonce handling, expiry skew, and repeated `resolverRequestId` idempotency.
 - Contract supports provider JSON payloads without requiring external protocol rendering.
 
-### GPTS-S1-T5 Finalize GlobalPayTo Intent Schema
+### GPTS-S1-T5 Finalize MyPayTag Intent Schema
 
 Status: Complete  
 Feature branch: main  
 Session log: agent-context/session-log/main.md  
 Depends on: TBD
 
-Define `globalpayto.intent.v1`, including intent id, status, modality, recipient hash, selected route, amount, expiry, single-use flag, payment instruction, and references.
+Define `mypaytag.intent.v1`, including intent id, status, modality, recipient hash, selected route, amount, expiry, single-use flag, payment instruction, and references.
 
 Acceptance notes:
 
-- Schema validates the GlobalPayTo envelope and typed `provider_json.payload` fields.
+- Schema validates the MyPayTag envelope and typed `provider_json.payload` fields.
 - Required payload keys include chain, network, asset, amount, reference, expiry, and destination semantics.
 - Schema keeps provider-specific details inside `paymentInstruction.payload`.
 - Schema does not add ERC-681, Solana Pay, WalletConnect Pay, ENS, FIO, Request Network, Stripe, Circle, Coinbase Commerce, or hosted payment link renderers.
@@ -93,7 +93,7 @@ Define how protocol versions, schema names, SDK exports, and breaking changes ar
 
 Acceptance notes:
 
-- Versioning covers `globalpayto.intent.v1` and request/response schemas.
+- Versioning covers `mypaytag.intent.v1` and request/response schemas.
 - Compatibility policy tells integrators what can change before and after MVP release.
 - Backend and site consumers can depend on stable package exports once implementation starts.
 
@@ -102,7 +102,7 @@ Acceptance notes:
 Status: Complete  
 Feature branch: main  
 Session log: agent-context/session-log/main.md  
-Depends on: globalpayto-sdk:GPTS-S1-T1, globalpayto-sdk:GPTS-S1-T5
+Depends on: mypaytag-sdk:GPTS-S1-T1, mypaytag-sdk:GPTS-S1-T5
 
 Define public Cubid comms event payload types for the MVP user-visible resolver notification event, `payment_intent_created`.
 
@@ -110,7 +110,7 @@ Acceptance notes:
 
 - Notification event types use masked display values, public references, and action URLs when needed.
 - Payloads omit wallet graphs, unrelated PayToDapps, route preferences, provider internals, raw identifiers, and private backend diagnostics.
-- Delivery is explicitly through Cubid comms, not a new GlobalPayTo notification provider SDK.
+- Delivery is explicitly through Cubid comms, not a new MyPayTag notification provider SDK.
 - Provider-reported receipt and notification-driven user-action events are tracked as future contracts, not MVP notification events.
 
 ## Sprint 2: SDK Package Implementation
@@ -120,9 +120,9 @@ Acceptance notes:
 Status: Complete  
 Feature branch: main  
 Session log: agent-context/session-log/main.md  
-Depends on: globalpayto-sdk:GPTS-S1-T1, globalpayto-sdk:GPTS-S1-T2, globalpayto-sdk:GPTS-S1-T3, globalpayto-sdk:GPTS-S1-T4, globalpayto-sdk:GPTS-S1-T5, globalpayto-sdk:GPTS-S1-T6, globalpayto-sdk:GPTS-S1-T7
+Depends on: mypaytag-sdk:GPTS-S1-T1, mypaytag-sdk:GPTS-S1-T2, mypaytag-sdk:GPTS-S1-T3, mypaytag-sdk:GPTS-S1-T4, mypaytag-sdk:GPTS-S1-T5, mypaytag-sdk:GPTS-S1-T6, mypaytag-sdk:GPTS-S1-T7
 
-Implement `@globalpayto/protocol` as the source of truth for public schemas, TypeScript types, enums, error/status codes, and test vectors.
+Implement `@mypaytag/protocol` as the source of truth for public schemas, TypeScript types, enums, error/status codes, and test vectors.
 
 Acceptance notes:
 
@@ -136,9 +136,9 @@ Acceptance notes:
 Status: Complete
 Feature branch: main
 Session log: agent-context/session-log/main.md
-Depends on: globalpayto-sdk:GPTS-S2-T1
+Depends on: mypaytag-sdk:GPTS-S2-T1
 
-Implement `@globalpayto/sdk` helpers for PayingDapp integrations.
+Implement `@mypaytag/sdk` helpers for PayingDapp integrations.
 
 Acceptance notes:
 
@@ -152,9 +152,9 @@ Acceptance notes:
 Status: Complete  
 Feature branch: main  
 Session log: agent-context/session-log/main.md  
-Depends on: globalpayto-sdk:GPTS-S2-T1
+Depends on: mypaytag-sdk:GPTS-S2-T1
 
-Implement `@globalpayto/provider-sdk` helpers for PayToDapp route registration and Modality B intent callbacks.
+Implement `@mypaytag/provider-sdk` helpers for PayToDapp route registration and Modality B intent callbacks.
 
 Acceptance notes:
 
@@ -167,9 +167,9 @@ Acceptance notes:
 Status: Complete  
 Feature branch: main  
 Session log: agent-context/session-log/main.md  
-Depends on: globalpayto-sdk:GPTS-S2-T1
+Depends on: mypaytag-sdk:GPTS-S2-T1
 
-Implement `@globalpayto/testing` fixtures and mocks for protocol conformance and local integration tests.
+Implement `@mypaytag/testing` fixtures and mocks for protocol conformance and local integration tests.
 
 Acceptance notes:
 
@@ -186,9 +186,9 @@ Acceptance notes:
 Status: Complete
 Feature branch: main
 Session log: agent-context/session-log/main.md
-Depends on: globalpayto-sdk:GPTS-S2-T2, globalpayto-sdk:GPTS-S2-T4
+Depends on: mypaytag-sdk:GPTS-S2-T2, mypaytag-sdk:GPTS-S2-T4
 
-Build a runnable example showing a PayingDapp resolving a verified-stamp recipient into a GlobalPayTo JSON intent.
+Build a runnable example showing a PayingDapp resolving a verified-stamp recipient into a MyPayTag JSON intent.
 
 Acceptance notes:
 
@@ -201,7 +201,7 @@ Acceptance notes:
 Status: Complete
 Feature branch: main
 Session log: agent-context/session-log/main.md
-Depends on: globalpayto-sdk:GPTS-S2-T3, globalpayto-sdk:GPTS-S2-T4
+Depends on: mypaytag-sdk:GPTS-S2-T3, mypaytag-sdk:GPTS-S2-T4
 
 Build a runnable example showing a PayToDapp registering route support and responding to provider intent callbacks.
 
@@ -216,7 +216,7 @@ Acceptance notes:
 Status: Complete
 Feature branch: main
 Session log: agent-context/session-log/main.md
-Depends on: globalpayto-sdk:GPTS-S1-T2
+Depends on: mypaytag-sdk:GPTS-S1-T2
 
 Remove the existing Modality A placeholder or reframe it as an explicitly out-of-scope future candidate.
 
@@ -231,7 +231,7 @@ Acceptance notes:
 Status: Complete
 Feature branch: main
 Session log: agent-context/session-log/main.md
-Depends on: globalpayto-sdk:GPTS-S3-T1, globalpayto-sdk:GPTS-S3-T2
+Depends on: mypaytag-sdk:GPTS-S3-T1, mypaytag-sdk:GPTS-S3-T2
 
 Write public integration docs for PayingDapps, PayToDapps, status handling, privacy boundaries, and test fixtures.
 
@@ -250,7 +250,7 @@ Acceptance notes:
 Status: Complete
 Feature branch: main
 Session log: agent-context/session-log/main.md
-Depends on: globalpayto-sdk:GPTS-S2-T1
+Depends on: mypaytag-sdk:GPTS-S2-T1
 
 Add automated tests proving all public request and response schemas accept valid fixtures and reject invalid fixtures.
 
@@ -266,14 +266,14 @@ Acceptance notes:
 Status: Complete
 Feature branch: main
 Session log: agent-context/session-log/main.md
-Depends on: globalpayto-sdk:GPTS-S2-T3, globalpayto-sdk:GPTS-S2-T4
+Depends on: mypaytag-sdk:GPTS-S2-T3, mypaytag-sdk:GPTS-S2-T4
 
 Add conformance tests for PayToDapp provider callback behavior and provider intent responses.
 
 Acceptance notes:
 
 - Tests cover valid callback handling, replay-protection integration expectations, provider error behavior, and malformed provider payloads.
-- Tests prove provider payloads stay inside the GlobalPayTo intent envelope.
+- Tests prove provider payloads stay inside the MyPayTag intent envelope.
 - Tests do not require private backend secrets.
 
 ### GPTS-S4-T3 Add Package Build And Publish Workflow
@@ -281,7 +281,7 @@ Acceptance notes:
 Status: Complete
 Feature branch: main
 Session log: agent-context/session-log/main.md
-Depends on: globalpayto-sdk:GPTS-S2-T1, globalpayto-sdk:GPTS-S2-T2, globalpayto-sdk:GPTS-S2-T3, globalpayto-sdk:GPTS-S2-T4
+Depends on: mypaytag-sdk:GPTS-S2-T1, mypaytag-sdk:GPTS-S2-T2, mypaytag-sdk:GPTS-S2-T3, mypaytag-sdk:GPTS-S2-T4
 
 Add package manifests, build scripts, test scripts, and publishing workflow scaffolding for the public SDK packages.
 
@@ -296,7 +296,7 @@ Acceptance notes:
 Status: Complete
 Feature branch: main
 Session log: agent-context/session-log/main.md
-Depends on: globalpayto-sdk:GPTS-S3-T4
+Depends on: mypaytag-sdk:GPTS-S3-T4
 
 Review public SDK docs, examples, and README files for private backend leakage.
 
@@ -310,10 +310,10 @@ Acceptance notes:
 
 ### GPTS-S5-T1 Define Route Quote Preview And Payor-App Request Contracts
 
-Status: TBD
-Feature branch: TBD
-Session log: TBD
-Depends on: globalpayto:GPTR-S5-T1
+Status: Complete
+Feature branch: feature/mypaytag-resolver-migration
+Session log: agent-context/session-log/main.md#2026-06-26-gpts-s5-t1
+Depends on: mypaytag-sdk:GPTS-S4-T4
 
 Define public SDK/protocol support for generic payor-app route option and quote preview flows.
 
@@ -326,10 +326,10 @@ Acceptance notes:
 
 ### GPTS-S5-T2 Implement Execution Solver Quote Provider Interfaces
 
-Status: TBD
-Feature branch: TBD
-Session log: TBD
-Depends on: globalpayto-sdk:GPTS-S5-T1
+Status: Complete
+Feature branch: feature/mypaytag-resolver-migration
+Session log: agent-context/session-log/main.md#2026-06-26-gpts-s5-t2
+Depends on: mypaytag-sdk:GPTS-S5-T1
 
 Implement SDK interfaces and helpers for crypto-native execution solver quote providers.
 
@@ -342,10 +342,10 @@ Acceptance notes:
 
 ### GPTS-S5-T3 Add Generic Payor-App Request Builders
 
-Status: TBD
-Feature branch: TBD
-Session log: TBD
-Depends on: globalpayto-sdk:GPTS-S5-T1
+Status: Complete
+Feature branch: feature/mypaytag-resolver-migration
+Session log: agent-context/session-log/main.md#2026-06-26-gpts-s5-t3
+Depends on: mypaytag-sdk:GPTS-S5-T1
 
 Add helper functions that let payor-apps build resolver requests from sender-side app state without hand-rolling protocol payloads.
 
@@ -358,12 +358,12 @@ Acceptance notes:
 
 ### GPTS-S5-T4 Add Generic Quote And Resolver Fixtures
 
-Status: TBD
-Feature branch: TBD
-Session log: TBD
-Depends on: globalpayto-sdk:GPTS-S5-T1, globalpayto-sdk:GPTS-S5-T2
+Status: Complete
+Feature branch: feature/mypaytag-resolver-migration
+Session log: agent-context/session-log/main.md#2026-06-26-gpts-s5-t4
+Depends on: mypaytag-sdk:GPTS-S5-T1, mypaytag-sdk:GPTS-S5-T2
 
-Extend `@globalpayto/testing` with generic route option, quote, and solver fixtures.
+Extend `@mypaytag/testing` with generic route option, quote, and solver fixtures.
 
 Acceptance notes:
 

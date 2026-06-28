@@ -1,6 +1,6 @@
 # PayToDapp Modality A
 
-Modality A is not part of the GlobalPayTo MVP.
+Modality A is not part of the MyPayTag MVP.
 
 The MVP path is Modality B:
 

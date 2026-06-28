@@ -1,5 +1,5 @@
 {
-  "name": "globalpayto-sdk-workspace",
+  "name": "mypaytag-sdk-workspace",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -7,18 +7,23 @@
   "scripts": {
     "build": "pnpm -r build",
     "clean": "pnpm -r --filter './packages/*' exec rm -rf dist",
-    "example:paying-dapp": "pnpm --filter @globalpayto/example-paying-dapp-basic start",
-    "example:payto-dapp": "pnpm --filter @globalpayto/example-payto-dapp-modality-b start",
-    "generate": "pnpm --filter @globalpayto/protocol generate",
+    "example:paying-dapp": "pnpm --filter @mypaytag/example-paying-dapp-basic start",
+    "example:payto-dapp": "pnpm --filter @mypaytag/example-payto-dapp-modality-b start",
+    "generate": "pnpm --filter @mypaytag/protocol generate",
+    "api:validate": "redocly lint api/openapi.yaml",
+    "api:postman": "node scripts/generate-postman-collection.mjs",
+    "generate:postman": "node scripts/generate-postman-collection.mjs",
     "pack:dry-run": "pnpm -r --filter './packages/*' exec npm pack --dry-run",
     "scan:public-boundary": "node scripts/scan-public-boundary.mjs",
     "test": "pnpm -r test",
-    "typecheck": "pnpm -r typecheck",
-    "validate": "pnpm generate && pnpm typecheck && pnpm test && pnpm scan:public-boundary && pnpm clean && pnpm build"
+    "typecheck": "pnpm -r --filter './packages/*' build && pnpm -r --filter './packages/*' typecheck",
+    "validate": "pnpm generate && pnpm api:validate && pnpm typecheck && pnpm test && pnpm scan:public-boundary && pnpm clean && pnpm build"
   },
   "devDependencies": {
+    "@redocly/cli": "^2.35.1",
     "@types/node": "^20.19.1",
     "json-schema-to-typescript": "^15.0.4",
+    "openapi-to-postmanv2": "^6.1.0",
     "typescript": "^5.8.3",
     "vitest": "^3.2.4"
   }

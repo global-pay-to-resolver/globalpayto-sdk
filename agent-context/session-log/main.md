@@ -48,8 +48,8 @@ follow-ups: Continue SDK Sprint 1 with intent, versioning, and notification cont
 agent: Codex
 branch: main
 head: f3b8c1a
-summary: Completed GPTS-S1-T5 by finalizing the GlobalPayTo intent schema design.
-validation: Confirmed the intent uses globalpayto.intent.v1, provider_json payment instructions, single-use defaults, and no external protocol renderer commitments.
+summary: Completed GPTS-S1-T5 by finalizing the MyPayTag intent schema design.
+validation: Confirmed the intent uses mypaytag.intent.v1, provider_json payment instructions, single-use defaults, and no external protocol renderer commitments.
 follow-ups: Continue SDK Sprint 1 with versioning and notification contracts.
 
 ---
@@ -58,7 +58,7 @@ agent: Codex
 branch: main
 head: d73727f
 summary: Completed GPTS-S1-T6 by finalizing MVP contract versioning and compatibility rules.
-validation: Confirmed schema names for globalpayto.intent.v1 and globalpayto.notification.v1 and documented pre-release and post-release compatibility expectations.
+validation: Confirmed schema names for mypaytag.intent.v1 and mypaytag.notification.v1 and documented pre-release and post-release compatibility expectations.
 follow-ups: Finish SDK Sprint 1 with Cubid comms notification event contracts.
 
 ---
@@ -67,7 +67,7 @@ agent: Codex
 branch: main
 head: 85efcc2
 summary: Completed GPTS-S1-T7 by finalizing public Cubid comms notification event contracts.
-validation: Confirmed notification payloads use globalpayto.notification.v1 and omit wallet graphs, unrelated PayToDapps, route preferences, raw identifiers, and private diagnostics.
+validation: Confirmed notification payloads use mypaytag.notification.v1 and omit wallet graphs, unrelated PayToDapps, route preferences, raw identifiers, and private diagnostics.
 follow-ups: SDK Sprint 2 can implement protocol schemas and package exports from the finalized Sprint 1 contracts.
 
 ---
@@ -84,8 +84,8 @@ follow-ups: Implement Sprint 2 protocol schemas from these tightened SDK contrac
 agent: Codex
 branch: main
 head: a3629cd
-summary: Completed GPTS-S2-T1 by adding the runnable PNPM TypeScript workspace and @globalpayto/protocol package with JSON Schema source files, generated TypeScript exports, Ajv validators, protocol fixtures, and validation tests.
-validation: Ran pnpm --filter @globalpayto/protocol typecheck, test, and build; protocol tests covered valid fixtures plus forbidden address fields, missing network, malformed action URLs, bad provider payloads, and unsupported notification events.
+summary: Completed GPTS-S2-T1 by adding the runnable PNPM TypeScript workspace and @mypaytag/protocol package with JSON Schema source files, generated TypeScript exports, Ajv validators, protocol fixtures, and validation tests.
+validation: Ran pnpm --filter @mypaytag/protocol typecheck, test, and build; protocol tests covered valid fixtures plus forbidden address fields, missing network, malformed action URLs, bad provider payloads, and unsupported notification events.
 follow-ups: Continue SDK Sprint 2 with PayingDapp helper implementation on top of the generated protocol types and validators.
 
 ---
@@ -93,8 +93,8 @@ follow-ups: Continue SDK Sprint 2 with PayingDapp helper implementation on top o
 agent: Codex
 branch: main
 head: 8c5080e
-summary: Completed GPTS-S2-T2 by adding @globalpayto/sdk PayingDapp helpers for resolve request construction, response parsing, status narrowing, action URL access, and Cubid comms notification guards.
-validation: Ran pnpm --filter @globalpayto/sdk typecheck, test, and build; helper tests covered request validation, resolved/action-required narrowing, action URL access, and notification parsing.
+summary: Completed GPTS-S2-T2 by adding @mypaytag/sdk PayingDapp helpers for resolve request construction, response parsing, status narrowing, action URL access, and Cubid comms notification guards.
+validation: Ran pnpm --filter @mypaytag/sdk typecheck, test, and build; helper tests covered request validation, resolved/action-required narrowing, action URL access, and notification parsing.
 follow-ups: Continue SDK Sprint 2 with PayToDapp provider helper implementation.
 
 ---
@@ -102,8 +102,8 @@ follow-ups: Continue SDK Sprint 2 with PayToDapp provider helper implementation.
 agent: Codex
 branch: main
 head: 4aa94e9
-summary: Completed GPTS-S2-T3 by adding @globalpayto/provider-sdk helpers for route registration validation, provider callback parsing, provider response parsing, response-to-callback matching, and auth/replay integration hooks.
-validation: Ran pnpm --filter @globalpayto/provider-sdk typecheck, test, and build; tests covered route registration, callback/response validation, mismatch rejection, and replay hook behavior.
+summary: Completed GPTS-S2-T3 by adding @mypaytag/provider-sdk helpers for route registration validation, provider callback parsing, provider response parsing, response-to-callback matching, and auth/replay integration hooks.
+validation: Ran pnpm --filter @mypaytag/provider-sdk typecheck, test, and build; tests covered route registration, callback/response validation, mismatch rejection, and replay hook behavior.
 follow-ups: Finish SDK Sprint 2 with shared testing fixtures and mock services.
 
 ---
@@ -111,7 +111,7 @@ follow-ups: Finish SDK Sprint 2 with shared testing fixtures and mock services.
 agent: Codex
 branch: main
 head: 7012b29
-summary: Completed GPTS-S2-T4 by adding @globalpayto/testing fixtures and mocks for resolver responses, Cubid validation, PayToDapp callbacks, provider responses, forbidden route-registration fields, and the MVP payment_intent_created notification event.
+summary: Completed GPTS-S2-T4 by adding @mypaytag/testing fixtures and mocks for resolver responses, Cubid validation, PayToDapp callbacks, provider responses, forbidden route-registration fields, and the MVP payment_intent_created notification event.
 validation: Ran pnpm typecheck, pnpm test, and pnpm build across the SDK workspace; all four packages passed.
 follow-ups: Backend Sprint 2 can now use the SDK protocol contracts as the dependency gate for Postgres design and implementation.
 
@@ -166,7 +166,7 @@ agent: Codex
 branch: main
 head: e1a4562
 summary: Completed GPTS-S4-T1 by expanding protocol contract validation tests to cover every public status response shape, forbidden route-registration payment fields, action URL requirements, provider payload address leakage, and Cubid comms notification limits.
-validation: Ran pnpm --filter @globalpayto/protocol test, typecheck, and build; protocol tests now cover 25 passing workspace test cases during the filtered run.
+validation: Ran pnpm --filter @mypaytag/protocol test, typecheck, and build; protocol tests now cover 25 passing workspace test cases during the filtered run.
 follow-ups: Continue SDK Sprint 4 with PayToDapp provider conformance tests for callback auth, replay, malformed payloads, and provider error behavior.
 
 ---
@@ -174,8 +174,8 @@ follow-ups: Continue SDK Sprint 4 with PayToDapp provider conformance tests for 
 agent: Codex
 branch: main
 head: 90432f6
-summary: Completed GPTS-S4-T2 by adding PayToDapp provider conformance tests for valid callback handling, Cubid alias-only callbacks, auth freshness and replay expectations, provider error status rejection, malformed provider payload rejection, callback/response matching, and GlobalPayTo intent-envelope containment.
-validation: Ran pnpm --filter @globalpayto/provider-sdk test, typecheck, and build; provider conformance added seven passing cases and the filtered run covered 32 passing workspace tests.
+summary: Completed GPTS-S4-T2 by adding PayToDapp provider conformance tests for valid callback handling, Cubid alias-only callbacks, auth freshness and replay expectations, provider error status rejection, malformed provider payload rejection, callback/response matching, and MyPayTag intent-envelope containment.
+validation: Ran pnpm --filter @mypaytag/provider-sdk test, typecheck, and build; provider conformance added seven passing cases and the filtered run covered 32 passing workspace tests.
 follow-ups: Continue SDK Sprint 4 with package build and publish workflow scaffolding.
 
 ---
@@ -204,3 +204,47 @@ head: 7e7f2c8
 summary: Updated the public protocol so only route selection carries hosted action URLs; no_route and authorization_required are status-only MVP responses.
 validation: Ran pnpm generate, pnpm typecheck, pnpm test -- --run, pnpm scan:public-boundary, and pnpm build.
 follow-ups: Keep SDK examples and integration copy aligned with send-to channels being enabled by default for requesting apps.
+
+---
+
+## 2026-06-26-gpts-s5-t1
+
+agent: Codex
+branch: feature/mypaytag-resolver-migration
+todo: mypaytag-sdk:GPTS-S5-T1
+summary: Defined public route quote preview contracts for generic payor-app route option and payment-intent option flows, added schema-backed generated types, fixture coverage, validator exports, and docs that separate route queries, intent options, and final resolved intents.
+validation: Ran pnpm --filter @mypaytag/protocol generate, pnpm --filter @mypaytag/protocol typecheck, and pnpm --filter @mypaytag/protocol test; protocol validation now covers 37 passing workspace tests including quote preview privacy and sender-fee rules.
+follow-ups: Continue with backend generic route option resolution using the SDK quote preview contract as the public boundary.
+
+---
+
+## 2026-06-26-gpts-s5-t2
+
+agent: Codex
+branch: feature/mypaytag-resolver-migration
+todo: mypaytag-sdk:GPTS-S5-T2
+summary: Completed SDK execution solver quote provider interfaces by validating the existing solver id exports, quote provider interface, preferred-solver selection, quote fanout behavior, partial provider failure handling, and all-provider failure handling.
+validation: Ran pnpm --filter @mypaytag/sdk typecheck and pnpm --filter @mypaytag/sdk test; SDK tests now cover 39 passing workspace cases including quote fanout and failure behavior.
+follow-ups: Continue with backend solver adapter boundaries that can consume the SDK solver ids and quote-provider behavior.
+
+---
+
+## 2026-06-26-gpts-s5-t3
+
+agent: Codex
+branch: feature/mypaytag-resolver-migration
+todo: mypaytag-sdk:GPTS-S5-T3
+summary: Added generic payor-app request builders for supported paths, amount values, payor-app references, and exactness-aware resolve request inputs while keeping the generated protocol payload backward-compatible.
+validation: Ran pnpm --filter @mypaytag/sdk typecheck and pnpm --filter @mypaytag/sdk test; SDK tests now cover 42 passing workspace cases including payor-app builder validation.
+follow-ups: Extend the public testing package with generic route option, quote, solver, and SmarTrust-like public-safe fixtures.
+
+---
+
+## 2026-06-26-gpts-s5-t4
+
+agent: Codex
+branch: feature/mypaytag-resolver-migration
+todo: mypaytag-sdk:GPTS-S5-T4
+summary: Extended the public testing package with generic route option fixtures, direct/exchange/bridge/cross-chain quote previews, exact-send and exact-receive execution quote requests, and reusable mock execution quote providers for preferred-solver and fanout tests.
+validation: Ran pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/sdk build, pnpm install, pnpm --filter @mypaytag/testing typecheck, and pnpm --filter @mypaytag/testing test; testing package coverage now passes 44 workspace tests.
+follow-ups: Continue with the public site solver-adapter content and checks.

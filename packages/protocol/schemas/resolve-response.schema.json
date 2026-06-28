@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.globalpayto.dev/resolve-response.schema.json",
+  "$id": "https://schemas.mypaytag.com/resolve-response.schema.json",
   "title": "ResolveResponse",
   "oneOf": [
     {
@@ -59,7 +59,7 @@
       "required": ["id", "schema", "status", "modality", "recipient", "selectedRoute", "amount", "expiresAt", "singleUse", "paymentInstruction", "references"],
       "properties": {
         "id": { "type": "string", "minLength": 1 },
-        "schema": { "const": "globalpayto.intent.v1" },
+        "schema": { "const": "mypaytag.intent.v1" },
         "status": { "const": "ready" },
         "modality": { "const": "provider_intent" },
         "recipient": {

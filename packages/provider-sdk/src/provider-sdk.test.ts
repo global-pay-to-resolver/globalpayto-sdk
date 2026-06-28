@@ -4,7 +4,7 @@ import {
   validProviderCallbackRequest,
   validProviderResponse,
   validRouteRegistrationRequest,
-} from "@globalpayto/protocol";
+} from "@mypaytag/protocol";
 
 import {
   assertProviderResponseMatchesCallback,
@@ -38,7 +38,7 @@ const authEnvelope: CallbackAuthEnvelope = {
   expiresAt: "2026-06-24T20:05:00Z",
 };
 
-describe("@globalpayto/provider-sdk", () => {
+describe("@mypaytag/provider-sdk", () => {
   it("builds route registration requests", () => {
     expect(buildRouteRegistrationRequest(validRouteRegistrationRequest)).toEqual(
       validRouteRegistrationRequest,

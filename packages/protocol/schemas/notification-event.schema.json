@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.globalpayto.dev/notification-event.schema.json",
+  "$id": "https://schemas.mypaytag.com/notification-event.schema.json",
   "title": "NotificationEvent",
   "type": "object",
   "additionalProperties": false,
   "required": ["eventType", "schema", "recipient", "amount", "references", "action"],
   "properties": {
     "eventType": { "const": "payment_intent_created" },
-    "schema": { "const": "globalpayto.notification.v1" },
+    "schema": { "const": "mypaytag.notification.v1" },
     "recipient": {
       "type": "object",
       "additionalProperties": false,

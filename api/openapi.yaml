@@ -1,0 +1,901 @@
+openapi: 3.1.0
+info:
+  title: MyPayTag Public API
+  version: 0.1.0
+  summary: Public resolver contracts for sending apps and receiving apps.
+  description: |
+    MyPayTag lets sending apps resolve a user pay-to tag into a one-time payment
+    intent, while receiving apps register supported routes and create dynamic
+    provider intents only after selection.
+
+    This public OpenAPI document describes integration-facing contracts only.
+    It does not expose private resolver storage, deployment wiring, audit
+    internals, admin APIs, service-role behavior, or provider credentials.
+  contact:
+    name: MyPayTag
+    url: https://mypaytag.com
+  license:
+    name: Proprietary
+    identifier: LicenseRef-Proprietary
+servers:
+  - url: http://localhost:54321/functions/v1
+    description: Local Supabase functions
+  - url: https://staging-api.mypaytag.com/functions/v1
+    description: Staging API
+  - url: https://api.mypaytag.com/functions/v1
+    description: Production API
+tags:
+  - name: Health
+    description: Availability checks.
+  - name: Resolve
+    description: Sending-app payment resolution.
+  - name: Routes
+    description: Receiving-app route registration.
+  - name: Hosted Actions
+    description: Browser-safe action hydration and completion.
+  - name: Notifications
+    description: Cubid comms notification event payloads.
+security:
+  - MyPayTagSignature: []
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      operationId: getHealth
+      summary: Check API availability.
+      security: []
+      responses:
+        "200":
+          description: API is available.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+              examples:
+                ok:
+                  value:
+                    status: ok
+                    service: mypaytag-api
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /resolve:
+    post:
+      tags:
+        - Resolve
+      operationId: resolvePayment
+      summary: Resolve a pay-to tag into a payment intent or safe next action.
+      description: |
+        Sending apps submit a Cubid verified-stamp recipient, supported payment
+        paths, amount, purpose, and reconciliation reference. The response is a
+        resolved one-time MyPayTag intent, a hosted action, or a public safe
+        status.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResolveRequest"
+            examples:
+              baseUsdcPayout:
+                summary: Base USDC payout
+                value:
+                  recipient:
+                    identifierType: verified_stamp
+                    identifier: email:recipient@example.com
+                  supportedPaths:
+                    - chain: base
+                      network: mainnet
+                      asset: USDC
+                  amount:
+                    value: "25.00"
+                    currency: USDC
+                  purpose: payout
+                  intentMode: one_time
+                  payingDappReference: sender:payout_987
+      responses:
+        "200":
+          description: Public resolver outcome.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResolveResponse"
+              examples:
+                resolved:
+                  summary: Resolved payment intent
+                  value:
+                    status: resolved
+                    intent:
+                      type: mypaytag.intent.v1
+                      resolverRequestId: mpt_req_123
+                      selectedPath:
+                        chain: base
+                        network: mainnet
+                        asset: USDC
+                      amount:
+                        value: "25.00"
+                        currency: USDC
+                      paymentInstruction:
+                        kind: provider_json
+                        payload:
+                          destination:
+                            kind: blockchain_address
+                            recipientAddress: "0xabc0000000000000000000000000000000000000"
+                actionRequired:
+                  summary: User route selection required
+                  value:
+                    status: user_action_required
+                    action:
+                      type: route_selection
+                      url: https://mypaytag.com/actions/route-selection/mpt_act_123
+                      expiresAt: "2026-06-24T20:00:00Z"
+                noRoute:
+                  summary: Safe no-route response
+                  value:
+                    status: no_route
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /payto-routes:
+    post:
+      tags:
+        - Routes
+      operationId: createPayToRoutes
+      summary: Register supported receive routes for a receiving app.
+      description: |
+        Receiving apps register route availability for a signed-in user.
+        Registration must not include wallet addresses, accounts, memos,
+        payment links, or chain-specific payment instructions.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RouteRegistrationRequest"
+            examples:
+              smartrustBaseUsdc:
+                summary: Register Base USDC support
+                value:
+                  recipient:
+                    identifierType: verified_stamp
+                    identifier: email:recipient@example.com
+                  payToDappId: example-wallet
+                  supportedRoutes:
+                    - chain: base
+                      network: mainnet
+                      asset: USDC
+                  consentToken: cubid_consent_token
+      responses:
+        "200":
+          description: Route registration outcome.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RouteRegistrationResponse"
+              examples:
+                registered:
+                  value:
+                    status: resolved
+                    routes:
+                      - id: mpt_route_123
+                        payToDappId: example-wallet
+                        chain: base
+                        network: mainnet
+                        asset: USDC
+                        state: active
+                routeSelectionRequired:
+                  value:
+                    status: user_action_required
+                    action:
+                      type: route_selection
+                      url: https://mypaytag.com/actions/route-selection/mpt_act_123
+                      expiresAt: "2026-06-24T20:00:00Z"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /payto-routes/{routeId}:
+    get:
+      tags:
+        - Routes
+      operationId: getPayToRoute
+      summary: Read a receiving-app route scoped to the authenticated app.
+      parameters:
+        - $ref: "#/components/parameters/RouteId"
+      responses:
+        "200":
+          description: Route details scoped to the authenticated app.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PayToRoute"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      tags:
+        - Routes
+      operationId: updatePayToRoute
+      summary: Update a receiving-app route.
+      parameters:
+        - $ref: "#/components/parameters/RouteId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RouteUpdateRequest"
+      responses:
+        "200":
+          description: Updated route.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PayToRoute"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags:
+        - Routes
+      operationId: deletePayToRoute
+      summary: Revoke a receiving-app route.
+      parameters:
+        - $ref: "#/components/parameters/RouteId"
+      responses:
+        "200":
+          description: Route revoked.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteRouteResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /hosted-actions/{actionId}:
+    get:
+      tags:
+        - Hosted Actions
+      operationId: getHostedAction
+      summary: Hydrate a browser-safe hosted action view model.
+      description: |
+        Hosted action URLs are opaque and short-lived. Details are hydrated only
+        after action validation and signed-in user context checks.
+      parameters:
+        - $ref: "#/components/parameters/ActionId"
+      responses:
+        "200":
+          description: Browser-safe hosted action view model.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HostedActionView"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      tags:
+        - Hosted Actions
+      operationId: completeHostedAction
+      summary: Complete a hosted action decision.
+      parameters:
+        - $ref: "#/components/parameters/ActionId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HostedActionDecision"
+      responses:
+        "200":
+          description: Completion state.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HostedActionCompletion"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /notifications:
+    post:
+      tags:
+        - Notifications
+      operationId: receiveNotificationEvent
+      summary: Accept an MVP notification event payload.
+      description: |
+        MVP notification delivery uses Cubid comms. The only MVP event is
+        payment_intent_created. Do not use payment-received language unless a
+        future provider receipt callback contract exists.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotificationEvent"
+            examples:
+              paymentIntentCreated:
+                value:
+                  event: payment_intent_created
+                  recipientDisplay: r***@example.com
+                  amount:
+                    value: "25.00"
+                    currency: USDC
+                  resolverRequestId: mpt_req_123
+                  payingDappReference: sender:payout_987
+      responses:
+        "202":
+          description: Notification accepted for delivery.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationAccepted"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+webhooks:
+  providerPaymentIntent:
+    post:
+      tags:
+        - Routes
+      operationId: createProviderPaymentIntent
+      summary: Receiving-app provider intent callback.
+      description: |
+        MyPayTag calls the receiving app's registered intent endpoint after the
+        route has been selected. Receiving apps return a typed provider_json
+        instruction for this one payment.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProviderCallbackRequest"
+      responses:
+        "200":
+          description: Provider intent response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProviderResponse"
+components:
+  responses:
+    BadRequest:
+      description: Invalid public request shape or unsupported request.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Unauthorized:
+      description: Missing or invalid app authentication signature.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: Resource unavailable or not visible to the authenticated app.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    TooManyRequests:
+      description: Request throttled.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    ServiceUnavailable:
+      description: Service temporarily unavailable.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  securitySchemes:
+    MyPayTagSignature:
+      type: apiKey
+      in: header
+      name: x-mypaytag-signature
+      description: |
+        App-authenticated requests include x-mypaytag-dapp-id,
+        x-mypaytag-timestamp, x-mypaytag-nonce, and x-mypaytag-signature.
+        The signature binds app identity, timestamp, nonce, method, path, and
+        request body.
+  parameters:
+    RouteId:
+      name: routeId
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: "^mpt_route_[A-Za-z0-9_-]+$"
+    ActionId:
+      name: actionId
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: "^mpt_act_[A-Za-z0-9_-]+$"
+  schemas:
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+        - service
+      properties:
+        status:
+          type: string
+          const: ok
+        service:
+          type: string
+          const: mypaytag-api
+    PublicStatus:
+      type: string
+      enum:
+        - resolved
+        - no_route
+        - user_action_required
+        - authorization_required
+        - unsupported_path
+        - provider_unavailable
+        - provider_error
+        - expired_authorization
+        - revoked_authorization
+        - invalid_identifier
+        - invalid_request
+    Recipient:
+      type: object
+      additionalProperties: false
+      required:
+        - identifierType
+        - identifier
+      properties:
+        identifierType:
+          type: string
+          const: verified_stamp
+        identifier:
+          type: string
+          examples:
+            - email:recipient@example.com
+    RecipientAlias:
+      type: object
+      additionalProperties: false
+      required:
+        - identifierType
+        - identifierAlias
+      properties:
+        identifierType:
+          type: string
+          const: verified_stamp
+        identifierAlias:
+          type: string
+          description: Cubid alias or masked server-side recipient reference.
+    RoutePath:
+      type: object
+      additionalProperties: false
+      required:
+        - chain
+        - network
+        - asset
+      properties:
+        chain:
+          type: string
+          examples:
+            - base
+            - ethereum
+            - solana
+        network:
+          type: string
+          examples:
+            - mainnet
+            - sepolia
+        asset:
+          type: string
+          examples:
+            - USDC
+            - USDT
+    Amount:
+      type: object
+      additionalProperties: false
+      required:
+        - value
+        - currency
+      properties:
+        value:
+          type: string
+          pattern: "^[0-9]+(\\.[0-9]+)?$"
+        currency:
+          type: string
+    ResolveRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - recipient
+        - supportedPaths
+        - amount
+        - purpose
+        - intentMode
+        - payingDappReference
+      properties:
+        recipient:
+          $ref: "#/components/schemas/Recipient"
+        supportedPaths:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/RoutePath"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        purpose:
+          type: string
+          minLength: 1
+        intentMode:
+          type: string
+          const: one_time
+        payingDappReference:
+          type: string
+          minLength: 1
+        preferredSolverId:
+          $ref: "#/components/schemas/SolverId"
+    ResolveResponse:
+      oneOf:
+        - $ref: "#/components/schemas/ResolvedIntentResponse"
+        - $ref: "#/components/schemas/ActionRequiredResponse"
+        - $ref: "#/components/schemas/StatusOnlyResponse"
+    ResolvedIntentResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+        - intent
+      properties:
+        status:
+          type: string
+          const: resolved
+        intent:
+          $ref: "#/components/schemas/MyPayTagIntent"
+    ActionRequiredResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+        - action
+      properties:
+        status:
+          type: string
+          const: user_action_required
+        action:
+          $ref: "#/components/schemas/HostedAction"
+    StatusOnlyResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+      properties:
+        status:
+          $ref: "#/components/schemas/PublicStatus"
+    HostedAction:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - url
+        - expiresAt
+      properties:
+        type:
+          type: string
+          enum:
+            - route_selection
+        url:
+          type: string
+          format: uri
+        expiresAt:
+          type: string
+          format: date-time
+    MyPayTagIntent:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - resolverRequestId
+        - selectedPath
+        - paymentInstruction
+      properties:
+        type:
+          type: string
+          const: mypaytag.intent.v1
+        resolverRequestId:
+          type: string
+        selectedPath:
+          $ref: "#/components/schemas/RoutePath"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        paymentInstruction:
+          $ref: "#/components/schemas/PaymentInstruction"
+    PaymentInstruction:
+      type: object
+      additionalProperties: false
+      required:
+        - kind
+        - payload
+      properties:
+        kind:
+          type: string
+          const: provider_json
+        payload:
+          type: object
+          additionalProperties: true
+          required:
+            - destination
+          properties:
+            destination:
+              $ref: "#/components/schemas/PaymentDestination"
+    PaymentDestination:
+      type: object
+      additionalProperties: false
+      required:
+        - kind
+        - recipientAddress
+      properties:
+        kind:
+          type: string
+          const: blockchain_address
+        recipientAddress:
+          type: string
+    RouteRegistrationRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - recipient
+        - payToDappId
+        - supportedRoutes
+        - consentToken
+      properties:
+        recipient:
+          $ref: "#/components/schemas/Recipient"
+        payToDappId:
+          type: string
+        supportedRoutes:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/RoutePath"
+        consentToken:
+          type: string
+    RouteRegistrationResponse:
+      oneOf:
+        - type: object
+          additionalProperties: false
+          required:
+            - status
+            - routes
+          properties:
+            status:
+              type: string
+              const: resolved
+            routes:
+              type: array
+              items:
+                $ref: "#/components/schemas/PayToRoute"
+        - $ref: "#/components/schemas/ActionRequiredResponse"
+        - $ref: "#/components/schemas/StatusOnlyResponse"
+    PayToRoute:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - payToDappId
+        - chain
+        - network
+        - asset
+        - state
+      properties:
+        id:
+          type: string
+        payToDappId:
+          type: string
+        chain:
+          type: string
+        network:
+          type: string
+        asset:
+          type: string
+        state:
+          type: string
+          enum:
+            - active
+            - revoked
+    RouteUpdateRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        state:
+          type: string
+          enum:
+            - active
+            - revoked
+        supportedRoutes:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/RoutePath"
+    DeleteRouteResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+        - routeId
+      properties:
+        status:
+          type: string
+          const: revoked
+        routeId:
+          type: string
+    HostedActionView:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+        - actionId
+        - actionType
+      properties:
+        status:
+          type: string
+          enum:
+            - ready
+            - expired
+            - invalid
+            - completed
+            - restart_required
+        actionId:
+          type: string
+        actionType:
+          type: string
+          enum:
+            - route_selection
+        options:
+          type: array
+          items:
+            $ref: "#/components/schemas/RouteOption"
+    RouteOption:
+      type: object
+      additionalProperties: false
+      required:
+        - optionId
+        - chain
+        - network
+        - asset
+        - payToDappId
+        - displayName
+      properties:
+        optionId:
+          type: string
+        chain:
+          type: string
+        network:
+          type: string
+        asset:
+          type: string
+        payToDappId:
+          type: string
+        displayName:
+          type: string
+    HostedActionDecision:
+      type: object
+      additionalProperties: false
+      required:
+        - decision
+      properties:
+        decision:
+          type: string
+          enum:
+            - approve
+            - deny
+            - select_route
+        selectedOptionId:
+          type: string
+    HostedActionCompletion:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - approved
+            - denied
+            - selected_route
+            - completed
+            - restart_required
+    ProviderCallbackRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - resolverRequestId
+        - recipient
+        - payingDappId
+        - selectedPath
+        - amount
+      properties:
+        resolverRequestId:
+          type: string
+        recipient:
+          $ref: "#/components/schemas/RecipientAlias"
+        payingDappId:
+          type: string
+        selectedPath:
+          $ref: "#/components/schemas/RoutePath"
+        amount:
+          $ref: "#/components/schemas/Amount"
+    ProviderResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - ready
+            - unavailable
+            - rejected
+        provider_json:
+          $ref: "#/components/schemas/PaymentInstruction"
+    NotificationEvent:
+      type: object
+      additionalProperties: false
+      required:
+        - event
+        - recipientDisplay
+        - amount
+        - resolverRequestId
+        - payingDappReference
+      properties:
+        event:
+          type: string
+          const: payment_intent_created
+        recipientDisplay:
+          type: string
+        amount:
+          $ref: "#/components/schemas/Amount"
+        resolverRequestId:
+          type: string
+        payingDappReference:
+          type: string
+    NotificationAccepted:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          const: accepted
+    SolverId:
+      type: string
+      enum:
+        - near_intents_1click
+        - lifi
+        - squid
+        - zero_x_cross_chain
+        - across
+        - layerzero_stargate
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+      properties:
+        status:
+          $ref: "#/components/schemas/PublicStatus"
+        message:
+          type: string
+          description: Safe public message only.

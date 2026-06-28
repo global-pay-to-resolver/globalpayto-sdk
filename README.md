@@ -1,6 +1,6 @@
-# GlobalPayTo SDK
+# MyPayTag SDK
 
-Public developer-facing protocol and SDK workspace for GlobalPayTo.
+Public developer-facing protocol and SDK workspace for MyPayTag.
 
 This repo should become the source of truth for request and response contracts, client SDKs, provider helpers, mocks, examples, and integration documentation.
 
@@ -8,14 +8,22 @@ This repo should become the source of truth for request and response contracts, 
 
 - [Protocol and SDK architecture](docs/engineering/protocol-and-sdk-architecture.md)
 - [Public integration guides](docs/integration/README.md)
-- Hosted user-action UX lives in the sibling `globalpayto-site` repo.
+- [Canonical OpenAPI 3.1 contract](api/openapi.yaml)
+- Hosted user-action UX lives in the sibling `mypaytag-site` repo.
+
+The public site publishes a copy of the OpenAPI contract at `/api/openapi.yaml`
+and renders it with Scalar at `/reference`.
+
+CI also generates `api/postman_collection.json` from the OpenAPI contract and
+uploads it as a workflow artifact. Tagged `sdk-v*` publish runs attach the same
+collection to the GitHub release.
 
 ## Intended Packages
 
-- `@globalpayto/protocol`
-- `@globalpayto/sdk`
-- `@globalpayto/provider-sdk`
-- `@globalpayto/testing`
+- `@mypaytag/protocol`
+- `@mypaytag/sdk`
+- `@mypaytag/provider-sdk`
+- `@mypaytag/testing`
 
 ## Initial Layout
 
@@ -26,6 +34,7 @@ This repo should become the source of truth for request and response contracts, 
 - `examples/paying-dapp-basic/`
 - `examples/payto-dapp-modality-b/`
 - `examples/payto-dapp-modality-a/` - future/out-of-scope note only; not an MVP integration path.
+- `api/`
 - `docs/`
 
 ## Development Status
@@ -58,8 +67,13 @@ Run individual checks:
 pnpm typecheck
 pnpm test
 pnpm scan:public-boundary
+pnpm api:validate
+pnpm api:postman
 pnpm build
 ```
+
+`api/postman_collection.json` is generated from `api/openapi.yaml`; do not edit
+the collection by hand.
 
 Run examples:
 

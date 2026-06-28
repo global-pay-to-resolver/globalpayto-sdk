@@ -1,20 +1,22 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  validateGlobalPayToIntent,
+  validateMyPayTagIntent,
   validateNotificationEvent,
   validateProviderResponse,
   validateResolveRequest,
   validateResolveResponse,
   validateRouteRegistrationRequest,
+  validateRouteQuotePreview,
   validateStatus,
-  validGlobalPayToIntent,
+  validMyPayTagIntent,
   validNoRouteResponse,
   validNotificationEvent,
   validProviderResponse,
   validResolveRequest,
   validResolvedResponse,
   validRouteRegistrationRequest,
+  validRouteQuotePreview,
   validRouteSelectionResponse,
 } from "./index.js";
 
@@ -34,7 +36,7 @@ const actionStatusFixtures = [
   validRouteSelectionResponse,
 ] as const;
 
-describe("@globalpayto/protocol", () => {
+describe("@mypaytag/protocol", () => {
   it("accepts valid MVP fixtures", () => {
     expect(validateRouteRegistrationRequest(validRouteRegistrationRequest)).toEqual(
       validRouteRegistrationRequest,
@@ -46,8 +48,9 @@ describe("@globalpayto/protocol", () => {
       validRouteSelectionResponse,
     );
     expect(validateProviderResponse(validProviderResponse)).toEqual(validProviderResponse);
-    expect(validateGlobalPayToIntent(validGlobalPayToIntent)).toEqual(validGlobalPayToIntent);
+    expect(validateMyPayTagIntent(validMyPayTagIntent)).toEqual(validMyPayTagIntent);
     expect(validateNotificationEvent(validNotificationEvent)).toEqual(validNotificationEvent);
+    expect(validateRouteQuotePreview(validRouteQuotePreview)).toEqual(validRouteQuotePreview);
   });
 
   it("accepts every public status value and response shape", () => {
@@ -122,12 +125,12 @@ describe("@globalpayto/protocol", () => {
     for (const action of [
       {
         type: "setup",
-        url: "https://globalpayto.example/actions/setup/gptr_act_456",
+        url: "https://mypaytag.com/actions/setup/gptr_act_456",
         expiresAt: "2026-06-24T20:00:00Z",
       },
       {
         type: "authorization",
-        url: "https://globalpayto.example/actions/setup/gptr_act_auth",
+        url: "https://mypaytag.com/actions/setup/gptr_act_auth",
         expiresAt: "2026-06-24T20:00:00Z",
       },
     ] as const) {
@@ -155,17 +158,17 @@ describe("@globalpayto/protocol", () => {
     ).toThrow();
   });
 
-  it("rejects provider payloads that expose address-like fields inside GlobalPayTo intents", () => {
+  it("rejects provider payloads that expose address-like fields inside MyPayTag intents", () => {
     for (const field of ["recipientAddress", "address", "account"] as const) {
       expect(() =>
         validateResolveResponse({
           ...validResolvedResponse,
           intent: {
-            ...validGlobalPayToIntent,
+            ...validMyPayTagIntent,
             paymentInstruction: {
-              ...validGlobalPayToIntent.paymentInstruction,
+              ...validMyPayTagIntent.paymentInstruction,
               payload: {
-                ...validGlobalPayToIntent.paymentInstruction.payload,
+                ...validMyPayTagIntent.paymentInstruction.payload,
                 [field]: "0xabc123",
               },
             },
@@ -199,13 +202,34 @@ describe("@globalpayto/protocol", () => {
     ).toThrow();
   });
 
+  it("rejects quote previews that expose recipient inventory or charge receiver fees", () => {
+    expect(() =>
+      validateRouteQuotePreview({
+        ...validRouteQuotePreview,
+        payToDappOptions: ["smartrust-wallet", "other-wallet"],
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateRouteQuotePreview({
+        ...validRouteQuotePreview,
+        fees: [
+          {
+            ...validRouteQuotePreview.fees[0],
+            chargedTo: "receiver",
+          },
+        ],
+      }),
+    ).toThrow();
+  });
+
   it("rejects notification payloads with provider receipt or action-link fields", () => {
     expect(() =>
       validateNotificationEvent({
         ...validNotificationEvent,
         action: {
           type: "setup",
-          url: "https://globalpayto.example/actions/setup/gptr_act_456",
+          url: "https://mypaytag.com/actions/setup/gptr_act_456",
           expiresAt: "2026-06-24T20:00:00Z",
         },
       }),

@@ -25,7 +25,7 @@ export type ResolveResponse =
 
 export interface Intent {
   id: string;
-  schema: "globalpayto.intent.v1";
+  schema: "mypaytag.intent.v1";
   status: "ready";
   modality: "provider_intent";
   recipient: {

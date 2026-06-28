@@ -3,11 +3,12 @@ import addFormats from "ajv-formats";
 
 import { protocolSchemas } from "./generated/schemas.js";
 import type {
-  GlobalPayToIntent,
-  GlobalPayToStatus,
+  MyPayTagIntent,
+  MyPayTagStatus,
   NotificationEvent,
   ProviderCallbackRequest,
   ProviderResponse,
+  RouteQuotePreview,
   ResolveRequest,
   ResolveResponse,
   RouteRegistrationRequest,
@@ -18,7 +19,7 @@ export class ProtocolValidationError extends Error {
   readonly errors: ErrorObject[] | null | undefined;
 
   constructor(schemaName: ProtocolSchemaName, errors: ErrorObject[] | null | undefined) {
-    super(`Invalid GlobalPayTo ${schemaName} payload`);
+    super(`Invalid MyPayTag ${schemaName} payload`);
     this.name = "ProtocolValidationError";
     this.errors = errors;
   }
@@ -56,7 +57,7 @@ export function isProtocolPayload<T>(schemaName: ProtocolSchemaName, payload: un
 }
 
 export const validateStatus = (payload: unknown) =>
-  validateProtocolPayload<GlobalPayToStatus>("status", payload);
+  validateProtocolPayload<MyPayTagStatus>("status", payload);
 
 export const validateRouteRegistrationRequest = (payload: unknown) =>
   validateProtocolPayload<RouteRegistrationRequest>("route-registration-request", payload);
@@ -76,11 +77,14 @@ export const validateProviderCallbackRequest = (payload: unknown) =>
 export const validateProviderResponse = (payload: unknown) =>
   validateProtocolPayload<ProviderResponse>("provider-response", payload);
 
-export const validateGlobalPayToIntent = (payload: unknown) =>
-  validateProtocolPayload<GlobalPayToIntent>("globalpayto-intent", payload);
+export const validateMyPayTagIntent = (payload: unknown) =>
+  validateProtocolPayload<MyPayTagIntent>("mypaytag-intent", payload);
 
 export const validateNotificationEvent = (payload: unknown) =>
   validateProtocolPayload<NotificationEvent>("notification-event", payload);
+
+export const validateRouteQuotePreview = (payload: unknown) =>
+  validateProtocolPayload<RouteQuotePreview>("route-quote-preview", payload);
 
 export const isNotificationEvent = (payload: unknown): payload is NotificationEvent =>
   isProtocolPayload<NotificationEvent>("notification-event", payload);

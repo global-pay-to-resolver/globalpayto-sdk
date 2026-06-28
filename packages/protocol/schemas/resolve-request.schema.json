@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.globalpayto.dev/resolve-request.schema.json",
+  "$id": "https://schemas.mypaytag.com/resolve-request.schema.json",
   "title": "ResolveRequest",
   "type": "object",
   "additionalProperties": false,
