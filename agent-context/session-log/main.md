@@ -325,3 +325,14 @@ todo: mypaytag-sdk:GPTS-S7-T1
 summary: Added the Phase 1 NEAR Intents / 1Click quote-option protocol contract, fixture, validator, SDK parser export, and tests while documenting broad solver fanout as Phase 2.
 validation: Ran pnpm generate, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/sdk test, pnpm --filter @mypaytag/sdk typecheck, and pnpm scan:public-boundary; focused tests passed with 48 workspace cases and the public-boundary scan passed.
 follow-ups: Add selected quote confirmation and payable instruction contracts.
+
+---
+
+## 2026-06-28-gpts-s7-t2
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T2
+summary: Added NEAR 1Click quote selection and payable instruction schemas, generated protocol exports, fixtures, validators, negative tests, and PayingDapp SDK builder/parser helpers.
+validation: Ran pnpm generate, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/sdk test, pnpm --filter @mypaytag/sdk typecheck, and pnpm scan:public-boundary; focused tests passed with 51 workspace cases and the public-boundary scan passed.
+follow-ups: Continue Sprint 7 by moving generic solver fanout wording and tests under Phase 2/non-MVP positioning.

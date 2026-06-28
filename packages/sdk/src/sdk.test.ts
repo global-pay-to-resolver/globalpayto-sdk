@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 
 import {
   validNoRouteResponse,
+  validNearOneClickPayableInstruction,
   validNearOneClickQuoteOption,
+  validNearOneClickQuoteSelectionRequest,
   validNotificationEvent,
   validResolvedResponse,
   validResolveRequest,
@@ -12,6 +14,7 @@ import {
 import {
   buildResolveRequest,
   buildAmountValue,
+  buildNearOneClickQuoteSelectionRequest,
   buildPayorAppReference,
   buildPayorAppResolveRequest,
   buildSupportedPath,
@@ -22,6 +25,7 @@ import {
   parseNotificationEvent,
   parseResolveResponse,
   requestExecutionQuotes,
+  parseNearOneClickPayableInstruction,
   parseNearOneClickQuoteOption,
   type CryptoNativeExecutionSolverId,
   type ExecutionQuoteProvider,
@@ -130,6 +134,15 @@ describe("@mypaytag/sdk", () => {
   it("parses the Phase 1 NEAR 1Click MVP quote option", () => {
     expect(parseNearOneClickQuoteOption(validNearOneClickQuoteOption)).toEqual(
       validNearOneClickQuoteOption,
+    );
+  });
+
+  it("builds selected NEAR 1Click quote requests and parses payable instructions", () => {
+    expect(buildNearOneClickQuoteSelectionRequest(validNearOneClickQuoteSelectionRequest)).toEqual(
+      validNearOneClickQuoteSelectionRequest,
+    );
+    expect(parseNearOneClickPayableInstruction(validNearOneClickPayableInstruction)).toEqual(
+      validNearOneClickPayableInstruction,
     );
   });
 

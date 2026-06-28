@@ -223,6 +223,57 @@ Rules:
 - Action URLs must not embed recipient, route, provider, authorization, wallet, preference, or diagnostic data.
 - Unauthenticated action pages must remain safe even when opened by the wrong user, crawler, browser preview, or expired session.
 
+### NEAR 1Click Quote Confirmation
+
+The MVP crypto-native execution contract is a NEAR Intents / 1Click quote flow. The resolver may return a `mypaytag.near_1click.quote_option.v1` object when a PayingDapp needs to confirm a concrete cross-chain execution route before receiving payable instructions.
+
+The PayingDapp confirms the selected option with `mypaytag.near_1click.quote_selection_request.v1`:
+
+```json
+{
+  "schema": "mypaytag.near_1click.quote_selection_request.v1",
+  "resolverReference": "mpt_req_123",
+  "quoteId": "near_1click_quote_123",
+  "selectedRouteReference": "mpt_route_123",
+  "payingDappReference": "chaincrew:payout_987",
+  "idempotencyKey": "mpt_idem_near_123",
+  "clientReference": "chaincrew:near_selection_123"
+}
+```
+
+The resolver responds with a `mypaytag.near_1click.payable_instruction.v1` payload:
+
+```json
+{
+  "schema": "mypaytag.near_1click.payable_instruction.v1",
+  "status": "ready",
+  "adapter": "near_intents_1click",
+  "resolverReference": "mpt_req_123",
+  "quoteId": "near_1click_quote_123",
+  "selectedRouteReference": "mpt_route_123",
+  "payingDappReference": "chaincrew:payout_987",
+  "expiresAt": "2026-06-24T20:00:00Z",
+  "instruction": {
+    "kind": "near_1click_payable",
+    "payload": {
+      "nearQuoteReference": "near_quote_ref_123",
+      "depositAddress": "near1click-deposit.testnet",
+      "depositAsset": "USDC",
+      "depositAmount": "25.18",
+      "recipientAsset": "USDC",
+      "recipientAmount": "25.00",
+      "deadline": "2026-06-24T20:00:00Z"
+    }
+  }
+}
+```
+
+Rules:
+
+- `adapter` is always `near_intents_1click` for the MVP execution flow.
+- The quote selection request carries an idempotency key so retries do not mint duplicate payable instructions.
+- Payable instructions expose only the selected quote and deposit terms. They must not expose PayToDapp route inventory, route preference data, wallet graphs, or receiver-charged fee structures.
+
 ## Provider Intent Callback
 
 Endpoint:

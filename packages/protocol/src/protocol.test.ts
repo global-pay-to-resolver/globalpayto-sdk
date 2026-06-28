@@ -5,8 +5,10 @@ import { describe, expect, it } from "vitest";
 
 import {
   validateMyPayTagIntent,
+  validateNearOneClickPayableInstruction,
   validateNotificationEvent,
   validateNearOneClickQuoteOption,
+  validateNearOneClickQuoteSelectionRequest,
   validateProviderResponse,
   validateResolveRequest,
   validateResolveResponse,
@@ -14,9 +16,11 @@ import {
   validateRouteQuotePreview,
   validateStatus,
   validMyPayTagIntent,
+  validNearOneClickPayableInstruction,
   validNoRouteResponse,
   validNotificationEvent,
   validNearOneClickQuoteOption,
+  validNearOneClickQuoteSelectionRequest,
   validProviderResponse,
   validResolveRequest,
   validResolvedResponse,
@@ -69,6 +73,12 @@ describe("@mypaytag/protocol", () => {
     expect(validateRouteQuotePreview(validRouteQuotePreview)).toEqual(validRouteQuotePreview);
     expect(validateNearOneClickQuoteOption(validNearOneClickQuoteOption)).toEqual(
       validNearOneClickQuoteOption,
+    );
+    expect(validateNearOneClickQuoteSelectionRequest(validNearOneClickQuoteSelectionRequest)).toEqual(
+      validNearOneClickQuoteSelectionRequest,
+    );
+    expect(validateNearOneClickPayableInstruction(validNearOneClickPayableInstruction)).toEqual(
+      validNearOneClickPayableInstruction,
     );
   });
 
@@ -283,6 +293,64 @@ describe("@mypaytag/protocol", () => {
             chargedTo: "receiver",
           },
         ],
+      }),
+    ).toThrow();
+  });
+
+  it("accepts selected NEAR 1Click quotes and payable instructions", () => {
+    expect(validateNearOneClickQuoteSelectionRequest(validNearOneClickQuoteSelectionRequest)).toEqual(
+      validNearOneClickQuoteSelectionRequest,
+    );
+    expect(validateNearOneClickPayableInstruction(validNearOneClickPayableInstruction)).toEqual(
+      validNearOneClickPayableInstruction,
+    );
+  });
+
+  it("rejects unsafe NEAR 1Click quote selection and payable instruction payloads", () => {
+    expect(() =>
+      validateNearOneClickQuoteSelectionRequest({
+        ...validNearOneClickQuoteSelectionRequest,
+        idempotencyKey: "short",
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateNearOneClickQuoteSelectionRequest({
+        ...validNearOneClickQuoteSelectionRequest,
+        selectedRouteReference: "",
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateNearOneClickPayableInstruction({
+        ...validNearOneClickPayableInstruction,
+        adapter: "lifi",
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateNearOneClickPayableInstruction({
+        ...validNearOneClickPayableInstruction,
+        instruction: {
+          ...validNearOneClickPayableInstruction.instruction,
+          payload: {
+            ...validNearOneClickPayableInstruction.instruction.payload,
+            depositAmount: "twenty five",
+          },
+        },
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateNearOneClickPayableInstruction({
+        ...validNearOneClickPayableInstruction,
+        instruction: {
+          ...validNearOneClickPayableInstruction.instruction,
+          payload: {
+            ...validNearOneClickPayableInstruction.instruction.payload,
+            payToDappOptions: ["smartrust-wallet", "other-wallet"],
+          },
+        },
       }),
     ).toThrow();
   });

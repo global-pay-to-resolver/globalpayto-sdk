@@ -4,7 +4,9 @@ import addFormats from "ajv-formats";
 import { protocolSchemas } from "./generated/schemas.js";
 import type {
   MyPayTagIntent,
+  NearOneClickPayableInstruction,
   NearOneClickQuoteOption,
+  NearOneClickQuoteSelectionRequest,
   MyPayTagStatus,
   NotificationEvent,
   ProviderCallbackRequest,
@@ -89,6 +91,12 @@ export const validateRouteQuotePreview = (payload: unknown) =>
 
 export const validateNearOneClickQuoteOption = (payload: unknown) =>
   validateProtocolPayload<NearOneClickQuoteOption>("near-one-click-quote-option", payload);
+
+export const validateNearOneClickQuoteSelectionRequest = (payload: unknown) =>
+  validateProtocolPayload<NearOneClickQuoteSelectionRequest>("near-one-click-quote-selection-request", payload);
+
+export const validateNearOneClickPayableInstruction = (payload: unknown) =>
+  validateProtocolPayload<NearOneClickPayableInstruction>("near-one-click-payable-instruction", payload);
 
 export const isNotificationEvent = (payload: unknown): payload is NotificationEvent =>
   isProtocolPayload<NotificationEvent>("notification-event", payload);

@@ -1,17 +1,23 @@
 import {
+  validateNearOneClickPayableInstruction,
   validateNearOneClickQuoteOption,
+  validateNearOneClickQuoteSelectionRequest,
   isNotificationEvent,
   validateNotificationEvent,
   validateResolveRequest,
   validateResolveResponse,
   type NotificationEvent,
+  type NearOneClickPayableInstruction,
   type NearOneClickQuoteOption,
+  type NearOneClickQuoteSelectionRequest,
   type ResolveRequest,
   type ResolveResponse,
 } from "@mypaytag/protocol";
 
 export type ResolveRequestInput = ResolveRequest;
 export type NearOneClickMvpQuoteOption = NearOneClickQuoteOption;
+export type NearOneClickMvpQuoteSelectionRequest = NearOneClickQuoteSelectionRequest;
+export type NearOneClickMvpPayableInstruction = NearOneClickPayableInstruction;
 export type SupportedPath = ResolveRequest["supportedPaths"][number];
 export type ResolveAmount = ResolveRequest["amount"];
 export type PayorAmountExactness = "exact_send" | "exact_receive";
@@ -154,6 +160,18 @@ export function parseNotificationEvent(payload: unknown): NotificationEvent {
 
 export function parseNearOneClickQuoteOption(payload: unknown): NearOneClickMvpQuoteOption {
   return validateNearOneClickQuoteOption(payload);
+}
+
+export function buildNearOneClickQuoteSelectionRequest(
+  input: NearOneClickMvpQuoteSelectionRequest,
+): NearOneClickMvpQuoteSelectionRequest {
+  return validateNearOneClickQuoteSelectionRequest(input);
+}
+
+export function parseNearOneClickPayableInstruction(
+  payload: unknown,
+): NearOneClickMvpPayableInstruction {
+  return validateNearOneClickPayableInstruction(payload);
 }
 
 export function isMyPayTagNotification(payload: unknown): payload is NotificationEvent {

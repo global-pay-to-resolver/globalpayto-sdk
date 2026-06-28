@@ -1,6 +1,8 @@
 import type {
   MyPayTagIntent,
+  NearOneClickPayableInstruction,
   NearOneClickQuoteOption,
+  NearOneClickQuoteSelectionRequest,
   NotificationEvent,
   ProviderCallbackRequest,
   ProviderResponse,
@@ -245,4 +247,37 @@ export const validNearOneClickQuoteOption: NearOneClickQuoteOption = {
   selectedRouteReference: "mpt_route_123",
   nearQuoteReference: "near_quote_ref_123",
   estimatedDurationSeconds: 20,
+};
+
+export const validNearOneClickQuoteSelectionRequest: NearOneClickQuoteSelectionRequest = {
+  schema: "mypaytag.near_1click.quote_selection_request.v1",
+  resolverReference: validNearOneClickQuoteOption.resolverReference,
+  quoteId: validNearOneClickQuoteOption.quoteId,
+  selectedRouteReference: validNearOneClickQuoteOption.selectedRouteReference,
+  payingDappReference: validResolveRequest.payingDappReference,
+  idempotencyKey: "mpt_idem_near_123",
+  clientReference: "chaincrew:near_selection_123",
+};
+
+export const validNearOneClickPayableInstruction: NearOneClickPayableInstruction = {
+  schema: "mypaytag.near_1click.payable_instruction.v1",
+  status: "ready",
+  adapter: "near_intents_1click",
+  resolverReference: validNearOneClickQuoteOption.resolverReference,
+  quoteId: validNearOneClickQuoteOption.quoteId,
+  selectedRouteReference: validNearOneClickQuoteOption.selectedRouteReference,
+  payingDappReference: validResolveRequest.payingDappReference,
+  expiresAt: validNearOneClickQuoteOption.expiresAt,
+  instruction: {
+    kind: "near_1click_payable",
+    payload: {
+      nearQuoteReference: "near_quote_ref_123",
+      depositAddress: "near1click-deposit.testnet",
+      depositAsset: "USDC",
+      depositAmount: "25.18",
+      recipientAsset: "USDC",
+      recipientAmount: "25.00",
+      deadline: validNearOneClickQuoteOption.expiresAt,
+    },
+  },
 };

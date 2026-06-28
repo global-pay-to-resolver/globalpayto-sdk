@@ -233,6 +233,112 @@ export const MypaytagIntentSchema = {
   }
 } as const;
 
+export const NearOneClickPayableInstructionSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/near-one-click-payable-instruction.schema.json",
+  "title": "NearOneClickPayableInstruction",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "adapter",
+    "resolverReference",
+    "quoteId",
+    "selectedRouteReference",
+    "payingDappReference",
+    "expiresAt",
+    "instruction"
+  ],
+  "properties": {
+    "schema": {
+      "const": "mypaytag.near_1click.payable_instruction.v1"
+    },
+    "status": {
+      "const": "ready"
+    },
+    "adapter": {
+      "const": "near_intents_1click"
+    },
+    "resolverReference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "quoteId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selectedRouteReference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payingDappReference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "instruction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "payload"
+      ],
+      "properties": {
+        "kind": {
+          "const": "near_1click_payable"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "nearQuoteReference",
+            "depositAddress",
+            "depositAsset",
+            "depositAmount",
+            "recipientAsset",
+            "recipientAmount",
+            "deadline"
+          ],
+          "properties": {
+            "nearQuoteReference": {
+              "type": "string",
+              "minLength": 1
+            },
+            "depositAddress": {
+              "type": "string",
+              "minLength": 1
+            },
+            "depositAsset": {
+              "type": "string",
+              "minLength": 1
+            },
+            "depositAmount": {
+              "type": "string",
+              "pattern": "^[0-9]+(\\.[0-9]+)?$"
+            },
+            "recipientAsset": {
+              "type": "string",
+              "minLength": 1
+            },
+            "recipientAmount": {
+              "type": "string",
+              "pattern": "^[0-9]+(\\.[0-9]+)?$"
+            },
+            "deadline": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    }
+  }
+} as const;
+
 export const NearOneClickQuoteOptionSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.mypaytag.com/near-one-click-quote-option.schema.json",
@@ -357,6 +463,51 @@ export const NearOneClickQuoteOptionSchema = {
           ]
         }
       }
+    }
+  }
+} as const;
+
+export const NearOneClickQuoteSelectionRequestSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/near-one-click-quote-selection-request.schema.json",
+  "title": "NearOneClickQuoteSelectionRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "resolverReference",
+    "quoteId",
+    "selectedRouteReference",
+    "payingDappReference",
+    "idempotencyKey"
+  ],
+  "properties": {
+    "schema": {
+      "const": "mypaytag.near_1click.quote_selection_request.v1"
+    },
+    "resolverReference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "quoteId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selectedRouteReference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payingDappReference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "idempotencyKey": {
+      "type": "string",
+      "minLength": 8
+    },
+    "clientReference": {
+      "type": "string",
+      "minLength": 1
     }
   }
 } as const;
@@ -1469,7 +1620,9 @@ export const StatusSchema = {
 
 export const protocolSchemas = {
   "mypaytag-intent": MypaytagIntentSchema,
+  "near-one-click-payable-instruction": NearOneClickPayableInstructionSchema,
   "near-one-click-quote-option": NearOneClickQuoteOptionSchema,
+  "near-one-click-quote-selection-request": NearOneClickQuoteSelectionRequestSchema,
   "notification-event": NotificationEventSchema,
   "provider-callback-request": ProviderCallbackRequestSchema,
   "provider-response": ProviderResponseSchema,

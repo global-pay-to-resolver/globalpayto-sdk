@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/near-one-click-quote-selection-request.schema.json",
+  "title": "NearOneClickQuoteSelectionRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "resolverReference",
+    "quoteId",
+    "selectedRouteReference",
+    "payingDappReference",
+    "idempotencyKey"
+  ],
+  "properties": {
+    "schema": { "const": "mypaytag.near_1click.quote_selection_request.v1" },
+    "resolverReference": { "type": "string", "minLength": 1 },
+    "quoteId": { "type": "string", "minLength": 1 },
+    "selectedRouteReference": { "type": "string", "minLength": 1 },
+    "payingDappReference": { "type": "string", "minLength": 1 },
+    "idempotencyKey": { "type": "string", "minLength": 8 },
+    "clientReference": { "type": "string", "minLength": 1 }
+  }
+}
