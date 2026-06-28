@@ -108,21 +108,41 @@ paths:
                   value:
                     status: resolved
                     intent:
-                      type: mypaytag.intent.v1
-                      resolverRequestId: mpt_req_123
-                      selectedPath:
+                      id: mpt_pi_123
+                      schema: mypaytag.intent.v1
+                      status: ready
+                      modality: provider_intent
+                      recipient:
+                        identifierType: verified_stamp
+                        identifierHash: sha256:example
+                      selectedRoute:
+                        payToDappId: example-wallet
                         chain: base
                         network: mainnet
                         asset: USDC
                       amount:
                         value: "25.00"
                         currency: USDC
+                      expiresAt: "2026-06-24T20:00:00Z"
+                      singleUse: true
                       paymentInstruction:
-                        kind: provider_json
+                        type: provider_json
+                        provider: example-wallet
                         payload:
+                          providerIntentId: provider_pi_456
+                          chain: base
+                          network: mainnet
+                          asset: USDC
                           destination:
                             kind: blockchain_address
                             recipientAddress: "0xabc0000000000000000000000000000000000000"
+                          amount: "25.00"
+                          reference: example-wallet:provider_pi_456
+                          expiresAt: "2026-06-24T20:00:00Z"
+                      references:
+                        resolverReference: mpt_pi_123
+                        providerReference: provider_pi_456
+                        payingDappReference: sender:payout_987
                 actionRequired:
                   summary: User route selection required
                   value:
@@ -599,44 +619,139 @@ components:
         expiresAt:
           type: string
           format: date-time
+        recipientAddress: false
+        address: false
+        account: false
     MyPayTagIntent:
       type: object
       additionalProperties: false
       required:
-        - type
-        - resolverRequestId
-        - selectedPath
+        - id
+        - schema
+        - status
+        - modality
+        - recipient
+        - selectedRoute
+        - amount
+        - expiresAt
+        - singleUse
         - paymentInstruction
+        - references
       properties:
-        type:
+        id:
+          type: string
+          minLength: 1
+        schema:
           type: string
           const: mypaytag.intent.v1
-        resolverRequestId:
+        status:
           type: string
-        selectedPath:
-          $ref: "#/components/schemas/RoutePath"
+          const: ready
+        modality:
+          type: string
+          const: provider_intent
+        recipient:
+          $ref: "#/components/schemas/IntentRecipient"
+        selectedRoute:
+          $ref: "#/components/schemas/SelectedRoute"
         amount:
           $ref: "#/components/schemas/Amount"
+        expiresAt:
+          type: string
+          format: date-time
+        singleUse:
+          type: boolean
+          const: true
         paymentInstruction:
           $ref: "#/components/schemas/PaymentInstruction"
+        references:
+          $ref: "#/components/schemas/IntentReferences"
+    IntentRecipient:
+      type: object
+      additionalProperties: false
+      required:
+        - identifierType
+        - identifierHash
+      properties:
+        identifierType:
+          type: string
+          const: verified_stamp
+        identifierHash:
+          type: string
+          minLength: 1
+    SelectedRoute:
+      type: object
+      additionalProperties: false
+      required:
+        - payToDappId
+        - chain
+        - network
+        - asset
+      properties:
+        payToDappId:
+          type: string
+          minLength: 1
+        chain:
+          type: string
+          minLength: 1
+        network:
+          type: string
+          minLength: 1
+        asset:
+          type: string
+          minLength: 1
     PaymentInstruction:
       type: object
       additionalProperties: false
       required:
-        - kind
+        - type
+        - provider
         - payload
       properties:
-        kind:
+        type:
           type: string
           const: provider_json
+        provider:
+          type: string
+          minLength: 1
         payload:
-          type: object
-          additionalProperties: true
-          required:
-            - destination
-          properties:
-            destination:
-              $ref: "#/components/schemas/PaymentDestination"
+          $ref: "#/components/schemas/ProviderPayload"
+    ProviderPayload:
+      type: object
+      additionalProperties: true
+      required:
+        - providerIntentId
+        - chain
+        - network
+        - asset
+        - destination
+        - amount
+        - reference
+        - expiresAt
+      properties:
+        providerIntentId:
+          type: string
+          minLength: 1
+        chain:
+          type: string
+          minLength: 1
+        network:
+          type: string
+          minLength: 1
+        asset:
+          type: string
+          minLength: 1
+        destination:
+          $ref: "#/components/schemas/PaymentDestination"
+        amount:
+          type: string
+          pattern: "^[0-9]+(\\.[0-9]+)?$"
+        reference:
+          type: string
+          minLength: 1
+        expiresAt:
+          type: string
+          format: date-time
     PaymentDestination:
       type: object
       additionalProperties: false
@@ -649,6 +764,24 @@ components:
           const: blockchain_address
         recipientAddress:
           type: string
+          minLength: 1
+    IntentReferences:
+      type: object
+      additionalProperties: false
+      required:
+        - resolverReference
+        - providerReference
+        - payingDappReference
+      properties:
+        resolverReference:
+          type: string
+          minLength: 1
+        providerReference:
+          type: string
+          minLength: 1
+        payingDappReference:
+          type: string
+          minLength: 1
     RouteRegistrationRequest:
       type: object
       additionalProperties: false
@@ -839,15 +972,17 @@ components:
       type: object
       additionalProperties: false
       required:
+        - providerIntentId
         - status
+        - paymentInstruction
       properties:
+        providerIntentId:
+          type: string
+          minLength: 1
         status:
           type: string
-          enum:
-            - ready
-            - unavailable
-            - rejected
-        provider_json:
+          const: ready
+        paymentInstruction:
           $ref: "#/components/schemas/PaymentInstruction"
     NotificationEvent:
       type: object

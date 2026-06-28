@@ -259,3 +259,14 @@ todo: mypaytag-sdk:GPTS-S6-T1
 summary: Renamed public contract fixture IDs, action IDs, docs, OpenAPI copy, and regenerated Postman examples from old gptr/pay-to-tag wording to MyPayTag mpt/paytag terminology while preserving PayToDapp compatibility terms.
 validation: Ran pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/sdk test, and pnpm scan:public-boundary; focused tests passed with 44 workspace cases and the public-boundary scan passed.
 follow-ups: Continue Sprint 6 by aligning OpenAPI intent schemas with the canonical JSON Schema contract.
+
+---
+
+## 2026-06-28-gpts-s6-t2
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S6-T2
+summary: Updated OpenAPI resolved-intent and provider-response components to match the canonical MyPayTag intent schema, including required envelope fields, selected route, references, provider_json metadata, and full provider payload requirements.
+validation: Ran pnpm api:postman and pnpm api:validate; Postman was regenerated from api/openapi.yaml and Redocly lint passed without warnings.
+follow-ups: Continue Sprint 6 by checking the public SDK contract for Cubid-internal leakage and direct Cubid probing examples.

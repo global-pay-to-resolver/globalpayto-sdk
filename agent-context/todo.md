@@ -392,9 +392,9 @@ Acceptance notes:
 
 ### GPTS-S6-T2 Make OpenAPI And Schemas Match The Canonical Intent Contract
 
-Status: TBD
-Feature branch: TBD
-Session log: TBD
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s6-t2
 Depends on: mypaytag-sdk:GPTS-S1-T5
 
 Align OpenAPI, JSON Schema, generated TypeScript, and examples around the MVP MyPayTag intent.
