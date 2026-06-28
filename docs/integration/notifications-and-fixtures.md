@@ -33,5 +33,10 @@ Use `@mypaytag/testing` for reusable fixtures and mocks:
 - valid route registration,
 - forbidden address registration,
 - resolved/no-route/route-selection/provider-failure resolver responses,
+- opaque default paytag examples such as `abd123@cubid.mypaytag`,
+- explicit raw-stamp paytag examples such as `+1234569999@phone.cubid.mypaytag`,
+- paytag availability, unavailable, and reserved-name checks before issuance,
+- negative-disclosure responses for `no_route`, `authorization_required`, and
+  `user_action_required`,
 - provider callback and provider response,
 - `payment_intent_created` notification payload.

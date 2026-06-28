@@ -30,6 +30,20 @@ import type {
 } from "@mypaytag/sdk";
 
 export interface MyPayTagFixtures {
+  paytags: {
+    opaqueDefault: PaytagExampleFixture;
+    rawExplicit: PaytagExampleFixture;
+    availability: {
+      available: PaytagAvailabilityFixture;
+      unavailable: PaytagAvailabilityFixture;
+      reserved: PaytagAvailabilityFixture;
+    };
+    negativeDisclosure: {
+      noRoute: ResolveResponse;
+      authorizationRequired: ResolveResponse;
+      userActionRequired: ResolveResponse;
+    };
+  };
   routeRegistration: {
     valid: RouteRegistrationRequest;
     forbiddenAddress: RouteRegistrationRequest & { address: string };
@@ -69,7 +83,61 @@ export interface MyPayTagFixtures {
   intent: MyPayTagIntent;
 }
 
+export interface PaytagExampleFixture {
+  paytag: string;
+  exposure: "opaque_default" | "raw_stamp_explicit";
+  identityProvider: "cubid";
+  userChoiceRequired: boolean;
+}
+
+export interface PaytagAvailabilityFixture {
+  paytag: string;
+  status: "available" | "unavailable" | "reserved";
+  canIssue: boolean;
+  publicReason?: "already_taken" | "reserved_namespace";
+}
+
 export const myPayTagFixtures: MyPayTagFixtures = {
+  paytags: {
+    opaqueDefault: {
+      paytag: "abd123@cubid.mypaytag",
+      exposure: "opaque_default",
+      identityProvider: "cubid",
+      userChoiceRequired: false,
+    },
+    rawExplicit: {
+      paytag: "+1234569999@phone.cubid.mypaytag",
+      exposure: "raw_stamp_explicit",
+      identityProvider: "cubid",
+      userChoiceRequired: true,
+    },
+    availability: {
+      available: {
+        paytag: "new456@cubid.mypaytag",
+        status: "available",
+        canIssue: true,
+      },
+      unavailable: {
+        paytag: "abd123@cubid.mypaytag",
+        status: "unavailable",
+        canIssue: false,
+        publicReason: "already_taken",
+      },
+      reserved: {
+        paytag: "support@mypaytag",
+        status: "reserved",
+        canIssue: false,
+        publicReason: "reserved_namespace",
+      },
+    },
+    negativeDisclosure: {
+      noRoute: validNoRouteResponse,
+      authorizationRequired: {
+        status: "authorization_required",
+      } satisfies ResolveResponse,
+      userActionRequired: validRouteSelectionResponse,
+    },
+  },
   routeRegistration: {
     valid: validRouteRegistrationRequest,
     forbiddenAddress: {
