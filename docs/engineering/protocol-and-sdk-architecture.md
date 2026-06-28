@@ -41,29 +41,32 @@ The MVP protocol does not support:
 - wallet graph lookup,
 - direct address/account registration,
 - resolver-built Modality A intents,
-- swaps, bridges, streams, recurring payments, refunds, or settlement guarantees,
+- generic swaps, generic bridges, streams, recurring payments, refunds, or settlement guarantees outside the dedicated MVP NEAR 1Click contract,
 - ERC-681, Solana Pay, WalletConnect Pay, ENS, FIO, Request Network, Stripe, Circle, Coinbase Commerce, or hosted payment link rendering,
 - public profile or directory APIs,
 - notification inbox APIs, marketing notification APIs, or non-Cubid notification provider APIs.
 
-## Future Extension: Crypto-Native Execution Solvers
+## MVP NEAR 1Click Execution
 
 NEAR Intents / 1Click is the Phase 1/MVP execution adapter for SmarTrust swap/bridge Paytag payments. It consumes a resolved receive requirement and returns a NEAR 1Click quote option scoped to the selected PayToDapp route. It does not decide which PayToDapp the recipient prefers.
 
+The MVP SDK surface for this path is the dedicated `NearOneClickMvpQuoteOption`, `NearOneClickMvpQuoteSelectionRequest`, and `NearOneClickMvpPayableInstruction` contract family. MVP PayingDapps should not use generic quote fanout to obtain NEAR 1Click payable instructions.
+
+## Future Extension: Crypto-Native Execution Solvers
+
 LI.FI, Squid, 0x, Across, LayerZero/Stargate, broad solver fanout, and generic external adapter support are Phase 2 extensions. They remain useful architecture context, but they are not required for the MVP resolve path.
 
-Short list for SDK adapter support:
+Short list for Phase 2 SDK adapter support:
 
 | Solver/router | Best fit |
 | --- | --- |
-| NEAR Intents / 1Click | Crypto-to-crypto cross-chain swaps, stablecoin delivery, distribution-channel fees, and default solver-style execution. |
 | LI.FI | EVM and Solana cross-chain routing, wallet-controlled execution, bridge/DEX aggregation, and quote responses with wallet-ready transaction requests. |
 | Squid | Broad chain coverage, cross-chain swaps, bridges, contract calls, and Cosmos/Axelar-style routing. |
 | 0x Cross-Chain API | Cross-chain payments, EVM/Solana routing, stablecoin settlement, fast quote responses, fallback paths, and progress tracking. |
 | Across | Fast bridge-focused EVM/L2 stablecoin transfers where supported. |
 | LayerZero Value Transfer API / Stargate | Cross-chain token transfer for OFT, LayerZero ecosystem assets, and routes where Stargate coverage is strong. |
 
-`@mypaytag/sdk` may expose a provider interface for these quote sources as non-MVP extension helpers. When a payor-app passes a preferred solver id, the SDK asks only that quote provider. When no preferred solver id is selected, the SDK fans out quote requests to every configured quote provider and returns the successful quotes for app-side display or future extension selection.
+`@mypaytag/sdk` exposes a provider interface for these quote sources as non-MVP extension helpers. When a payor-app passes a preferred solver id, the SDK asks only that quote provider. When no preferred solver id is selected, the SDK fans out quote requests to every configured quote provider and returns the successful quotes for app-side display or future extension selection.
 
 ## Future Extension: Route Query And Quote Contracts
 

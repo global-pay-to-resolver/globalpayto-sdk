@@ -49,7 +49,6 @@ export type ActionRequiredResponse = Extract<ResolveResponse, { action: unknown 
  * MVP quote-option contract exported as NearOneClickMvpQuoteOption.
  */
 export const cryptoNativeExecutionSolvers = [
-  "near_intents_1click",
   "lifi",
   "squid",
   "zero_x_cross_chain",
@@ -60,7 +59,10 @@ export const cryptoNativeExecutionSolvers = [
 export type CryptoNativeExecutionSolverId = (typeof cryptoNativeExecutionSolvers)[number];
 
 /**
- * Future extension quote request consumed by app-configured execution adapters.
+ * Phase 2 extension quote request consumed by app-configured execution adapters.
+ * The Phase 1 NEAR Intents / 1Click path uses the dedicated
+ * NearOneClickMvpQuoteOption, NearOneClickMvpQuoteSelectionRequest, and
+ * NearOneClickMvpPayableInstruction contracts instead of this fanout helper.
  */
 export interface ExecutionQuoteRequest {
   amount: {
@@ -217,9 +219,10 @@ function requireNonEmpty(value: string, fieldName: string): string {
 }
 
 /**
- * Requests non-MVP execution quotes from caller-provided providers. Core
- * MyPayTag MVP integrations can resolve paytags and handle provider callbacks
- * without calling this helper.
+ * Requests Phase 2 non-MVP execution quotes from caller-provided providers.
+ * Core MyPayTag MVP integrations can resolve paytags, parse NEAR 1Click quote
+ * options, confirm selected quotes, and handle provider callbacks without
+ * calling this helper.
  */
 export async function requestExecutionQuotes({
   preferredSolverId,

@@ -46,13 +46,24 @@ MVP payment instructions use `provider_json` with a typed provider destination:
 Do not infer reusable wallet details from this destination. It belongs to the
 selected one-time provider intent.
 
+## MVP NEAR 1Click Quote Flow
+
+The MVP resolve flow can return a NEAR Intents / 1Click quote option for
+SmarTrust swap/bridge paytag payments. PayingDapps parse that quote with
+`parseNearOneClickQuoteOption`, confirm the selected route with
+`buildNearOneClickQuoteSelectionRequest`, and parse the returned payable
+instruction with `parseNearOneClickPayableInstruction`.
+
+This MVP path is not generic solver fanout. PayingDapps do not need to
+configure LI.FI, Squid, 0x, Across, LayerZero/Stargate, or other broad
+execution providers to support the Phase 1 NEAR 1Click flow.
+
 ## Future Extension: Crypto-Native Execution Quotes
 
-The MVP resolve flow can return a NEAR Intents / 1Click quote option for SmarTrust swap/bridge Paytag payments. Broad execution quote fanout is Phase 2. When a PayingDapp supports future execution adapters, configure quote providers for the
-solver/router surfaces the app can use. The initial MyPayTag SDK solver ids
-are:
+Broad execution quote fanout is Phase 2. When a PayingDapp supports future
+execution adapters, configure quote providers for the solver/router surfaces
+the app can use. The Phase 2 MyPayTag SDK solver ids are:
 
-- `near_intents_1click`
 - `lifi`
 - `squid`
 - `zero_x_cross_chain`

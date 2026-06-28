@@ -85,11 +85,11 @@ describe("@mypaytag/testing", () => {
     expect(createPaymentIntentCreatedNotification().eventType).toBe("payment_intent_created");
   });
 
-  it("provides mock quote providers for preferred-solver and fanout tests", async () => {
+  it("provides Phase 2 mock quote providers for preferred-solver and fanout tests", async () => {
     const providers = [
-      createMockExecutionQuoteProvider({ solverId: "near_intents_1click" }),
       createMockExecutionQuoteProvider({ solverId: "lifi" }),
       createMockExecutionQuoteProvider({ solverId: "squid", failWith: "provider_unavailable" }),
+      createMockExecutionQuoteProvider({ solverId: "across" }),
     ];
 
     await expect(requestExecutionQuotes({
@@ -107,10 +107,10 @@ describe("@mypaytag/testing", () => {
       request: myPayTagFixtures.executionQuotes.exactSendRequest,
     })).resolves.toMatchObject([
       {
-        solverId: "near_intents_1click",
+        solverId: "lifi",
       },
       {
-        solverId: "lifi",
+        solverId: "across",
       },
     ]);
   });
@@ -119,7 +119,7 @@ describe("@mypaytag/testing", () => {
     await expect(requestExecutionQuotes({
       providers: [
         createMockExecutionQuoteProvider({
-          solverId: "near_intents_1click",
+          solverId: "zero_x_cross_chain",
           failWith: "provider_unavailable",
         }),
         createMockExecutionQuoteProvider({

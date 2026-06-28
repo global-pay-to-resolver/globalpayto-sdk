@@ -77,8 +77,8 @@ export interface MyPayTagFixtures {
   executionQuotes: {
     exactSendRequest: ExecutionQuoteRequest;
     exactReceiveRequest: ExecutionQuoteRequest;
-    near: ExecutionQuote;
     lifi: ExecutionQuote;
+    squid: ExecutionQuote;
   };
   intent: MyPayTagIntent;
 }
@@ -218,13 +218,6 @@ export const myPayTagFixtures: MyPayTagFixtures = {
       recipient: "eip155:8453:0x0000000000000000000000000000000000000001",
       reference: "example-payor:exact-receive",
     },
-    near: {
-      solverId: "near_intents_1click",
-      quoteId: "quote_near_fixture",
-      sendAmount: "25.18",
-      receiveAmount: "25.00",
-      estimatedDurationSeconds: 20,
-    },
     lifi: {
       solverId: "lifi",
       quoteId: "quote_lifi_fixture",
@@ -235,6 +228,13 @@ export const myPayTagFixtures: MyPayTagFixtures = {
         to: "0x0000000000000000000000000000000000000001",
         data: "0x",
       },
+    },
+    squid: {
+      solverId: "squid",
+      quoteId: "quote_squid_fixture",
+      sendAmount: "25.22",
+      receiveAmount: "25.00",
+      estimatedDurationSeconds: 60,
     },
   },
   intent: validMyPayTagIntent,

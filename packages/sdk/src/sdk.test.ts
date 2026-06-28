@@ -146,12 +146,12 @@ describe("@mypaytag/sdk", () => {
     );
   });
 
-  it("requests execution quotes from every configured solver when none is preferred", async () => {
+  it("requests Phase 2 extension quotes from every configured solver when none is preferred", async () => {
     const calls: CryptoNativeExecutionSolverId[] = [];
     const providers = [
-      createQuoteProvider("near_intents_1click", calls),
       createQuoteProvider("lifi", calls),
       createQuoteProvider("squid", calls),
+      createQuoteProvider("across", calls),
     ];
 
     const quotes = await requestExecutionQuotes({
@@ -159,16 +159,16 @@ describe("@mypaytag/sdk", () => {
       request: quoteRequest,
     });
 
-    expect(calls).toEqual(["near_intents_1click", "lifi", "squid"]);
-    expect(quotes.map((quote) => quote.solverId)).toEqual(["near_intents_1click", "lifi", "squid"]);
+    expect(calls).toEqual(["lifi", "squid", "across"]);
+    expect(quotes.map((quote) => quote.solverId)).toEqual(["lifi", "squid", "across"]);
   });
 
-  it("requests an execution quote only from the preferred solver when provided", async () => {
+  it("requests a Phase 2 extension quote only from the preferred solver when provided", async () => {
     const calls: CryptoNativeExecutionSolverId[] = [];
     const providers = [
-      createQuoteProvider("near_intents_1click", calls),
       createQuoteProvider("lifi", calls),
       createQuoteProvider("squid", calls),
+      createQuoteProvider("across", calls),
     ];
 
     const quotes = await requestExecutionQuotes({
@@ -181,10 +181,10 @@ describe("@mypaytag/sdk", () => {
     expect(quotes.map((quote) => quote.solverId)).toEqual(["lifi"]);
   });
 
-  it("returns successful quotes when some configured solvers fail", async () => {
+  it("returns successful Phase 2 extension quotes when some configured solvers fail", async () => {
     const calls: CryptoNativeExecutionSolverId[] = [];
     const providers = [
-      createQuoteProvider("near_intents_1click", calls, { fail: true }),
+      createQuoteProvider("zero_x_cross_chain", calls, { fail: true }),
       createQuoteProvider("lifi", calls),
       createQuoteProvider("squid", calls, { fail: true }),
     ];
@@ -194,14 +194,14 @@ describe("@mypaytag/sdk", () => {
       request: quoteRequest,
     });
 
-    expect(calls).toEqual(["near_intents_1click", "lifi", "squid"]);
+    expect(calls).toEqual(["zero_x_cross_chain", "lifi", "squid"]);
     expect(quotes.map((quote) => quote.solverId)).toEqual(["lifi"]);
   });
 
   it("throws when every configured quote provider fails", async () => {
     await expect(requestExecutionQuotes({
       providers: [
-        createQuoteProvider("near_intents_1click", [], { fail: true }),
+        createQuoteProvider("zero_x_cross_chain", [], { fail: true }),
         createQuoteProvider("lifi", [], { fail: true }),
       ],
       request: quoteRequest,
