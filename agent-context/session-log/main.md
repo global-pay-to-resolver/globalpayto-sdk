@@ -303,3 +303,14 @@ todo: mypaytag-sdk:GPTS-S6-T5
 summary: Added reusable testing fixtures for opaque default paytags, explicit raw-stamp paytags, availability/unavailable/reserved issuance checks, and negative-disclosure responses for no_route, authorization_required, and user_action_required.
 validation: Ran pnpm --filter @mypaytag/testing typecheck, pnpm --filter @mypaytag/testing test, and pnpm --filter @mypaytag/protocol test; typecheck passed and focused tests passed with 44 workspace cases.
 follow-ups: Complete Sprint 6 with contract tests for OpenAPI/schema parity, forbidden route registration fields, provider payload requirements, and staged smoke documentation.
+
+---
+
+## 2026-06-28-gpts-s6-t6
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S6-T6
+summary: Added protocol acceptance tests for required provider_json payload fields and OpenAPI/canonical intent parity, plus a staged smoke checklist linking SDK validation to Cubid SDK, MyPayTag backend, one test PayingDapp, and one test PayToDapp.
+validation: Ran pnpm --filter @mypaytag/protocol typecheck, pnpm --filter @mypaytag/protocol test, and pnpm run validate; full validation regenerated types, linted OpenAPI, built and typechecked packages, passed tests with 46 workspace cases, passed the public-boundary scan, cleaned, and rebuilt.
+follow-ups: Sprint 6 is complete; use the staged smoke checklist only after local SDK validation remains green.

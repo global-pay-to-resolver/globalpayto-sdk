@@ -456,9 +456,9 @@ Acceptance notes:
 
 ### GPTS-S6-T6 Add Contract Tests And Cross-Repo Smoke Checklist
 
-Status: TBD
-Feature branch: TBD
-Session log: TBD
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s6-t6
 Depends on: mypaytag-sdk:GPTS-S6-T2, mypaytag-sdk:GPTS-S6-T3, mypaytag-sdk:GPTS-S6-T5
 
 Add acceptance coverage for the corrected MVP contract and document the staged integration smoke.

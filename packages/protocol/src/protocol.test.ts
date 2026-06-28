@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
 import { describe, expect, it } from "vitest";
 
 import {
@@ -34,6 +37,17 @@ const terminalStatusFixtures = [
 
 const actionStatusFixtures = [
   validRouteSelectionResponse,
+] as const;
+
+const providerPayloadRequiredFields = [
+  "providerIntentId",
+  "chain",
+  "network",
+  "asset",
+  "destination",
+  "amount",
+  "reference",
+  "expiresAt",
 ] as const;
 
 describe("@mypaytag/protocol", () => {
@@ -158,6 +172,23 @@ describe("@mypaytag/protocol", () => {
     ).toThrow();
   });
 
+  it("rejects provider responses missing required provider_json payload fields", () => {
+    for (const field of providerPayloadRequiredFields) {
+      const payload = { ...validProviderResponse.paymentInstruction.payload };
+      delete payload[field];
+
+      expect(() =>
+        validateProviderResponse({
+          ...validProviderResponse,
+          paymentInstruction: {
+            ...validProviderResponse.paymentInstruction,
+            payload,
+          },
+        }),
+      ).toThrow();
+    }
+  });
+
   it("rejects provider payloads that expose address-like fields inside MyPayTag intents", () => {
     for (const field of ["recipientAddress", "address", "account"] as const) {
       expect(() =>
@@ -243,5 +274,37 @@ describe("@mypaytag/protocol", () => {
         },
       }),
     ).toThrow();
+  });
+
+  it("keeps OpenAPI examples aligned with canonical intent and provider payload fields", () => {
+    const openApi = readFileSync(
+      fileURLToPath(new URL("../../../api/openapi.yaml", import.meta.url)),
+      "utf8",
+    );
+
+    for (const field of [
+      "id",
+      "schema",
+      "status",
+      "modality",
+      "recipient",
+      "selectedRoute",
+      "amount",
+      "expiresAt",
+      "singleUse",
+      "paymentInstruction",
+      "references",
+    ] as const) {
+      expect(openApi).toContain(`        - ${field}`);
+    }
+
+    for (const field of providerPayloadRequiredFields) {
+      expect(openApi).toContain(`        - ${field}`);
+      expect(openApi).toContain(`${field}:`);
+    }
+
+    expect(openApi).toContain("identifierType: paytag");
+    expect(openApi).toContain("schema: mypaytag.intent.v1");
+    expect(openApi).not.toContain("identifierType: verified_stamp");
   });
 });
