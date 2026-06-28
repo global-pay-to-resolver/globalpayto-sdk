@@ -30,7 +30,7 @@ export const validRouteRegistrationResponse: RouteRegistrationResponse = {
   status: "resolved",
   routes: [
     {
-      id: "gptr_route_123",
+      id: "mpt_route_123",
       payToDappId: "smartrust-wallet",
       chain: "base",
       network: "mainnet",
@@ -62,7 +62,7 @@ export const validResolveRequest: ResolveRequest = {
 };
 
 export const validProviderCallbackRequest: ProviderCallbackRequest = {
-  resolverRequestId: "gptr_req_123",
+  resolverRequestId: "mpt_req_123",
   recipient: {
     identifierType: "verified_stamp",
     identifierAlias: "cubid_stamp_alias_abc",
@@ -104,7 +104,7 @@ export const validProviderResponse: ProviderResponse = {
 };
 
 export const validMyPayTagIntent: MyPayTagIntent = {
-  id: "gptr_pi_123",
+  id: "mpt_pi_123",
   schema: "mypaytag.intent.v1",
   status: "ready",
   modality: "provider_intent",
@@ -126,7 +126,7 @@ export const validMyPayTagIntent: MyPayTagIntent = {
   singleUse: true,
   paymentInstruction: validProviderResponse.paymentInstruction,
   references: {
-    resolverReference: "gptr_pi_123",
+    resolverReference: "mpt_pi_123",
     providerReference: "st_pi_456",
     payingDappReference: "chaincrew:payout_987",
   },
@@ -145,7 +145,7 @@ export const validRouteSelectionResponse: ResolveResponse = {
   status: "user_action_required",
   action: {
     type: "route_selection",
-    url: "https://mypaytag.com/actions/route-selection/gptr_act_789",
+    url: "https://mypaytag.com/actions/route-selection/mpt_act_789",
     expiresAt: "2026-06-24T20:00:00Z",
   },
 };
@@ -162,7 +162,7 @@ export const validNotificationEvent: NotificationEvent = {
     currency: "USDC",
   },
   references: {
-    resolverReference: "gptr_pi_123",
+    resolverReference: "mpt_pi_123",
     providerReference: "st_pi_456",
     payingDappReference: "chaincrew:payout_987",
   },
@@ -172,7 +172,7 @@ export const validNotificationEvent: NotificationEvent = {
 };
 
 export const validRouteQuotePreview: RouteQuotePreview = {
-  id: "gptr_quote_123",
+  id: "mpt_quote_123",
   method: "cross_chain_intent",
   methodLabel: "Cross-chain intent route",
   send: {
@@ -204,5 +204,5 @@ export const validRouteQuotePreview: RouteQuotePreview = {
     },
   ],
   expiresAt: "2026-06-24T20:00:00Z",
-  resolverReference: "gptr_req_123",
+  resolverReference: "mpt_req_123",
 };

@@ -99,28 +99,28 @@ export const myPayTagFixtures: MyPayTagFixtures = {
   },
   routeOptions: {
     directTransfer: buildQuotePreview({
-      id: "gptr_quote_direct",
+      id: "mpt_quote_direct",
       method: "direct_transfer",
       methodLabel: "Direct transfer",
       send: { chain: "eip155", network: "8453", asset: "USDC", amount: "25.00" },
       receive: { chain: "eip155", network: "8453", asset: "USDC", amount: "25.00" },
     }),
     sameChainExchange: buildQuotePreview({
-      id: "gptr_quote_exchange",
+      id: "mpt_quote_exchange",
       method: "provider_exchange",
       methodLabel: "Same-chain exchange",
       send: { chain: "eip155", network: "8453", asset: "ETH", amount: "0.008" },
       receive: { chain: "eip155", network: "8453", asset: "USDC", amount: "25.00" },
     }),
     bridge: buildQuotePreview({
-      id: "gptr_quote_bridge",
+      id: "mpt_quote_bridge",
       method: "bridge",
       methodLabel: "Bridge transfer",
       send: { chain: "eip155", network: "1", asset: "USDC", amount: "25.12" },
       receive: { chain: "eip155", network: "8453", asset: "USDC", amount: "25.00" },
     }),
     crossChainIntent: buildQuotePreview({
-      id: "gptr_quote_cross_chain_intent",
+      id: "mpt_quote_cross_chain_intent",
       method: "cross_chain_intent",
       methodLabel: "Cross-chain intent",
       send: { chain: "solana", network: "mainnet-beta", asset: "USDC", amount: "25.18" },
@@ -278,7 +278,7 @@ function buildQuotePreview(input: Omit<RouteQuotePreview, "fees" | "expiresAt" |
       },
     ],
     expiresAt: "2026-06-24T20:00:00Z",
-    resolverReference: "gptr_req_fixture",
+    resolverReference: "mpt_req_fixture",
   };
 }
 

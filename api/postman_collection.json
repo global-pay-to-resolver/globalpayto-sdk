@@ -169,9 +169,9 @@
       "description": "",
       "item": [
         {
-          "name": "Resolve a pay-to tag into a payment intent or safe next action.",
+          "name": "Resolve a paytag into a payment intent or safe next action.",
           "request": {
-            "name": "Resolve a pay-to tag into a payment intent or safe next action.",
+            "name": "Resolve a paytag into a payment intent or safe next action.",
             "description": {
               "content": "Sending apps submit a Cubid verified-stamp recipient, supported payment\npaths, amount, purpose, and reconciliation reference. The response is a\nresolved one-time MyPayTag intent, a hosted action, or a public safe\nstatus.\n",
               "type": "text/plain"
@@ -2021,7 +2021,7 @@
     "name": "MyPayTag Public API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "MyPayTag lets sending apps resolve a user pay-to tag into a one-time payment\nintent, while receiving apps register supported routes and create dynamic\nprovider intents only after selection.\n\nThis public OpenAPI document describes integration-facing contracts only.\nIt does not expose private resolver storage, deployment wiring, audit\ninternals, admin APIs, service-role behavior, or provider credentials.\n\n\nContact Support:\n Name: MyPayTag",
+      "content": "MyPayTag lets sending apps resolve a user paytag into a one-time payment\nintent, while receiving apps register supported routes and create dynamic\nprovider intents only after selection.\n\nThis public OpenAPI document describes integration-facing contracts only.\nIt does not expose private resolver storage, deployment wiring, audit\ninternals, admin APIs, service-role behavior, or provider credentials.\n\n\nContact Support:\n Name: MyPayTag",
       "type": "text/plain"
     }
   }

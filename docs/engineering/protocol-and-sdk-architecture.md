@@ -28,7 +28,7 @@ The public protocol package should be importable by both integrators and the pri
 
 The MVP protocol supports:
 
-- verified Cubid stamps as pay-to identifiers,
+- verified Cubid stamps as paytag identifiers,
 - PayToDapp route registration using supported routes only,
 - PayingDapp resolution requests,
 - resolver-to-PayToDapp Modality B payment-intent callback schemas,
@@ -67,7 +67,7 @@ Short list for SDK adapter support:
 
 Generic payor-app flows distinguish three stages:
 
-- route availability query: the app asks what safe receive options can be considered for a pay-to tag and sender-supported path set;
+- route availability query: the app asks what safe receive options can be considered for a paytag and sender-supported path set;
 - payment intent option query: the app includes amount and exactness context so the resolver can return executable or selectable quote previews;
 - final resolved intent: the app receives one `mypaytag.intent.v1` instruction for execution or handoff.
 
@@ -149,7 +149,7 @@ Callback request:
 
 ```json
 {
-  "resolverRequestId": "gptr_req_123",
+  "resolverRequestId": "mpt_req_123",
   "recipient": {
     "identifierType": "verified_stamp",
     "identifierAlias": "cubid_stamp_alias_abc"
@@ -181,7 +181,7 @@ Resolved response shape:
 {
   "status": "resolved",
   "intent": {
-    "id": "gptr_pi_123",
+    "id": "mpt_pi_123",
     "schema": "mypaytag.intent.v1",
     "status": "ready",
     "modality": "provider_intent",
@@ -219,7 +219,7 @@ Resolved response shape:
       }
     },
     "references": {
-      "resolverReference": "gptr_pi_123",
+      "resolverReference": "mpt_pi_123",
       "providerReference": "st_pi_456",
       "payingDappReference": "chaincrew:payout_987"
     }

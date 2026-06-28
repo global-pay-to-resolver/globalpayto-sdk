@@ -73,7 +73,7 @@ Public statuses:
 | `provider_error` | Selected PayToDapp returned an invalid or failed response. | Show failure and retry only if user flow allows. |
 | `expired_authorization` | Required authorization has expired. | Send user through authorization again. |
 | `revoked_authorization` | User or system revoked authorization. | Do not retry without new authorization. |
-| `invalid_identifier` | Cubid validation rejected the pay-to identifier. | Ask for a different identifier. |
+| `invalid_identifier` | Cubid validation rejected the paytag identifier. | Ask for a different identifier. |
 | `invalid_request` | Request failed schema or policy validation. | Fix integrator request before retrying. |
 
 Private backend diagnostics must never appear as public statuses.
@@ -124,7 +124,7 @@ Resolved registration response:
   "status": "resolved",
   "routes": [
     {
-      "id": "gptr_route_123",
+      "id": "mpt_route_123",
       "payToDappId": "smartrust-wallet",
       "chain": "base",
       "network": "mainnet",
@@ -142,7 +142,7 @@ Route selection required response:
   "status": "user_action_required",
   "action": {
     "type": "route_selection",
-    "url": "https://mypaytag.com/actions/route-selection/gptr_act_123",
+    "url": "https://mypaytag.com/actions/route-selection/mpt_act_123",
     "expiresAt": "2026-06-24T20:00:00Z"
   }
 }
@@ -206,7 +206,7 @@ User action response:
   "status": "user_action_required",
   "action": {
     "type": "route_selection",
-    "url": "https://mypaytag.com/actions/route-selection/gptr_act_789",
+    "url": "https://mypaytag.com/actions/route-selection/mpt_act_789",
     "expiresAt": "2026-06-24T20:00:00Z"
   }
 }
@@ -235,7 +235,7 @@ Request:
 
 ```json
 {
-  "resolverRequestId": "gptr_req_123",
+  "resolverRequestId": "mpt_req_123",
   "recipient": {
     "identifierType": "verified_stamp",
     "identifierAlias": "cubid_stamp_alias_abc"
@@ -296,7 +296,7 @@ Rules:
 {
   "status": "resolved",
   "intent": {
-    "id": "gptr_pi_123",
+    "id": "mpt_pi_123",
     "schema": "mypaytag.intent.v1",
     "status": "ready",
     "modality": "provider_intent",
@@ -334,7 +334,7 @@ Rules:
       }
     },
     "references": {
-      "resolverReference": "gptr_pi_123",
+      "resolverReference": "mpt_pi_123",
       "providerReference": "st_pi_456",
       "payingDappReference": "chaincrew:payout_987"
     }
@@ -376,7 +376,7 @@ Payor-app route option and intent option flows may return quote previews before 
 
 ```json
 {
-  "id": "gptr_quote_123",
+  "id": "mpt_quote_123",
   "method": "cross_chain_intent",
   "methodLabel": "Cross-chain intent route",
   "send": {
@@ -401,7 +401,7 @@ Payor-app route option and intent option flows may return quote previews before 
     }
   ],
   "expiresAt": "2026-06-24T20:00:00Z",
-  "resolverReference": "gptr_req_123"
+  "resolverReference": "mpt_req_123"
 }
 ```
 
@@ -431,7 +431,7 @@ Common payload fields:
     "currency": "USDC"
   },
   "references": {
-    "resolverReference": "gptr_pi_123",
+    "resolverReference": "mpt_pi_123",
     "providerReference": "st_pi_456",
     "payingDappReference": "chaincrew:payout_987"
   },

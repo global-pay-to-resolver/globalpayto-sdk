@@ -31,7 +31,7 @@ const authEnvelope: CallbackAuthEnvelope = {
   method: "POST",
   url: "https://wallet.example/payment-intents",
   bodyDigest: "sha256:abc",
-  resolverRequestId: "gptr_req_123",
+  resolverRequestId: "mpt_req_123",
   signature: "sig_123",
   nonce: "nonce_123",
   timestamp: "2026-06-24T20:00:00Z",

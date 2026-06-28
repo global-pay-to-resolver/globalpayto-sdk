@@ -110,7 +110,7 @@ describe("@mypaytag/sdk", () => {
     const response = parseResolveResponse(validRouteSelectionResponse);
 
     expect(isActionRequired(response)).toBe(true);
-    expect(getActionUrl(response)).toBe("https://mypaytag.com/actions/route-selection/gptr_act_789");
+    expect(getActionUrl(response)).toBe("https://mypaytag.com/actions/route-selection/mpt_act_789");
   });
 
   it("treats no-route responses as status-only", () => {

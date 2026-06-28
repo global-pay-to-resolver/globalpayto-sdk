@@ -125,12 +125,12 @@ describe("@mypaytag/protocol", () => {
     for (const action of [
       {
         type: "setup",
-        url: "https://mypaytag.com/actions/setup/gptr_act_456",
+        url: "https://mypaytag.com/actions/setup/mpt_act_456",
         expiresAt: "2026-06-24T20:00:00Z",
       },
       {
         type: "authorization",
-        url: "https://mypaytag.com/actions/setup/gptr_act_auth",
+        url: "https://mypaytag.com/actions/setup/mpt_act_auth",
         expiresAt: "2026-06-24T20:00:00Z",
       },
     ] as const) {
@@ -229,7 +229,7 @@ describe("@mypaytag/protocol", () => {
         ...validNotificationEvent,
         action: {
           type: "setup",
-          url: "https://mypaytag.com/actions/setup/gptr_act_456",
+          url: "https://mypaytag.com/actions/setup/mpt_act_456",
           expiresAt: "2026-06-24T20:00:00Z",
         },
       }),

@@ -248,3 +248,14 @@ todo: mypaytag-sdk:GPTS-S5-T4
 summary: Extended the public testing package with generic route option fixtures, direct/exchange/bridge/cross-chain quote previews, exact-send and exact-receive execution quote requests, and reusable mock execution quote providers for preferred-solver and fanout tests.
 validation: Ran pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/sdk build, pnpm install, pnpm --filter @mypaytag/testing typecheck, and pnpm --filter @mypaytag/testing test; testing package coverage now passes 44 workspace tests.
 follow-ups: Continue with the public site solver-adapter content and checks.
+
+---
+
+## 2026-06-28-gpts-s6-t1
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S6-T1
+summary: Renamed public contract fixture IDs, action IDs, docs, OpenAPI copy, and regenerated Postman examples from old gptr/pay-to-tag wording to MyPayTag mpt/paytag terminology while preserving PayToDapp compatibility terms.
+validation: Ran pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/sdk test, and pnpm scan:public-boundary; focused tests passed with 44 workspace cases and the public-boundary scan passed.
+follow-ups: Continue Sprint 6 by aligning OpenAPI intent schemas with the canonical JSON Schema contract.

@@ -4,7 +4,7 @@ info:
   version: 0.1.0
   summary: Public resolver contracts for sending apps and receiving apps.
   description: |
-    MyPayTag lets sending apps resolve a user pay-to tag into a one-time payment
+    MyPayTag lets sending apps resolve a user paytag into a one-time payment
     intent, while receiving apps register supported routes and create dynamic
     provider intents only after selection.
 
@@ -66,7 +66,7 @@ paths:
       tags:
         - Resolve
       operationId: resolvePayment
-      summary: Resolve a pay-to tag into a payment intent or safe next action.
+      summary: Resolve a paytag into a payment intent or safe next action.
       description: |
         Sending apps submit a Cubid verified-stamp recipient, supported payment
         paths, amount, purpose, and reconciliation reference. The response is a
