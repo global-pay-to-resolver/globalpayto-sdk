@@ -402,3 +402,14 @@ todo: mypaytag-sdk:GPTS-S7-T8
 summary: Documented paytag availability and issuance as a private MyPayTag/Cubid service-boundary contract rather than a public integrator SDK schema, and expanded public-safe testing fixtures for idempotent retry plus revoked/expired reuse policy cases.
 validation: Ran pnpm --filter @mypaytag/testing typecheck, pnpm --filter @mypaytag/testing test, and pnpm scan:public-boundary; focused tests passed with 59 workspace cases and the public-boundary scan passed.
 follow-ups: Continue Sprint 7 by expanding MVP happy-path fixtures and examples.
+
+---
+
+## 2026-06-28-gpts-s7-t9
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T9
+summary: Expanded public-safe testing fixtures for route CRUD, hosted route selection, and NEAR 1Click quote selection/payable instructions; updated PayingDapp and PayToDapp examples to exercise same-chain resolve, NEAR 1Click, route update/delete, and provider response validation without direct Cubid probing or broad solver fanout.
+validation: Ran pnpm build, pnpm --filter @mypaytag/testing test, pnpm example:paying-dapp, pnpm example:payto-dapp, and pnpm scan:public-boundary; examples executed successfully and focused tests passed with 59 workspace cases.
+follow-ups: Complete Sprint 7 with regenerated artifact validation.

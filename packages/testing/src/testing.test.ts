@@ -50,6 +50,14 @@ describe("@mypaytag/testing", () => {
       "payment_intent_created",
     );
     expect(myPayTagFixtures.routeRegistration.forbiddenAddress).toHaveProperty("address");
+    expect(myPayTagFixtures.routeCrud.update.state).toBe("disabled");
+    expect(myPayTagFixtures.routeCrud.delete.status).toBe("revoked");
+    expect(myPayTagFixtures.hostedActions.view.actionType).toBe("route_selection");
+    expect(myPayTagFixtures.hostedActions.decision.decision).toBe("select_route");
+    expect(myPayTagFixtures.nearOneClick.quoteOption.adapter).toBe("near_intents_1click");
+    expect(myPayTagFixtures.nearOneClick.payableInstruction.instruction.kind).toBe(
+      "near_1click_payable",
+    );
     expect(myPayTagFixtures.routeOptions.directTransfer.method).toBe("direct_transfer");
     expect(myPayTagFixtures.routeOptions.sameChainExchange.method).toBe("provider_exchange");
     expect(myPayTagFixtures.routeOptions.bridge.method).toBe("bridge");

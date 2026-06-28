@@ -1,8 +1,12 @@
 import {
   assertProviderResponseMatchesCallback,
   buildRouteRegistrationRequest,
+  buildRouteUpdateRequest,
   parseProviderCallbackRequest,
   parseProviderResponse,
+  parseRouteDeleteResponse,
+  parseRouteListResponse,
+  parseRouteReadResponse,
   verifyCallbackAuth,
 } from "@mypaytag/provider-sdk";
 import { createMockPayToDapp, myPayTagFixtures } from "@mypaytag/testing";
@@ -19,6 +23,10 @@ function createMemoryReplayStore() {
 }
 
 const routeRegistration = buildRouteRegistrationRequest(myPayTagFixtures.routeRegistration.valid);
+const routeList = parseRouteListResponse(myPayTagFixtures.routeCrud.list);
+const routeRead = parseRouteReadResponse(myPayTagFixtures.routeCrud.read);
+const routeUpdate = buildRouteUpdateRequest(myPayTagFixtures.routeCrud.update);
+const routeDelete = parseRouteDeleteResponse(myPayTagFixtures.routeCrud.delete);
 
 const callbackAuthEnvelope = {
   method: "POST",
@@ -72,6 +80,12 @@ console.log(
         payToDappId: routeRegistration.payToDappId,
         supportedRoutes: routeRegistration.supportedRoutes,
         containsWalletAddress: "address" in routeRegistration || "recipientAddress" in routeRegistration,
+      },
+      routeCrud: {
+        listedRoutes: routeList.routes.length,
+        readStatus: routeRead.status,
+        updateState: routeUpdate.state,
+        deleteStatus: routeDelete.status,
       },
       callbackAuth: {
         firstAuthCheck,

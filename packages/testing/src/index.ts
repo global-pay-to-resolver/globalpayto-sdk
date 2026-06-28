@@ -1,23 +1,47 @@
 import {
+  denyHostedActionDecision,
+  expiredHostedActionView,
+  replayedHostedActionCompletion,
+  restartRequiredHostedActionCompletion,
+  validHostedActionCompletion,
+  validHostedActionDecision,
+  validHostedActionView,
   validMyPayTagIntent,
+  validNearOneClickPayableInstruction,
+  validNearOneClickQuoteOption,
+  validNearOneClickQuoteSelectionRequest,
   validNoRouteResponse,
   validNotificationEvent,
   validProviderCallbackRequest,
   validProviderResponse,
+  validRouteDeleteResponse,
+  validRouteListResponse,
+  validRouteReadResponse,
   validResolvedResponse,
   validResolveRequest,
   validRouteRegistrationRequest,
   validRouteRegistrationResponse,
   validRouteSelectionResponse,
+  validRouteUpdateRequest,
+  type HostedActionCompletion,
+  type HostedActionDecision,
+  type HostedActionView,
   type MyPayTagIntent,
+  type NearOneClickPayableInstruction,
+  type NearOneClickQuoteOption,
+  type NearOneClickQuoteSelectionRequest,
   type NotificationEvent,
   type ProviderCallbackRequest,
   type ProviderResponse,
+  type RouteDeleteResponse,
+  type RouteListResponse,
   type ResolveRequest,
   type ResolveResponse,
   type RouteQuotePreview,
+  type RouteReadResponse,
   type RouteRegistrationRequest,
   type RouteRegistrationResponse,
+  type RouteUpdateRequest,
   validateNotificationEvent,
   validateResolveRequest,
   validateRouteRegistrationRequest,
@@ -51,6 +75,26 @@ export interface MyPayTagFixtures {
     valid: RouteRegistrationRequest;
     forbiddenAddress: RouteRegistrationRequest & { address: string };
     response: RouteRegistrationResponse;
+  };
+  routeCrud: {
+    list: RouteListResponse;
+    read: RouteReadResponse;
+    update: RouteUpdateRequest;
+    delete: RouteDeleteResponse;
+  };
+  hostedActions: {
+    view: HostedActionView;
+    expiredView: HostedActionView;
+    decision: HostedActionDecision;
+    denyDecision: HostedActionDecision;
+    completion: HostedActionCompletion;
+    replayedCompletion: HostedActionCompletion;
+    restartRequiredCompletion: HostedActionCompletion;
+  };
+  nearOneClick: {
+    quoteOption: NearOneClickQuoteOption;
+    quoteSelectionRequest: NearOneClickQuoteSelectionRequest;
+    payableInstruction: NearOneClickPayableInstruction;
   };
   resolve: {
     request: ResolveRequest;
@@ -177,6 +221,26 @@ export const myPayTagFixtures: MyPayTagFixtures = {
       address: "0xabc123",
     },
     response: validRouteRegistrationResponse,
+  },
+  routeCrud: {
+    list: validRouteListResponse,
+    read: validRouteReadResponse,
+    update: validRouteUpdateRequest,
+    delete: validRouteDeleteResponse,
+  },
+  hostedActions: {
+    view: validHostedActionView,
+    expiredView: expiredHostedActionView,
+    decision: validHostedActionDecision,
+    denyDecision: denyHostedActionDecision,
+    completion: validHostedActionCompletion,
+    replayedCompletion: replayedHostedActionCompletion,
+    restartRequiredCompletion: restartRequiredHostedActionCompletion,
+  },
+  nearOneClick: {
+    quoteOption: validNearOneClickQuoteOption,
+    quoteSelectionRequest: validNearOneClickQuoteSelectionRequest,
+    payableInstruction: validNearOneClickPayableInstruction,
   },
   resolve: {
     request: validResolveRequest,
