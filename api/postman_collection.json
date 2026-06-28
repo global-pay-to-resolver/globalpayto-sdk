@@ -912,7 +912,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"state\": true\n}",
+                  "raw": "{\n  \"state\": \"<string>\"\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",
@@ -969,7 +969,7 @@
                     "method": "PATCH",
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"state\": true\n}",
+                      "raw": "{\n  \"state\": \"<string>\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -1036,7 +1036,7 @@
                     "method": "PATCH",
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"state\": true\n}",
+                      "raw": "{\n  \"state\": \"<string>\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -1103,7 +1103,7 @@
                     "method": "PATCH",
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"state\": true\n}",
+                      "raw": "{\n  \"state\": \"<string>\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -1170,7 +1170,7 @@
                     "method": "PATCH",
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"state\": true\n}",
+                      "raw": "{\n  \"state\": \"<string>\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",

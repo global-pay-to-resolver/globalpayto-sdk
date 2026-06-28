@@ -413,3 +413,14 @@ todo: mypaytag-sdk:GPTS-S7-T9
 summary: Expanded public-safe testing fixtures for route CRUD, hosted route selection, and NEAR 1Click quote selection/payable instructions; updated PayingDapp and PayToDapp examples to exercise same-chain resolve, NEAR 1Click, route update/delete, and provider response validation without direct Cubid probing or broad solver fanout.
 validation: Ran pnpm build, pnpm --filter @mypaytag/testing test, pnpm example:paying-dapp, pnpm example:payto-dapp, and pnpm scan:public-boundary; examples executed successfully and focused tests passed with 59 workspace cases.
 follow-ups: Complete Sprint 7 with regenerated artifact validation.
+
+---
+
+## 2026-06-28-gpts-s7-t10
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T10
+summary: Refreshed generated protocol artifacts through `pnpm generate`, refreshed Postman through the repo script, updated the staged smoke checklist for Cubid SDK, MyPayTag backend, test PayingDapp, test PayToDapp, and SmarTrust NEAR 1Click coverage, and ran the full workspace validation gate.
+validation: Ran pnpm generate, pnpm api:postman, and pnpm validate; full validation regenerated types, linted OpenAPI without warnings, built/typechecked all packages, passed tests with 59 workspace cases, passed the public-boundary scan, cleaned, and rebuilt.
+follow-ups: Sprint 7 is complete.
