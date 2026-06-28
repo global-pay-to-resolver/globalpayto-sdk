@@ -6,8 +6,6 @@ one-time MyPayTag JSON intent.
 ## Use The SDK
 
 - Build resolve requests with `buildResolveRequest`.
-- Request crypto-native execution quotes with `requestExecutionQuotes` when your
-  app needs solver/router options for a resolved receive requirement.
 - Parse resolver responses with `parseResolveResponse`.
 - Branch with `isResolved`, `isActionRequired`, `isRetryable`, and
   `isInvalidForRetry`.
@@ -48,9 +46,9 @@ MVP payment instructions use `provider_json` with a typed provider destination:
 Do not infer reusable wallet details from this destination. It belongs to the
 selected one-time provider intent.
 
-## Crypto-Native Execution Quotes
+## Future Extension: Crypto-Native Execution Quotes
 
-When a PayingDapp supports execution adapters, configure quote providers for the
+The MVP resolve flow does not require execution quote helpers. When a PayingDapp supports future execution adapters, configure quote providers for the
 solver/router surfaces the app can use. The initial MyPayTag SDK solver ids
 are:
 

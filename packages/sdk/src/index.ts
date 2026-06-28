@@ -35,6 +35,11 @@ export interface ExactnessAwareResolveRequest {
 export type ActionRequiredStatus = "user_action_required";
 export type ActionRequiredResponse = Extract<ResolveResponse, { action: unknown }>;
 
+/**
+ * Future extension solver ids. These are not required for the MVP MyPayTag
+ * resolve flow, route registration flow, provider callback flow, or hosted
+ * route-selection flow.
+ */
 export const cryptoNativeExecutionSolvers = [
   "near_intents_1click",
   "lifi",
@@ -46,6 +51,9 @@ export const cryptoNativeExecutionSolvers = [
 
 export type CryptoNativeExecutionSolverId = (typeof cryptoNativeExecutionSolvers)[number];
 
+/**
+ * Future extension quote request consumed by app-configured execution adapters.
+ */
 export interface ExecutionQuoteRequest {
   amount: {
     value: string;
@@ -184,6 +192,11 @@ function requireNonEmpty(value: string, fieldName: string): string {
   return trimmed;
 }
 
+/**
+ * Requests non-MVP execution quotes from caller-provided providers. Core
+ * MyPayTag MVP integrations can resolve paytags and handle provider callbacks
+ * without calling this helper.
+ */
 export async function requestExecutionQuotes({
   preferredSolverId,
   providers,

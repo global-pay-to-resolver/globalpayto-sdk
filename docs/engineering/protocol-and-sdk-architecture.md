@@ -46,9 +46,9 @@ The MVP protocol does not support:
 - public profile or directory APIs,
 - notification inbox APIs, marketing notification APIs, or non-Cubid notification provider APIs.
 
-## Crypto-Native Execution Solvers
+## Future Extension: Crypto-Native Execution Solvers
 
-Future payor-app helpers should support crypto-native execution adapters alongside the selected PayToDapp intent flow. These adapters consume a resolved receive requirement and produce quotes or transaction requests; they do not decide which PayToDapp the recipient prefers.
+Crypto-native execution adapters are a future extension, not part of the core MVP resolve flow. These adapters consume a resolved receive requirement and produce quotes or transaction requests; they do not decide which PayToDapp the recipient prefers.
 
 Short list for SDK adapter support:
 
@@ -61,17 +61,17 @@ Short list for SDK adapter support:
 | Across | Fast bridge-focused EVM/L2 stablecoin transfers where supported. |
 | LayerZero Value Transfer API / Stargate | Cross-chain token transfer for OFT, LayerZero ecosystem assets, and routes where Stargate coverage is strong. |
 
-`@mypaytag/sdk` should expose a provider interface for these quote sources. When a payor-app passes a preferred solver id, the SDK asks only that quote provider. When no preferred solver id is selected, the SDK fans out quote requests to every configured quote provider and returns the successful quotes for app-side display or resolver-side selection.
+`@mypaytag/sdk` may expose a provider interface for these quote sources as non-MVP extension helpers. When a payor-app passes a preferred solver id, the SDK asks only that quote provider. When no preferred solver id is selected, the SDK fans out quote requests to every configured quote provider and returns the successful quotes for app-side display or future extension selection.
 
-## Route Query And Quote Contracts
+## Future Extension: Route Query And Quote Contracts
 
-Generic payor-app flows distinguish three stages:
+Generic payor-app extension flows can distinguish three stages:
 
 - route availability query: the app asks what safe receive options can be considered for a paytag and sender-supported path set;
-- payment intent option query: the app includes amount and exactness context so the resolver can return executable or selectable quote previews;
+- payment intent option query: the app includes amount and exactness context so MyPayTag or a future extension can return executable or selectable quote previews;
 - final resolved intent: the app receives one `mypaytag.intent.v1` instruction for execution or handoff.
 
-Route quote previews are public contract objects with method, send amount, receive amount, fee rows, expiry, and resolver reference. Fee rows identify whether the source is the payor app, provider, or resolver, and all MVP fees are charged to the sender. Quote previews must not include recipient wallet inventory, route preferences, unrelated PayToDapps, or wallet graph details.
+Route quote previews are public future-extension contract objects with method, send amount, receive amount, fee rows, expiry, and resolver reference. Fee rows identify whether the source is the payor app, provider, or resolver, and all modeled fees are charged to the sender. Quote previews must not include recipient wallet inventory, route preferences, unrelated PayToDapps, or wallet graph details.
 
 ## Public API Shapes
 
@@ -262,7 +262,7 @@ Notification payloads must use masked display values, public references, and act
 `@mypaytag/sdk` should provide:
 
 - request builders for PayingDapp resolution,
-- quote helpers for crypto-native execution solvers,
+- non-MVP quote helpers for crypto-native execution solver extensions,
 - schema validation for responses,
 - status narrowing helpers,
 - notification event type guards for Cubid comms payloads,

@@ -281,3 +281,14 @@ todo: mypaytag-sdk:GPTS-S6-T3
 summary: Reframed public request, callback, intent, notification, fixture, OpenAPI, docs, and testing surfaces around MyPayTag paytag references and generic authorization tokens instead of Cubid verified-stamp fields, Cubid aliases, or Cubid consent-token fields.
 validation: Ran pnpm generate, pnpm api:postman, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/sdk typecheck, pnpm --filter @mypaytag/sdk test, pnpm --filter @mypaytag/provider-sdk test, pnpm --filter @mypaytag/testing test, and pnpm api:validate; focused tests passed with 44 workspace cases and OpenAPI lint passed.
 follow-ups: Continue Sprint 6 by labeling execution quote helpers and solver surfaces as future/non-MVP extensions.
+
+---
+
+## 2026-06-28-gpts-s6-t4
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S6-T4
+summary: Labeled crypto-native solver ids, execution quote helpers, route quote previews, bridge/swap language, and fanout behavior as future/non-MVP extensions while keeping core resolve, route registration, provider callback, hosted route selection, and intent helpers as the MVP path.
+validation: Ran pnpm --filter @mypaytag/sdk typecheck, pnpm --filter @mypaytag/sdk test, and pnpm scan:public-boundary; SDK typecheck passed, focused tests passed with 44 workspace cases, and the public-boundary scan passed.
+follow-ups: Continue Sprint 6 by adding paytag availability, opaque paytag, raw-explicit paytag, and negative-disclosure fixtures.
