@@ -371,3 +371,101 @@ Acceptance notes:
 - Fixtures include SmarTrust-like examples without SmarTrust-specific exported type names.
 - Mock quote providers support preferred-solver and quote-fanout tests.
 - Fixtures remain public-safe and do not reference private backend implementation details.
+
+## Sprint 6: MyPayTag MVP Contract Realignment
+
+### GPTS-S6-T1 Rename Public GlobalPayTo Contract Surfaces To MyPayTag
+
+Status: TBD
+Feature branch: TBD
+Session log: TBD
+Depends on: TBD
+
+Implement the public-contract rename requested in `agent-context/2026-06-28-mypaytag-mvp-realignment.md`.
+
+Acceptance notes:
+
+- Package metadata, schemas, generated types, examples, docs, OpenAPI, Postman collections, fixtures, tests, and published-contract names use `MyPayTag`, `mypaytag`, and `Paytag`.
+- Backwards-compatible aliases are retained only where needed and are explicitly documented as compatibility.
+- Examples present paytags as universal identifiers for PayingDapps while noting implementation may use PayToDapp-scoped aliases internally.
+- The other four realignment docs are checked before implementation.
+
+### GPTS-S6-T2 Make OpenAPI And Schemas Match The Canonical Intent Contract
+
+Status: TBD
+Feature branch: TBD
+Session log: TBD
+Depends on: mypaytag-sdk:GPTS-S1-T5
+
+Align OpenAPI, JSON Schema, generated TypeScript, and examples around the MVP MyPayTag intent.
+
+Acceptance notes:
+
+- `api/openapi.yaml` requires the same intent fields as `packages/protocol/schemas/mypaytag-intent.schema.json`.
+- `provider_json` examples require provider intent id, chain, network, asset, destination, amount, reference, and expiry.
+- Weak examples that require only `destination` are removed or corrected.
+- OpenAPI examples, JSON Schemas, generated TypeScript types, and SDK fixtures agree.
+
+### GPTS-S6-T3 Keep Cubid Internals Out Of MyPayTag Public APIs
+
+Status: TBD
+Feature branch: TBD
+Session log: TBD
+Depends on: cubid-sdk-v2:S18.1
+
+Ensure the SDK contract treats Cubid as an external identity and consent dependency only.
+
+Acceptance notes:
+
+- Public contracts accept a paytag or opaque paytag reference and rely on backend validation against Cubid.
+- Public SDK surfaces do not expose Cubid internal ids, raw Cubid user ids, Cubid grant internals, or Cubid stamp management APIs.
+- PayingDapp examples integrate with MyPayTag rather than directly probing Cubid.
+- MyPayTag route authorization remains separate from Cubid identity/paytag validation grants.
+
+### GPTS-S6-T4 Split MVP Helpers From Future Execution Helpers
+
+Status: TBD
+Feature branch: TBD
+Session log: TBD
+Depends on: mypaytag-sdk:GPTS-S5-T1, mypaytag-sdk:GPTS-S5-T2
+
+Preserve future execution helper work while making it clearly non-MVP.
+
+Acceptance notes:
+
+- Resolve, route registration, provider callback, hosted route selection, and MyPayTag intent helpers are labeled MVP.
+- Solver quote helpers, preferred solver ids, bridge/swap/cross-chain quote previews, and execution fanout are labeled future or extension helpers.
+- Examples do not imply execution helpers are required for the core MyPayTag resolve flow.
+- Future helper docs avoid saying Cubid resolves payments or owns wallets/payment destinations.
+
+### GPTS-S6-T5 Add Paytag Availability And Privacy Fixtures
+
+Status: TBD
+Feature branch: TBD
+Session log: TBD
+Depends on: mypaytag-sdk:GPTS-S2-T4
+
+Extend fixtures for opaque/default paytags, explicit raw paytags, uniqueness checks, and safe negative states.
+
+Acceptance notes:
+
+- Fixtures include opaque Cubid-backed paytags such as `abd123@cubid.mypaytag`.
+- Fixtures include raw stamp-based paytags such as `+1234569999@phone.cubid.mypaytag` only as explicit user-choice examples.
+- Fixtures cover paytag uniqueness and availability checks before issuance.
+- Negative-disclosure fixtures cover `no_route`, `authorization_required`, and `user_action_required`.
+
+### GPTS-S6-T6 Add Contract Tests And Cross-Repo Smoke Checklist
+
+Status: TBD
+Feature branch: TBD
+Session log: TBD
+Depends on: mypaytag-sdk:GPTS-S6-T2, mypaytag-sdk:GPTS-S6-T3, mypaytag-sdk:GPTS-S6-T5
+
+Add acceptance coverage for the corrected MVP contract and document the staged integration smoke.
+
+Acceptance notes:
+
+- Tests reject route registration with wallet addresses or payment instructions.
+- Tests reject provider responses missing required `provider_json` fields.
+- Generated artifacts are refreshed only through repo scripts.
+- A staged smoke checklist pairs this SDK with Cubid SDK, MyPayTag backend, one test PayingDapp, and one test PayToDapp after local validation passes.
