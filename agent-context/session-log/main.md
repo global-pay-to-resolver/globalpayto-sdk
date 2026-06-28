@@ -174,7 +174,7 @@ follow-ups: Continue SDK Sprint 4 with PayToDapp provider conformance tests for 
 agent: Codex
 branch: main
 head: 90432f6
-summary: Completed GPTS-S4-T2 by adding PayToDapp provider conformance tests for valid callback handling, Cubid alias-only callbacks, auth freshness and replay expectations, provider error status rejection, malformed provider payload rejection, callback/response matching, and MyPayTag intent-envelope containment.
+summary: Completed GPTS-S4-T2 by adding PayToDapp provider conformance tests for valid callback handling, MyPayTag paytag reference-only callbacks, auth freshness and replay expectations, provider error status rejection, malformed provider payload rejection, callback/response matching, and MyPayTag intent-envelope containment.
 validation: Ran pnpm --filter @mypaytag/provider-sdk test, typecheck, and build; provider conformance added seven passing cases and the filtered run covered 32 passing workspace tests.
 follow-ups: Continue SDK Sprint 4 with package build and publish workflow scaffolding.
 
@@ -270,3 +270,14 @@ todo: mypaytag-sdk:GPTS-S6-T2
 summary: Updated OpenAPI resolved-intent and provider-response components to match the canonical MyPayTag intent schema, including required envelope fields, selected route, references, provider_json metadata, and full provider payload requirements.
 validation: Ran pnpm api:postman and pnpm api:validate; Postman was regenerated from api/openapi.yaml and Redocly lint passed without warnings.
 follow-ups: Continue Sprint 6 by checking the public SDK contract for Cubid-internal leakage and direct Cubid probing examples.
+
+---
+
+## 2026-06-28-gpts-s6-t3
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S6-T3
+summary: Reframed public request, callback, intent, notification, fixture, OpenAPI, docs, and testing surfaces around MyPayTag paytag references and generic authorization tokens instead of Cubid verified-stamp fields, Cubid aliases, or Cubid consent-token fields.
+validation: Ran pnpm generate, pnpm api:postman, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/sdk typecheck, pnpm --filter @mypaytag/sdk test, pnpm --filter @mypaytag/provider-sdk test, pnpm --filter @mypaytag/testing test, and pnpm api:validate; focused tests passed with 44 workspace cases and OpenAPI lint passed.
+follow-ups: Continue Sprint 6 by labeling execution quote helpers and solver surfaces as future/non-MVP extensions.

@@ -43,7 +43,7 @@ export const MypaytagIntentSchema = {
       ],
       "properties": {
         "identifierType": {
-          "const": "verified_stamp"
+          "const": "paytag"
         },
         "identifierHash": {
           "type": "string",
@@ -263,7 +263,7 @@ export const NotificationEventSchema = {
       ],
       "properties": {
         "identifierType": {
-          "const": "verified_stamp"
+          "const": "paytag"
         },
         "maskedDisplay": {
           "type": "string",
@@ -352,13 +352,13 @@ export const ProviderCallbackRequestSchema = {
       "additionalProperties": false,
       "required": [
         "identifierType",
-        "identifierAlias"
+        "paytagReference"
       ],
       "properties": {
         "identifierType": {
-          "const": "verified_stamp"
+          "const": "paytag"
         },
-        "identifierAlias": {
+        "paytagReference": {
           "type": "string",
           "minLength": 1
         }
@@ -603,7 +603,7 @@ export const ResolveRequestSchema = {
       ],
       "properties": {
         "identifierType": {
-          "const": "verified_stamp"
+          "const": "paytag"
         },
         "identifier": {
           "type": "string",
@@ -777,7 +777,7 @@ export const ResolveResponseSchema = {
           ],
           "properties": {
             "identifierType": {
-              "const": "verified_stamp"
+              "const": "paytag"
             },
             "identifierHash": {
               "type": "string",
@@ -1111,7 +1111,7 @@ export const RouteRegistrationRequestSchema = {
     "recipient",
     "payToDappId",
     "supportedRoutes",
-    "consentToken"
+    "authorizationToken"
   ],
   "properties": {
     "recipient": {
@@ -1128,7 +1128,7 @@ export const RouteRegistrationRequestSchema = {
         "$ref": "#/$defs/route"
       }
     },
-    "consentToken": {
+    "authorizationToken": {
       "type": "string",
       "minLength": 1
     }
@@ -1177,7 +1177,7 @@ export const RouteRegistrationRequestSchema = {
       ],
       "properties": {
         "identifierType": {
-          "const": "verified_stamp"
+          "const": "paytag"
         },
         "identifier": {
           "type": "string",

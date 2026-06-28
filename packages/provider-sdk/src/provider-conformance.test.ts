@@ -50,13 +50,13 @@ describe("PayToDapp provider conformance", () => {
     expect(assertProviderResponseMatchesCallback(callback, response)).toEqual(response);
   });
 
-  it("requires callbacks to use Cubid aliases instead of raw identifiers", () => {
+  it("requires callbacks to use MyPayTag paytag references instead of raw identifiers", () => {
     expect(() =>
       parseProviderCallbackRequest({
         ...validProviderCallbackRequest,
         recipient: {
-          identifierType: "verified_stamp",
-          identifier: "email:noak@example.com",
+          identifierType: "paytag",
+          identifier: "abd123@cubid.mypaytag",
         },
       }),
     ).toThrow();

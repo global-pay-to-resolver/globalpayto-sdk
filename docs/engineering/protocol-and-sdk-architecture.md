@@ -19,7 +19,7 @@ Planned packages:
 - `@mypaytag/protocol`: schemas, TypeScript types, enums, OpenAPI source, error/status codes, and test vectors.
 - `@mypaytag/sdk`: client helpers for PayingDapp and resolver integrations.
 - `@mypaytag/provider-sdk`: helpers for PayToDapp route registration and Modality B intent callbacks.
-- `@mypaytag/testing`: mock resolver, mock Cubid validator, mock PayToDapp, fixtures, and conformance test vectors.
+- `@mypaytag/testing`: mock resolver, mock paytag validator, mock PayToDapp, fixtures, and conformance test vectors.
 - Notification-related public event types belong in `@mypaytag/protocol`; delivery uses Cubid comms rather than a MyPayTag notification provider SDK.
 
 The public protocol package should be importable by both integrators and the private resolver backend.
@@ -28,7 +28,7 @@ The public protocol package should be importable by both integrators and the pri
 
 The MVP protocol supports:
 
-- verified Cubid stamps as paytag identifiers,
+- paytags as MyPayTag payment identifiers backed by external identity and consent providers,
 - PayToDapp route registration using supported routes only,
 - PayingDapp resolution requests,
 - resolver-to-PayToDapp Modality B payment-intent callback schemas,
@@ -91,8 +91,8 @@ Route registration request:
 ```json
 {
   "recipient": {
-    "identifierType": "verified_stamp",
-    "identifier": "email:noak@example.com"
+    "identifierType": "paytag",
+    "identifier": "abd123@cubid.mypaytag"
   },
   "payToDappId": "smartrust-wallet",
   "supportedRoutes": [
@@ -102,7 +102,7 @@ Route registration request:
       "asset": "USDC"
     }
   ],
-  "consentToken": "cubid_consent_token"
+  "authorizationToken": "mpt_auth_123"
 }
 ```
 
@@ -119,8 +119,8 @@ Resolve request:
 ```json
 {
   "recipient": {
-    "identifierType": "verified_stamp",
-    "identifier": "email:noak@example.com"
+    "identifierType": "paytag",
+    "identifier": "abd123@cubid.mypaytag"
   },
   "supportedPaths": [
     {
@@ -151,8 +151,8 @@ Callback request:
 {
   "resolverRequestId": "mpt_req_123",
   "recipient": {
-    "identifierType": "verified_stamp",
-    "identifierAlias": "cubid_stamp_alias_abc"
+    "identifierType": "paytag",
+    "paytagReference": "paytag_ref_abc"
   },
   "payingDappId": "chaincrew",
   "selectedPath": {
@@ -186,7 +186,7 @@ Resolved response shape:
     "status": "ready",
     "modality": "provider_intent",
     "recipient": {
-      "identifierType": "verified_stamp",
+      "identifierType": "paytag",
       "identifierHash": "sha256:..."
     },
     "selectedRoute": {

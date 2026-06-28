@@ -1,6 +1,6 @@
 # PayingDapp Integration
 
-PayingDapps ask MyPayTag to resolve a Cubid verified-stamp recipient into a
+PayingDapps ask MyPayTag to resolve a paytag recipient into a
 one-time MyPayTag JSON intent.
 
 ## Use The SDK
@@ -20,7 +20,7 @@ Runnable example: `examples/paying-dapp-basic`.
 
 PayingDapps provide:
 
-- a Cubid verified-stamp recipient,
+- a paytag recipient,
 - supported paths containing `chain`, `network`, and `asset`,
 - a one-time amount,
 - a purpose,

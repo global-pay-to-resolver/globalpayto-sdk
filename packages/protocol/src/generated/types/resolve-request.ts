@@ -13,7 +13,7 @@ export interface ResolveRequest {
   payingDappReference: string;
 }
 export interface Recipient {
-  identifierType: "verified_stamp";
+  identifierType: "paytag";
   identifier: string;
 }
 export interface Path {

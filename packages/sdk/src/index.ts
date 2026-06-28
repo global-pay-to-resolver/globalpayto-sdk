@@ -118,7 +118,7 @@ export function buildPayorAppResolveRequest(input: PayorAppResolveRequestInput):
 
   const request = buildResolveRequest({
     recipient: {
-      identifierType: "verified_stamp",
+      identifierType: "paytag",
       identifier: requireNonEmpty(input.recipientIdentifier, "recipientIdentifier"),
     },
     supportedPaths: [firstPath, ...remainingPaths],

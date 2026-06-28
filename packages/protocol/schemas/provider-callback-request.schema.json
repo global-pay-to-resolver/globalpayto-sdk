@@ -10,10 +10,10 @@
     "recipient": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["identifierType", "identifierAlias"],
+      "required": ["identifierType", "paytagReference"],
       "properties": {
-        "identifierType": { "const": "verified_stamp" },
-        "identifierAlias": { "type": "string", "minLength": 1 }
+        "identifierType": { "const": "paytag" },
+        "paytagReference": { "type": "string", "minLength": 1 }
       }
     },
     "payingDappId": { "type": "string", "minLength": 1 },

@@ -68,7 +68,7 @@ paths:
       operationId: resolvePayment
       summary: Resolve a paytag into a payment intent or safe next action.
       description: |
-        Sending apps submit a Cubid verified-stamp recipient, supported payment
+        Sending apps submit a paytag or opaque paytag reference, supported payment
         paths, amount, purpose, and reconciliation reference. The response is a
         resolved one-time MyPayTag intent, a hosted action, or a public safe
         status.
@@ -83,8 +83,8 @@ paths:
                 summary: Base USDC payout
                 value:
                   recipient:
-                    identifierType: verified_stamp
-                    identifier: email:recipient@example.com
+                    identifierType: paytag
+                    identifier: abd123@cubid.mypaytag
                   supportedPaths:
                     - chain: base
                       network: mainnet
@@ -113,7 +113,7 @@ paths:
                       status: ready
                       modality: provider_intent
                       recipient:
-                        identifierType: verified_stamp
+                        identifierType: paytag
                         identifierHash: sha256:example
                       selectedRoute:
                         payToDappId: example-wallet
@@ -180,14 +180,14 @@ paths:
                 summary: Register Base USDC support
                 value:
                   recipient:
-                    identifierType: verified_stamp
-                    identifier: email:recipient@example.com
+                    identifierType: paytag
+                    identifier: abd123@cubid.mypaytag
                   payToDappId: example-wallet
                   supportedRoutes:
                     - chain: base
                       network: mainnet
                       asset: USDC
-                  consentToken: cubid_consent_token
+                  authorizationToken: mpt_auth_123
       responses:
         "200":
           description: Route registration outcome.
@@ -479,24 +479,25 @@ components:
       properties:
         identifierType:
           type: string
-          const: verified_stamp
+          const: paytag
         identifier:
           type: string
           examples:
-            - email:recipient@example.com
+            - abd123@cubid.mypaytag
+            - "+1234569999@phone.cubid.mypaytag"
     RecipientAlias:
       type: object
       additionalProperties: false
       required:
         - identifierType
-        - identifierAlias
+        - paytagReference
       properties:
         identifierType:
           type: string
-          const: verified_stamp
-        identifierAlias:
+          const: paytag
+        paytagReference:
           type: string
-          description: Cubid alias or masked server-side recipient reference.
+          description: MyPayTag server-side paytag reference for the selected provider callback.
     RoutePath:
       type: object
       additionalProperties: false
@@ -675,7 +676,7 @@ components:
       properties:
         identifierType:
           type: string
-          const: verified_stamp
+          const: paytag
         identifierHash:
           type: string
           minLength: 1
@@ -789,7 +790,7 @@ components:
         - recipient
         - payToDappId
         - supportedRoutes
-        - consentToken
+        - authorizationToken
       properties:
         recipient:
           $ref: "#/components/schemas/Recipient"
@@ -800,7 +801,7 @@ components:
           minItems: 1
           items:
             $ref: "#/components/schemas/RoutePath"
-        consentToken:
+        authorizationToken:
           type: string
     RouteRegistrationResponse:
       oneOf:

@@ -23,7 +23,7 @@
       "additionalProperties": false,
       "required": ["identifierType", "identifier"],
       "properties": {
-        "identifierType": { "const": "verified_stamp" },
+        "identifierType": { "const": "paytag" },
         "identifier": { "type": "string", "minLength": 1 }
       }
     },

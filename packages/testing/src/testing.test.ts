@@ -5,7 +5,7 @@ import {
 } from "@mypaytag/sdk";
 
 import {
-  createMockCubidValidator,
+  createMockPaytagValidator,
   createMockExecutionQuoteProvider,
   createMockPayToDapp,
   createMockResolver,
@@ -40,11 +40,11 @@ describe("@mypaytag/testing", () => {
     );
   });
 
-  it("provides a mock Cubid validator", async () => {
-    const validator = createMockCubidValidator();
+  it("provides a mock paytag validator", async () => {
+    const validator = createMockPaytagValidator();
 
-    await expect(validator.validateStamp("email:noak@example.com")).resolves.toMatchObject({
-      alias: "cubid_stamp_alias_abc",
+    await expect(validator.validatePaytag("abd123@cubid.mypaytag")).resolves.toMatchObject({
+      paytagReference: "paytag_ref_abc",
       valid: true,
     });
   });

@@ -12,8 +12,8 @@ import type {
 
 export const validRouteRegistrationRequest: RouteRegistrationRequest = {
   recipient: {
-    identifierType: "verified_stamp",
-    identifier: "email:noak@example.com",
+    identifierType: "paytag",
+    identifier: "abd123@cubid.mypaytag",
   },
   payToDappId: "smartrust-wallet",
   supportedRoutes: [
@@ -23,7 +23,7 @@ export const validRouteRegistrationRequest: RouteRegistrationRequest = {
       asset: "USDC",
     },
   ],
-  consentToken: "cubid_consent_token",
+  authorizationToken: "mpt_auth_123",
 };
 
 export const validRouteRegistrationResponse: RouteRegistrationResponse = {
@@ -42,8 +42,8 @@ export const validRouteRegistrationResponse: RouteRegistrationResponse = {
 
 export const validResolveRequest: ResolveRequest = {
   recipient: {
-    identifierType: "verified_stamp",
-    identifier: "email:noak@example.com",
+    identifierType: "paytag",
+    identifier: "abd123@cubid.mypaytag",
   },
   supportedPaths: [
     {
@@ -64,8 +64,8 @@ export const validResolveRequest: ResolveRequest = {
 export const validProviderCallbackRequest: ProviderCallbackRequest = {
   resolverRequestId: "mpt_req_123",
   recipient: {
-    identifierType: "verified_stamp",
-    identifierAlias: "cubid_stamp_alias_abc",
+    identifierType: "paytag",
+    paytagReference: "paytag_ref_abc",
   },
   payingDappId: "chaincrew",
   selectedPath: {
@@ -109,7 +109,7 @@ export const validMyPayTagIntent: MyPayTagIntent = {
   status: "ready",
   modality: "provider_intent",
   recipient: {
-    identifierType: "verified_stamp",
+    identifierType: "paytag",
     identifierHash: "sha256:example",
   },
   selectedRoute: {
@@ -154,7 +154,7 @@ export const validNotificationEvent: NotificationEvent = {
   eventType: "payment_intent_created",
   schema: "mypaytag.notification.v1",
   recipient: {
-    identifierType: "verified_stamp",
+    identifierType: "paytag",
     maskedDisplay: "n***@example.com",
   },
   amount: {

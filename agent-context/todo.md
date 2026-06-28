@@ -408,9 +408,9 @@ Acceptance notes:
 
 ### GPTS-S6-T3 Keep Cubid Internals Out Of MyPayTag Public APIs
 
-Status: TBD
-Feature branch: TBD
-Session log: TBD
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s6-t3
 Depends on: cubid-sdk-v2:S18.1
 
 Ensure the SDK contract treats Cubid as an external identity and consent dependency only.

@@ -1,6 +1,6 @@
 # PayingDapp Basic Example
 
-Runnable example for a PayingDapp resolving a Cubid verified-stamp recipient
+Runnable example for a PayingDapp resolving a paytag recipient
 into a MyPayTag JSON intent.
 
 Run from the repository root after building packages:

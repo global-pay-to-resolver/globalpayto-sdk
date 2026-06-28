@@ -7,7 +7,7 @@ export interface MyPayTagIntent {
   status: "ready";
   modality: "provider_intent";
   recipient: {
-    identifierType: "verified_stamp";
+    identifierType: "paytag";
     identifierHash: string;
   };
   selectedRoute: {

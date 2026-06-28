@@ -172,22 +172,22 @@ export const myPayTagFixtures: MyPayTagFixtures = {
   intent: validMyPayTagIntent,
 };
 
-export interface MockCubidValidator {
-  validateStamp(identifier: string): Promise<{
-    alias: string;
+export interface MockPaytagValidator {
+  validatePaytag(identifier: string): Promise<{
+    paytagReference: string;
     hash: string;
     maskedDisplay: string;
     valid: boolean;
   }>;
 }
 
-export function createMockCubidValidator(): MockCubidValidator {
+export function createMockPaytagValidator(): MockPaytagValidator {
   return {
-    async validateStamp(identifier: string) {
+    async validatePaytag(identifier: string) {
       return {
-        alias: "cubid_stamp_alias_abc",
+        paytagReference: "paytag_ref_abc",
         hash: `sha256:${identifier}`,
-        maskedDisplay: "n***@example.com",
+        maskedDisplay: "a***@cubid.mypaytag",
         valid: identifier.length > 0,
       };
     },

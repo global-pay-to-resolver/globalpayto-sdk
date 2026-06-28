@@ -16,16 +16,16 @@ The contract intentionally covers only verified-stamp identity, Modality B route
 
 ```json
 {
-  "identifierType": "verified_stamp",
-  "identifier": "email:noak@example.com"
+  "identifierType": "paytag",
+  "identifier": "abd123@cubid.mypaytag"
 }
 ```
 
 Rules:
 
-- `identifierType` is `verified_stamp` for MVP.
+- `identifierType` is `paytag` for MVP public requests.
 - `identifier` is provided by the integrator request and is validated server-side through Cubid.
-- Responses must use hashes, masked displays, or Cubid aliases instead of exposing raw identifiers where possible.
+- Responses must use hashes, masked displays, or MyPayTag paytag references instead of exposing raw identifiers where possible.
 
 ### Route Or Path
 
@@ -102,8 +102,8 @@ Create/update request:
 ```json
 {
   "recipient": {
-    "identifierType": "verified_stamp",
-    "identifier": "email:noak@example.com"
+    "identifierType": "paytag",
+    "identifier": "abd123@cubid.mypaytag"
   },
   "payToDappId": "smartrust-wallet",
   "supportedRoutes": [
@@ -113,7 +113,7 @@ Create/update request:
       "asset": "USDC"
     }
   ],
-  "consentToken": "cubid_consent_token"
+  "authorizationToken": "mpt_auth_123"
 }
 ```
 
@@ -167,8 +167,8 @@ Request:
 ```json
 {
   "recipient": {
-    "identifierType": "verified_stamp",
-    "identifier": "email:noak@example.com"
+    "identifierType": "paytag",
+    "identifier": "abd123@cubid.mypaytag"
   },
   "supportedPaths": [
     {
@@ -237,8 +237,8 @@ Request:
 {
   "resolverRequestId": "mpt_req_123",
   "recipient": {
-    "identifierType": "verified_stamp",
-    "identifierAlias": "cubid_stamp_alias_abc"
+    "identifierType": "paytag",
+    "paytagReference": "paytag_ref_abc"
   },
   "payingDappId": "chaincrew",
   "selectedPath": {
@@ -301,7 +301,7 @@ Rules:
     "status": "ready",
     "modality": "provider_intent",
     "recipient": {
-      "identifierType": "verified_stamp",
+      "identifierType": "paytag",
       "identifierHash": "sha256:..."
     },
     "selectedRoute": {
@@ -423,7 +423,7 @@ Common payload fields:
   "eventType": "payment_intent_created",
   "schema": "mypaytag.notification.v1",
   "recipient": {
-    "identifierType": "verified_stamp",
+    "identifierType": "paytag",
     "maskedDisplay": "n***@example.com"
   },
   "amount": {

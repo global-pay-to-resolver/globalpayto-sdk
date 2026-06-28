@@ -173,7 +173,7 @@
           "request": {
             "name": "Resolve a paytag into a payment intent or safe next action.",
             "description": {
-              "content": "Sending apps submit a Cubid verified-stamp recipient, supported payment\npaths, amount, purpose, and reconciliation reference. The response is a\nresolved one-time MyPayTag intent, a hosted action, or a public safe\nstatus.\n",
+              "content": "Sending apps submit a paytag or opaque paytag reference, supported payment\npaths, amount, purpose, and reconciliation reference. The response is a\nresolved one-time MyPayTag intent, a hosted action, or a public safe\nstatus.\n",
               "type": "text/plain"
             },
             "url": {
@@ -418,7 +418,7 @@
             "method": "POST",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"consentToken\": \"<string>\"\n}",
+              "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"authorizationToken\": \"<string>\"\n}",
               "options": {
                 "raw": {
                   "headerFamily": "json",
@@ -463,7 +463,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"consentToken\": \"<string>\"\n}",
+                  "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"authorizationToken\": \"<string>\"\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",
@@ -518,7 +518,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"consentToken\": \"<string>\"\n}",
+                  "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"authorizationToken\": \"<string>\"\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",
@@ -573,7 +573,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"consentToken\": \"<string>\"\n}",
+                  "raw": "{\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"identifier\": \"<string>\"\n  },\n  \"payToDappId\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ],\n  \"authorizationToken\": \"<string>\"\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",

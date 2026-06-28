@@ -4,7 +4,7 @@
   "title": "RouteRegistrationRequest",
   "type": "object",
   "additionalProperties": false,
-  "required": ["recipient", "payToDappId", "supportedRoutes", "consentToken"],
+  "required": ["recipient", "payToDappId", "supportedRoutes", "authorizationToken"],
   "properties": {
     "recipient": { "$ref": "#/$defs/recipient" },
     "payToDappId": { "type": "string", "minLength": 1 },
@@ -13,7 +13,7 @@
       "minItems": 1,
       "items": { "$ref": "#/$defs/route" }
     },
-    "consentToken": { "type": "string", "minLength": 1 }
+    "authorizationToken": { "type": "string", "minLength": 1 }
   },
   "not": {
     "anyOf": [
@@ -31,7 +31,7 @@
       "additionalProperties": false,
       "required": ["identifierType", "identifier"],
       "properties": {
-        "identifierType": { "const": "verified_stamp" },
+        "identifierType": { "const": "paytag" },
         "identifier": { "type": "string", "minLength": 1 }
       }
     },

@@ -42,7 +42,7 @@ describe("@mypaytag/sdk", () => {
     });
 
     const result = buildPayorAppResolveRequest({
-      recipientIdentifier: "email:noak@example.com",
+      recipientIdentifier: "abd123@cubid.mypaytag",
       supportedPaths: [supportedPath],
       amount,
       purpose: "wallet_send",
@@ -70,7 +70,7 @@ describe("@mypaytag/sdk", () => {
 
   it("defaults payor-app helper exactness to exact receive", () => {
     const result = buildPayorAppResolveRequest({
-      recipientIdentifier: "email:noak@example.com",
+      recipientIdentifier: "abd123@cubid.mypaytag",
       supportedPaths: validResolveRequest.supportedPaths,
       amount: validResolveRequest.amount,
       purpose: validResolveRequest.purpose,
@@ -83,7 +83,7 @@ describe("@mypaytag/sdk", () => {
   it("rejects empty payor-app request fields before schema validation", () => {
     expect(() =>
       buildPayorAppResolveRequest({
-        recipientIdentifier: "email:noak@example.com",
+        recipientIdentifier: "abd123@cubid.mypaytag",
         supportedPaths: [],
         amount: validResolveRequest.amount,
         purpose: validResolveRequest.purpose,
