@@ -391,3 +391,14 @@ todo: mypaytag-sdk:GPTS-S7-T7
 summary: Added hosted route-selection action view, decision, and completion protocol schemas with generated exports, fixtures, validators, OpenAPI examples/components, and privacy/decision-state tests.
 validation: Ran pnpm generate, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm api:validate, pnpm api:postman, and pnpm scan:public-boundary; focused tests passed with 59 workspace cases and OpenAPI/Postman/public-boundary checks passed.
 follow-ups: Continue Sprint 7 by deciding/documenting public placement for paytag availability contracts.
+
+---
+
+## 2026-06-28-gpts-s7-t8
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T8
+summary: Documented paytag availability and issuance as a private MyPayTag/Cubid service-boundary contract rather than a public integrator SDK schema, and expanded public-safe testing fixtures for idempotent retry plus revoked/expired reuse policy cases.
+validation: Ran pnpm --filter @mypaytag/testing typecheck, pnpm --filter @mypaytag/testing test, and pnpm scan:public-boundary; focused tests passed with 59 workspace cases and the public-boundary scan passed.
+follow-ups: Continue Sprint 7 by expanding MVP happy-path fixtures and examples.

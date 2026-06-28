@@ -28,6 +28,16 @@ describe("@mypaytag/testing", () => {
     expect(myPayTagFixtures.paytags.availability.available.canIssue).toBe(true);
     expect(myPayTagFixtures.paytags.availability.unavailable.publicReason).toBe("already_taken");
     expect(myPayTagFixtures.paytags.availability.reserved.publicReason).toBe("reserved_namespace");
+    expect(myPayTagFixtures.paytags.availability.idempotentRetry).toMatchObject({
+      status: "idempotent_retry",
+      canIssue: true,
+    });
+    expect(myPayTagFixtures.paytags.availability.revokedReuseBlocked.publicReason).toBe(
+      "revoked_recently",
+    );
+    expect(myPayTagFixtures.paytags.availability.expiredReuseBlocked.publicReason).toBe(
+      "expired_recently",
+    );
     expect(myPayTagFixtures.paytags.negativeDisclosure.noRoute).toEqual({ status: "no_route" });
     expect(myPayTagFixtures.paytags.negativeDisclosure.authorizationRequired).toEqual({
       status: "authorization_required",

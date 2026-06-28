@@ -37,6 +37,9 @@ export interface MyPayTagFixtures {
       available: PaytagAvailabilityFixture;
       unavailable: PaytagAvailabilityFixture;
       reserved: PaytagAvailabilityFixture;
+      idempotentRetry: PaytagAvailabilityFixture;
+      revokedReuseBlocked: PaytagAvailabilityFixture;
+      expiredReuseBlocked: PaytagAvailabilityFixture;
     };
     negativeDisclosure: {
       noRoute: ResolveResponse;
@@ -92,9 +95,20 @@ export interface PaytagExampleFixture {
 
 export interface PaytagAvailabilityFixture {
   paytag: string;
-  status: "available" | "unavailable" | "reserved";
+  status:
+    | "available"
+    | "unavailable"
+    | "reserved"
+    | "idempotent_retry"
+    | "revoked_reuse_blocked"
+    | "expired_reuse_blocked";
   canIssue: boolean;
-  publicReason?: "already_taken" | "reserved_namespace";
+  publicReason?:
+    | "already_taken"
+    | "reserved_namespace"
+    | "same_request_replay"
+    | "revoked_recently"
+    | "expired_recently";
 }
 
 export const myPayTagFixtures: MyPayTagFixtures = {
@@ -128,6 +142,24 @@ export const myPayTagFixtures: MyPayTagFixtures = {
         status: "reserved",
         canIssue: false,
         publicReason: "reserved_namespace",
+      },
+      idempotentRetry: {
+        paytag: "new456@cubid.mypaytag",
+        status: "idempotent_retry",
+        canIssue: true,
+        publicReason: "same_request_replay",
+      },
+      revokedReuseBlocked: {
+        paytag: "revoked789@cubid.mypaytag",
+        status: "revoked_reuse_blocked",
+        canIssue: false,
+        publicReason: "revoked_recently",
+      },
+      expiredReuseBlocked: {
+        paytag: "expired789@cubid.mypaytag",
+        status: "expired_reuse_blocked",
+        canIssue: false,
+        publicReason: "expired_recently",
       },
     },
     negativeDisclosure: {

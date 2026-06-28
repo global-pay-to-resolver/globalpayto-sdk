@@ -591,7 +591,7 @@ Acceptance notes:
 
 ### GPTS-S7-T8 Decide And Document Paytag Availability Contract Placement
 
-Status: Todo
+Status: Complete
 Feature branch: codex/mypaytag-mvp-realignment-20260628
 Session log: agent-context/session-log/main.md#2026-06-28-gpts-s7-t8
 Depends on: cubid-monorepo:CUBID-PAYTAG-02, mypaytag:GPTR-S7-T4

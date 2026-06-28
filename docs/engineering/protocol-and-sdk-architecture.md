@@ -125,6 +125,17 @@ after validation and user context checks. Decisions can select an option, leave
 the choice unchanged, or deny the action. Completion states include expired,
 invalid, replayed, and restart-required outcomes without private diagnostics.
 
+### Paytag Availability Boundary
+
+Paytag availability and issuance are intentionally not public integrator API
+contracts in the MVP SDK. They belong to the private MyPayTag/Cubid service
+boundary: Cubid owns identity evidence and consent, while MyPayTag owns paytag
+uniqueness and availability policy.
+
+The public SDK keeps public-safe availability fixtures only. No availability
+boundary should expose wallet addresses, payment route data, route preferences,
+wallet graphs, provider payloads, or payment instructions to Cubid.
+
 ### PayingDapp Resolve
 
 ```http
