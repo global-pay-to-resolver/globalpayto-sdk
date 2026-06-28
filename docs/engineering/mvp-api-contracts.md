@@ -135,6 +135,47 @@ Resolved registration response:
 }
 ```
 
+List/read/update responses are scoped envelopes:
+
+```json
+{
+  "status": "resolved",
+  "routes": [
+    {
+      "id": "mpt_route_123",
+      "payToDappId": "smartrust-wallet",
+      "chain": "base",
+      "network": "mainnet",
+      "asset": "USDC",
+      "state": "active"
+    }
+  ]
+}
+```
+
+```json
+{
+  "status": "resolved",
+  "route": {
+    "id": "mpt_route_123",
+    "payToDappId": "smartrust-wallet",
+    "chain": "base",
+    "network": "mainnet",
+    "asset": "USDC",
+    "state": "disabled"
+  }
+}
+```
+
+Route revocation response:
+
+```json
+{
+  "status": "revoked",
+  "routeId": "mpt_route_123"
+}
+```
+
 Route selection required response:
 
 ```json
@@ -152,7 +193,8 @@ Rules:
 
 - Requests with account/address/payment-instruction fields are `invalid_request`.
 - Overlapping routes can return `user_action_required` until the user confirms priority/default.
-- PayingDapps must not receive route preference details.
+- Route CRUD responses expose only PayToDapp-owned scoped route capability data.
+- PayingDapps must not receive route preference details, unrelated PayToDapps, wallet graphs, raw identifiers, or payment instructions.
 
 ## PayingDapp Resolve
 

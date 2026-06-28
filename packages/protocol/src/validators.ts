@@ -9,13 +9,18 @@ import type {
   NearOneClickQuoteSelectionRequest,
   MyPayTagStatus,
   NotificationEvent,
+  PayToRoute,
   ProviderCallbackRequest,
   ProviderResponse,
+  RouteDeleteResponse,
+  RouteListResponse,
   RouteQuotePreview,
+  RouteReadResponse,
   ResolveRequest,
   ResolveResponse,
   RouteRegistrationRequest,
   RouteRegistrationResponse,
+  RouteUpdateRequest,
 } from "./generated/types.js";
 
 export class ProtocolValidationError extends Error {
@@ -67,6 +72,21 @@ export const validateRouteRegistrationRequest = (payload: unknown) =>
 
 export const validateRouteRegistrationResponse = (payload: unknown) =>
   validateProtocolPayload<RouteRegistrationResponse>("route-registration-response", payload);
+
+export const validatePayToRoute = (payload: unknown) =>
+  validateProtocolPayload<PayToRoute>("pay-to-route", payload);
+
+export const validateRouteListResponse = (payload: unknown) =>
+  validateProtocolPayload<RouteListResponse>("route-list-response", payload);
+
+export const validateRouteReadResponse = (payload: unknown) =>
+  validateProtocolPayload<RouteReadResponse>("route-read-response", payload);
+
+export const validateRouteUpdateRequest = (payload: unknown) =>
+  validateProtocolPayload<RouteUpdateRequest>("route-update-request", payload);
+
+export const validateRouteDeleteResponse = (payload: unknown) =>
+  validateProtocolPayload<RouteDeleteResponse>("route-delete-response", payload);
 
 export const validateResolveRequest = (payload: unknown) =>
   validateProtocolPayload<ResolveRequest>("resolve-request", payload);

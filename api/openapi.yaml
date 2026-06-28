@@ -164,6 +164,31 @@ paths:
         "401":
           $ref: "#/components/responses/Unauthorized"
   /payto-routes:
+    get:
+      tags:
+        - Routes
+      operationId: listPayToRoutes
+      summary: List receiving-app routes scoped to the authenticated app.
+      responses:
+        "200":
+          description: Scoped route list.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RouteListResponse"
+              examples:
+                routes:
+                  value:
+                    status: resolved
+                    routes:
+                      - id: mpt_route_123
+                        payToDappId: example-wallet
+                        chain: base
+                        network: mainnet
+                        asset: USDC
+                        state: active
+        "401":
+          $ref: "#/components/responses/Unauthorized"
     post:
       tags:
         - Routes
@@ -235,7 +260,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PayToRoute"
+                $ref: "#/components/schemas/RouteReadResponse"
+              examples:
+                route:
+                  value:
+                    status: resolved
+                    route:
+                      id: mpt_route_123
+                      payToDappId: example-wallet
+                      chain: base
+                      network: mainnet
+                      asset: USDC
+                      state: active
         "404":
           $ref: "#/components/responses/NotFound"
     patch:
@@ -249,15 +285,30 @@ paths:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/RouteUpdateRequest"
+              schema:
+                $ref: "#/components/schemas/RouteUpdateRequest"
+              examples:
+                disableRoute:
+                  value:
+                    state: disabled
       responses:
         "200":
           description: Updated route.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PayToRoute"
+                $ref: "#/components/schemas/RouteReadResponse"
+              examples:
+                route:
+                  value:
+                    status: resolved
+                    route:
+                      id: mpt_route_123
+                      payToDappId: example-wallet
+                      chain: base
+                      network: mainnet
+                      asset: USDC
+                      state: disabled
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -277,7 +328,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DeleteRouteResponse"
+                $ref: "#/components/schemas/RouteDeleteResponse"
+              examples:
+                revoked:
+                  value:
+                    status: revoked
+                    routeId: mpt_route_123
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
@@ -621,7 +677,16 @@ components:
       oneOf:
         - $ref: "#/components/schemas/ResolvedIntentResponse"
         - $ref: "#/components/schemas/ActionRequiredResponse"
-        - $ref: "#/components/schemas/StatusOnlyResponse"
+        - type: object
+          additionalProperties: false
+          required:
+            - status
+          properties:
+            status:
+              type: string
+              enum:
+                - no_route
+                - provider_unavailable
     ResolvedIntentResponse:
       type: object
       additionalProperties: false
@@ -887,7 +952,16 @@ components:
               items:
                 $ref: "#/components/schemas/PayToRoute"
         - $ref: "#/components/schemas/ActionRequiredResponse"
-        - $ref: "#/components/schemas/StatusOnlyResponse"
+        - type: object
+          additionalProperties: false
+          required:
+            - status
+          properties:
+            status:
+              type: string
+              enum:
+                - no_route
+                - provider_unavailable
     PayToRoute:
       type: object
       additionalProperties: false
@@ -901,45 +975,88 @@ components:
       properties:
         id:
           type: string
+          minLength: 1
         payToDappId:
           type: string
+          minLength: 1
         chain:
           type: string
+          minLength: 1
         network:
           type: string
+          minLength: 1
         asset:
           type: string
+          minLength: 1
         state:
           type: string
           enum:
             - active
+            - disabled
             - revoked
+    RouteListResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+        - routes
+      properties:
+        status:
+          type: string
+          const: resolved
+        routes:
+          type: array
+          items:
+            $ref: "#/components/schemas/PayToRoute"
+    RouteReadResponse:
+      oneOf:
+        - type: object
+          additionalProperties: false
+          required:
+            - status
+            - route
+          properties:
+            status:
+              type: string
+              const: resolved
+            route:
+              $ref: "#/components/schemas/PayToRoute"
+        - $ref: "#/components/schemas/StatusOnlyResponse"
     RouteUpdateRequest:
       type: object
       additionalProperties: false
+      anyOf:
+        - required:
+            - state
+        - required:
+            - supportedRoutes
       properties:
         state:
           type: string
           enum:
             - active
+            - disabled
             - revoked
         supportedRoutes:
           type: array
           minItems: 1
           items:
             $ref: "#/components/schemas/RoutePath"
-    DeleteRouteResponse:
-      type: object
-      additionalProperties: false
-      required:
-        - status
-        - routeId
-      properties:
-        status:
-          type: string
-          const: revoked
-        routeId:
-          type: string
+    RouteDeleteResponse:
+      oneOf:
+        - type: object
+          additionalProperties: false
+          required:
+            - status
+            - routeId
+          properties:
+            status:
+              type: string
+              const: revoked
+            routeId:
+              type: string
+              minLength: 1
+        - $ref: "#/components/schemas/StatusOnlyResponse"
     HostedActionView:
       type: object
       additionalProperties: false

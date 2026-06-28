@@ -10,12 +10,18 @@ import {
   validateNotificationEvent,
   validateNearOneClickQuoteOption,
   validateNearOneClickQuoteSelectionRequest,
+  validatePayToRoute,
   validateProviderCallbackRequest,
   validateProviderResponse,
+  validateRouteDeleteResponse,
+  validateRouteListResponse,
   validateResolveRequest,
   validateResolveResponse,
   validateRouteRegistrationRequest,
+  validateRouteRegistrationResponse,
+  validateRouteReadResponse,
   validateRouteQuotePreview,
+  validateRouteUpdateRequest,
   validateStatus,
   validMyPayTagIntent,
   validNearOneClickPayableInstruction,
@@ -25,11 +31,18 @@ import {
   validNearOneClickQuoteSelectionRequest,
   validProviderCallbackRequest,
   validProviderResponse,
+  validPayToRoute,
+  validRouteDeleteResponse,
+  validRouteListResponse,
+  validRouteNotFoundResponse,
   validResolveRequest,
   validResolvedResponse,
   validRouteRegistrationRequest,
   validRouteQuotePreview,
+  validRouteReadResponse,
   validRouteSelectionResponse,
+  validRouteUnavailableResponse,
+  validRouteUpdateRequest,
 } from "./index.js";
 
 const terminalStatusFixtures = [
@@ -85,6 +98,11 @@ describe("@mypaytag/protocol", () => {
     expect(validateResolveResponse(validRouteSelectionResponse)).toEqual(
       validRouteSelectionResponse,
     );
+    expect(validatePayToRoute(validPayToRoute)).toEqual(validPayToRoute);
+    expect(validateRouteListResponse(validRouteListResponse)).toEqual(validRouteListResponse);
+    expect(validateRouteReadResponse(validRouteReadResponse)).toEqual(validRouteReadResponse);
+    expect(validateRouteUpdateRequest(validRouteUpdateRequest)).toEqual(validRouteUpdateRequest);
+    expect(validateRouteDeleteResponse(validRouteDeleteResponse)).toEqual(validRouteDeleteResponse);
     expect(validateProviderResponse(validProviderResponse)).toEqual(validProviderResponse);
     expect(validateMyPayTagIntent(validMyPayTagIntent)).toEqual(validMyPayTagIntent);
     expect(validateNotificationEvent(validNotificationEvent)).toEqual(validNotificationEvent);
@@ -126,6 +144,41 @@ describe("@mypaytag/protocol", () => {
       expect(() =>
         validateRouteRegistrationRequest({
           ...validRouteRegistrationRequest,
+          [field]: value,
+        }),
+      ).toThrow();
+    }
+  });
+
+  it("accepts route CRUD response and safe unavailable shapes", () => {
+    expect(validateRouteListResponse(validRouteListResponse)).toEqual(validRouteListResponse);
+    expect(validateRouteReadResponse(validRouteReadResponse)).toEqual(validRouteReadResponse);
+    expect(validateRouteReadResponse(validRouteNotFoundResponse)).toEqual(validRouteNotFoundResponse);
+    expect(validateRouteDeleteResponse(validRouteDeleteResponse)).toEqual(validRouteDeleteResponse);
+    expect(validateRouteDeleteResponse(validRouteUnavailableResponse)).toEqual(
+      validRouteUnavailableResponse,
+    );
+  });
+
+  it("rejects route CRUD payloads that expose private route or wallet data", () => {
+    for (const [field, value] of [
+      ["account", "acct_123"],
+      ["address", "0xabc123"],
+      ["recipientAddress", "0xabc123"],
+      ["paymentInstruction", validProviderResponse.paymentInstruction],
+      ["routePreference", "default"],
+      ["walletGraph", { connectedWallets: ["0xabc123"] }],
+    ] as const) {
+      expect(() =>
+        validatePayToRoute({
+          ...validPayToRoute,
+          [field]: value,
+        }),
+      ).toThrow();
+
+      expect(() =>
+        validateRouteUpdateRequest({
+          ...validRouteUpdateRequest,
           [field]: value,
         }),
       ).toThrow();
@@ -412,6 +465,20 @@ describe("@mypaytag/protocol", () => {
 
     const resolvedExample =
       openApi.paths["/resolve"].post.responses["200"].content["application/json"].examples.resolved.value;
+    const routeRegistrationRequestExample =
+      openApi.paths["/payto-routes"].post.requestBody.content["application/json"].examples.smartrustBaseUsdc.value;
+    const routeRegistrationResponseExample =
+      openApi.paths["/payto-routes"].post.responses["200"].content["application/json"].examples.registered.value;
+    const routeListResponseExample =
+      openApi.paths["/payto-routes"].get.responses["200"].content["application/json"].examples.routes.value;
+    const routeReadResponseExample =
+      openApi.paths["/payto-routes/{routeId}"].get.responses["200"].content["application/json"].examples.route.value;
+    const routeUpdateRequestExample =
+      openApi.paths["/payto-routes/{routeId}"].patch.requestBody.content["application/json"].examples.disableRoute.value;
+    const routeUpdateResponseExample =
+      openApi.paths["/payto-routes/{routeId}"].patch.responses["200"].content["application/json"].examples.route.value;
+    const routeDeleteResponseExample =
+      openApi.paths["/payto-routes/{routeId}"].delete.responses["200"].content["application/json"].examples.revoked.value;
     const notificationExample =
       openApi.paths["/notifications"].post.requestBody.content["application/json"].examples.paymentIntentCreated.value;
     const providerCallbackExample =
@@ -420,6 +487,17 @@ describe("@mypaytag/protocol", () => {
       openApi.webhooks.providerPaymentIntent.post.responses["200"].content["application/json"].examples.providerResponse.value;
 
     expect(validateResolveResponse(resolvedExample)).toEqual(resolvedExample);
+    expect(validateRouteRegistrationRequest(routeRegistrationRequestExample)).toEqual(
+      routeRegistrationRequestExample,
+    );
+    expect(validateRouteRegistrationResponse(routeRegistrationResponseExample)).toEqual(
+      routeRegistrationResponseExample,
+    );
+    expect(validateRouteListResponse(routeListResponseExample)).toEqual(routeListResponseExample);
+    expect(validateRouteReadResponse(routeReadResponseExample)).toEqual(routeReadResponseExample);
+    expect(validateRouteUpdateRequest(routeUpdateRequestExample)).toEqual(routeUpdateRequestExample);
+    expect(validateRouteReadResponse(routeUpdateResponseExample)).toEqual(routeUpdateResponseExample);
+    expect(validateRouteDeleteResponse(routeDeleteResponseExample)).toEqual(routeDeleteResponseExample);
     expect(validateNotificationEvent(notificationExample)).toEqual(notificationExample);
     expect(validateProviderCallbackRequest(providerCallbackExample)).toEqual(providerCallbackExample);
     expect(validateProviderResponse(providerResponseExample)).toEqual(providerResponseExample);

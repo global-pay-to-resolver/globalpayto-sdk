@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/pay-to-route.schema.json",
+  "title": "PayToRoute",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "payToDappId", "chain", "network", "asset", "state"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "payToDappId": { "type": "string", "minLength": 1 },
+    "chain": { "type": "string", "minLength": 1 },
+    "network": { "type": "string", "minLength": 1 },
+    "asset": { "type": "string", "minLength": 1 },
+    "state": { "enum": ["active", "disabled", "revoked"] }
+  },
+  "not": {
+    "anyOf": [
+      { "required": ["account"] },
+      { "required": ["address"] },
+      { "required": ["recipientAddress"] },
+      { "required": ["memo"] },
+      { "required": ["paymentInstruction"] },
+      { "required": ["paymentLink"] },
+      { "required": ["routePreference"] },
+      { "required": ["walletGraph"] }
+    ]
+  }
+}

@@ -557,7 +557,7 @@ Acceptance notes:
 
 ### GPTS-S7-T6 Add Route CRUD Protocol Schemas And SDK Helpers
 
-Status: Todo
+Status: Complete
 Feature branch: codex/mypaytag-mvp-realignment-20260628
 Session log: agent-context/session-log/main.md#2026-06-28-gpts-s7-t6
 Depends on: mypaytag:GPTR-S7-T1

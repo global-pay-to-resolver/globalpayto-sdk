@@ -4,13 +4,18 @@ import type {
   NearOneClickQuoteOption,
   NearOneClickQuoteSelectionRequest,
   NotificationEvent,
+  PayToRoute,
   ProviderCallbackRequest,
   ProviderResponse,
+  RouteDeleteResponse,
+  RouteListResponse,
   RouteQuotePreview,
+  RouteReadResponse,
   ResolveRequest,
   ResolveResponse,
   RouteRegistrationRequest,
   RouteRegistrationResponse,
+  RouteUpdateRequest,
 } from "./generated/types.js";
 
 export const validRouteRegistrationRequest: RouteRegistrationRequest = {
@@ -41,6 +46,42 @@ export const validRouteRegistrationResponse: RouteRegistrationResponse = {
       state: "active",
     },
   ],
+};
+
+export const validPayToRoute: PayToRoute = {
+  id: "mpt_route_123",
+  payToDappId: "smartrust-wallet",
+  chain: "base",
+  network: "mainnet",
+  asset: "USDC",
+  state: "active",
+};
+
+export const validRouteListResponse: RouteListResponse = {
+  status: "resolved",
+  routes: [validPayToRoute],
+};
+
+export const validRouteReadResponse: RouteReadResponse = {
+  status: "resolved",
+  route: validPayToRoute,
+};
+
+export const validRouteUpdateRequest: RouteUpdateRequest = {
+  state: "disabled",
+};
+
+export const validRouteDeleteResponse: RouteDeleteResponse = {
+  status: "revoked",
+  routeId: validPayToRoute.id,
+};
+
+export const validRouteNotFoundResponse: RouteReadResponse = {
+  status: "no_route",
+};
+
+export const validRouteUnavailableResponse: RouteDeleteResponse = {
+  status: "provider_unavailable",
 };
 
 export const validResolveRequest: ResolveRequest = {

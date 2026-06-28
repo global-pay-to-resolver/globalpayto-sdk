@@ -113,6 +113,13 @@ Route registration request:
 
 The schema must reject account, address, and chain-specific payment instruction fields. Dynamic addresses belong only in a provider intent response.
 
+Route CRUD responses expose only PayToDapp-owned scoped route capability data.
+List/read/update responses use `status: resolved` envelopes, deletion uses
+`status: revoked`, and safe unavailable cases use public status-only shapes such
+as `no_route` or `provider_unavailable`. They must not expose route
+preferences, unrelated PayToDapps, wallet graphs, raw identifiers, or payment
+instructions.
+
 ### PayingDapp Resolve
 
 ```http

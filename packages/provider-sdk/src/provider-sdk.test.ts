@@ -3,14 +3,22 @@ import { describe, expect, it } from "vitest";
 import {
   validProviderCallbackRequest,
   validProviderResponse,
+  validRouteDeleteResponse,
+  validRouteListResponse,
   validRouteRegistrationRequest,
+  validRouteReadResponse,
+  validRouteUpdateRequest,
 } from "@mypaytag/protocol";
 
 import {
   assertProviderResponseMatchesCallback,
   buildRouteRegistrationRequest,
+  buildRouteUpdateRequest,
   parseProviderCallbackRequest,
   parseProviderResponse,
+  parseRouteDeleteResponse,
+  parseRouteListResponse,
+  parseRouteReadResponse,
   verifyCallbackAuth,
   type CallbackAuthEnvelope,
   type ReplayStore,
@@ -43,6 +51,13 @@ describe("@mypaytag/provider-sdk", () => {
     expect(buildRouteRegistrationRequest(validRouteRegistrationRequest)).toEqual(
       validRouteRegistrationRequest,
     );
+  });
+
+  it("builds route updates and parses route CRUD responses", () => {
+    expect(buildRouteUpdateRequest(validRouteUpdateRequest)).toEqual(validRouteUpdateRequest);
+    expect(parseRouteListResponse(validRouteListResponse)).toEqual(validRouteListResponse);
+    expect(parseRouteReadResponse(validRouteReadResponse)).toEqual(validRouteReadResponse);
+    expect(parseRouteDeleteResponse(validRouteDeleteResponse)).toEqual(validRouteDeleteResponse);
   });
 
   it("validates callback requests and provider responses", () => {

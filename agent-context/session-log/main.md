@@ -369,3 +369,14 @@ todo: mypaytag-sdk:GPTS-S7-T5
 summary: Aligned OpenAPI notification events with protocol `eventType`/`schema`/`recipient`/`references`/`action` shape, added provider callback/response examples, removed NEAR from the generic SolverId enum, and replaced the brittle OpenAPI string-presence test with validator-backed example checks.
 validation: Ran pnpm api:validate, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/provider-sdk test, pnpm api:postman, and pnpm scan:public-boundary; focused tests passed with 53 workspace cases and OpenAPI/Postman/public-boundary checks passed.
 follow-ups: Continue Sprint 7 by adding route CRUD protocol schemas and SDK helpers.
+
+---
+
+## 2026-06-28-gpts-s7-t6
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T6
+summary: Added canonical PayToRoute, route list/read, route update, and route delete schemas with generated exports, fixtures, validators, OpenAPI route CRUD envelopes/examples, provider SDK helpers, and tests for scoped route data plus forbidden wallet/private fields.
+validation: Ran pnpm generate, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/provider-sdk typecheck, pnpm --filter @mypaytag/provider-sdk test, pnpm api:validate, pnpm api:postman, and pnpm scan:public-boundary; focused tests passed with 56 workspace cases and OpenAPI/Postman/public-boundary checks passed.
+follow-ups: Continue Sprint 7 by adding hosted route-selection action schemas.

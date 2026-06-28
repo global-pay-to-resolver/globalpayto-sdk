@@ -388,6 +388,122 @@
       "description": "",
       "item": [
         {
+          "name": "List receiving-app routes scoped to the authenticated app.",
+          "request": {
+            "name": "List receiving-app routes scoped to the authenticated app.",
+            "description": {},
+            "url": {
+              "path": [
+                "payto-routes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {},
+            "auth": null
+          },
+          "response": [
+            {
+              "name": "Scoped route list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payto-routes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mypaytag-signature",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"<string>\",\n  \"routes\": [\n    {\n      \"id\": \"<string>\",\n      \"payToDappId\": \"<string>\",\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\",\n      \"state\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"payToDappId\": \"<string>\",\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\",\n      \"state\": \"<string>\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "Missing or invalid app authentication signature.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "payto-routes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-mypaytag-signature",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"<string>\",\n  \"message\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
           "name": "Register supported receive routes for a receiving app.",
           "request": {
             "name": "Register supported receive routes for a receiving app.",
@@ -692,7 +808,7 @@
                       "value": "application/json"
                     }
                   ],
-                  "body": "{\n  \"id\": \"<string>\",\n  \"payToDappId\": \"<string>\",\n  \"chain\": \"<string>\",\n  \"network\": \"<string>\",\n  \"asset\": \"<string>\",\n  \"state\": \"<string>\"\n}",
+                  "body": "{\n  \"status\": \"<string>\",\n  \"route\": {\n    \"id\": \"<string>\",\n    \"payToDappId\": \"<string>\",\n    \"chain\": \"<string>\",\n    \"network\": \"<string>\",\n    \"asset\": \"<string>\",\n    \"state\": \"<string>\"\n  }\n}",
                   "cookie": [],
                   "_postman_previewlanguage": "json"
                 },
@@ -796,7 +912,7 @@
                 "method": "PATCH",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"state\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
+                  "raw": "{\n  \"state\": 5128.764344395074\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",
@@ -853,7 +969,7 @@
                     "method": "PATCH",
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"state\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
+                      "raw": "{\n  \"state\": 5128.764344395074\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -870,7 +986,7 @@
                       "value": "application/json"
                     }
                   ],
-                  "body": "{\n  \"id\": \"<string>\",\n  \"payToDappId\": \"<string>\",\n  \"chain\": \"<string>\",\n  \"network\": \"<string>\",\n  \"asset\": \"<string>\",\n  \"state\": \"<string>\"\n}",
+                  "body": "{\n  \"status\": \"<string>\",\n  \"route\": {\n    \"id\": \"<string>\",\n    \"payToDappId\": \"<string>\",\n    \"chain\": \"<string>\",\n    \"network\": \"<string>\",\n    \"asset\": \"<string>\",\n    \"state\": \"<string>\"\n  }\n}",
                   "cookie": [],
                   "_postman_previewlanguage": "json"
                 },
@@ -920,7 +1036,7 @@
                     "method": "PATCH",
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"state\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
+                      "raw": "{\n  \"state\": 5128.764344395074\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -987,7 +1103,7 @@
                     "method": "PATCH",
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"state\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
+                      "raw": "{\n  \"state\": 5128.764344395074\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -1054,7 +1170,7 @@
                     "method": "PATCH",
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"state\": \"<string>\",\n  \"supportedRoutes\": [\n    {\n      \"chain\": \"<string>\",\n      \"network\": \"<string>\",\n      \"asset\": \"<string>\"\n    }\n  ]\n}",
+                      "raw": "{\n  \"state\": 5128.764344395074\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",

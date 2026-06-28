@@ -606,6 +606,95 @@ export const NotificationEventSchema = {
   }
 } as const;
 
+export const PayToRouteSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/pay-to-route.schema.json",
+  "title": "PayToRoute",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "payToDappId",
+    "chain",
+    "network",
+    "asset",
+    "state"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payToDappId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "chain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "network": {
+      "type": "string",
+      "minLength": 1
+    },
+    "asset": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state": {
+      "enum": [
+        "active",
+        "disabled",
+        "revoked"
+      ]
+    }
+  },
+  "not": {
+    "anyOf": [
+      {
+        "required": [
+          "account"
+        ]
+      },
+      {
+        "required": [
+          "address"
+        ]
+      },
+      {
+        "required": [
+          "recipientAddress"
+        ]
+      },
+      {
+        "required": [
+          "memo"
+        ]
+      },
+      {
+        "required": [
+          "paymentInstruction"
+        ]
+      },
+      {
+        "required": [
+          "paymentLink"
+        ]
+      },
+      {
+        "required": [
+          "routePreference"
+        ]
+      },
+      {
+        "required": [
+          "walletGraph"
+        ]
+      }
+    ]
+  }
+} as const;
+
 export const ProviderCallbackRequestSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.mypaytag.com/provider-callback-request.schema.json",
@@ -1283,6 +1372,112 @@ export const ResolveResponseSchema = {
   }
 } as const;
 
+export const RouteDeleteResponseSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/route-delete-response.schema.json",
+  "title": "RouteDeleteResponse",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "routeId"
+      ],
+      "properties": {
+        "status": {
+          "const": "revoked"
+        },
+        "routeId": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "no_route",
+            "provider_unavailable"
+          ]
+        }
+      }
+    }
+  ]
+} as const;
+
+export const RouteListResponseSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/route-list-response.schema.json",
+  "title": "RouteListResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "routes"
+  ],
+  "properties": {
+    "status": {
+      "const": "resolved"
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/payToRoute"
+      }
+    }
+  },
+  "$defs": {
+    "payToRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "payToDappId",
+        "chain",
+        "network",
+        "asset",
+        "state"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payToDappId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state": {
+          "enum": [
+            "active",
+            "disabled",
+            "revoked"
+          ]
+        }
+      }
+    }
+  }
+} as const;
+
 export const RouteQuotePreviewSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.mypaytag.com/route-quote-preview.schema.json",
@@ -1398,6 +1593,88 @@ export const RouteQuotePreviewSchema = {
             "payor_app",
             "provider",
             "resolver"
+          ]
+        }
+      }
+    }
+  }
+} as const;
+
+export const RouteReadResponseSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/route-read-response.schema.json",
+  "title": "RouteReadResponse",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "route"
+      ],
+      "properties": {
+        "status": {
+          "const": "resolved"
+        },
+        "route": {
+          "$ref": "#/$defs/payToRoute"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "no_route",
+            "provider_unavailable"
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "payToRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "payToDappId",
+        "chain",
+        "network",
+        "asset",
+        "state"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payToDappId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state": {
+          "enum": [
+            "active",
+            "disabled",
+            "revoked"
           ]
         }
       }
@@ -1623,6 +1900,111 @@ export const RouteRegistrationResponseSchema = {
   }
 } as const;
 
+export const RouteUpdateRequestSchema = {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/route-update-request.schema.json",
+  "title": "RouteUpdateRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "anyOf": [
+    {
+      "required": [
+        "state"
+      ]
+    },
+    {
+      "required": [
+        "supportedRoutes"
+      ]
+    }
+  ],
+  "properties": {
+    "state": {
+      "enum": [
+        "active",
+        "disabled",
+        "revoked"
+      ]
+    },
+    "supportedRoutes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/route"
+      }
+    }
+  },
+  "not": {
+    "anyOf": [
+      {
+        "required": [
+          "account"
+        ]
+      },
+      {
+        "required": [
+          "address"
+        ]
+      },
+      {
+        "required": [
+          "recipientAddress"
+        ]
+      },
+      {
+        "required": [
+          "memo"
+        ]
+      },
+      {
+        "required": [
+          "paymentInstruction"
+        ]
+      },
+      {
+        "required": [
+          "paymentLink"
+        ]
+      },
+      {
+        "required": [
+          "routePreference"
+        ]
+      },
+      {
+        "required": [
+          "walletGraph"
+        ]
+      }
+    ]
+  },
+  "$defs": {
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "chain",
+        "network",
+        "asset"
+      ],
+      "properties": {
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+} as const;
+
 export const StatusSchema = {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.mypaytag.com/status.schema.json",
@@ -1649,12 +2031,17 @@ export const protocolSchemas = {
   "near-one-click-quote-option": NearOneClickQuoteOptionSchema,
   "near-one-click-quote-selection-request": NearOneClickQuoteSelectionRequestSchema,
   "notification-event": NotificationEventSchema,
+  "pay-to-route": PayToRouteSchema,
   "provider-callback-request": ProviderCallbackRequestSchema,
   "provider-response": ProviderResponseSchema,
   "resolve-request": ResolveRequestSchema,
   "resolve-response": ResolveResponseSchema,
+  "route-delete-response": RouteDeleteResponseSchema,
+  "route-list-response": RouteListResponseSchema,
   "route-quote-preview": RouteQuotePreviewSchema,
+  "route-read-response": RouteReadResponseSchema,
   "route-registration-request": RouteRegistrationRequestSchema,
   "route-registration-response": RouteRegistrationResponseSchema,
+  "route-update-request": RouteUpdateRequestSchema,
   "status": StatusSchema,
 } as const;

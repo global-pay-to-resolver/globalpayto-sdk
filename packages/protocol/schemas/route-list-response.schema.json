@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/route-list-response.schema.json",
+  "title": "RouteListResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "routes"],
+  "properties": {
+    "status": { "const": "resolved" },
+    "routes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/payToRoute" }
+    }
+  },
+  "$defs": {
+    "payToRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "payToDappId", "chain", "network", "asset", "state"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "payToDappId": { "type": "string", "minLength": 1 },
+        "chain": { "type": "string", "minLength": 1 },
+        "network": { "type": "string", "minLength": 1 },
+        "asset": { "type": "string", "minLength": 1 },
+        "state": { "enum": ["active", "disabled", "revoked"] }
+      }
+    }
+  }
+}

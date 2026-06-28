@@ -1,10 +1,18 @@
 import {
   validateProviderCallbackRequest,
   validateProviderResponse,
+  validateRouteDeleteResponse,
+  validateRouteListResponse,
   validateRouteRegistrationRequest,
+  validateRouteReadResponse,
+  validateRouteUpdateRequest,
   type ProviderCallbackRequest,
   type ProviderResponse,
+  type RouteDeleteResponse,
+  type RouteListResponse,
   type RouteRegistrationRequest,
+  type RouteReadResponse,
+  type RouteUpdateRequest,
 } from "@mypaytag/protocol";
 
 export interface CallbackAuthEnvelope {
@@ -34,6 +42,22 @@ export interface CallbackFreshnessOptions {
 
 export function buildRouteRegistrationRequest(input: RouteRegistrationRequest): RouteRegistrationRequest {
   return validateRouteRegistrationRequest(input);
+}
+
+export function buildRouteUpdateRequest(input: RouteUpdateRequest): RouteUpdateRequest {
+  return validateRouteUpdateRequest(input);
+}
+
+export function parseRouteListResponse(payload: unknown): RouteListResponse {
+  return validateRouteListResponse(payload);
+}
+
+export function parseRouteReadResponse(payload: unknown): RouteReadResponse {
+  return validateRouteReadResponse(payload);
+}
+
+export function parseRouteDeleteResponse(payload: unknown): RouteDeleteResponse {
+  return validateRouteDeleteResponse(payload);
 }
 
 export function parseProviderCallbackRequest(payload: unknown): ProviderCallbackRequest {

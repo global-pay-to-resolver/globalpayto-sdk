@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/route-read-response.schema.json",
+  "title": "RouteReadResponse",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "route"],
+      "properties": {
+        "status": { "const": "resolved" },
+        "route": { "$ref": "#/$defs/payToRoute" }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["no_route", "provider_unavailable"] }
+      }
+    }
+  ],
+  "$defs": {
+    "payToRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "payToDappId", "chain", "network", "asset", "state"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "payToDappId": { "type": "string", "minLength": 1 },
+        "chain": { "type": "string", "minLength": 1 },
+        "network": { "type": "string", "minLength": 1 },
+        "asset": { "type": "string", "minLength": 1 },
+        "state": { "enum": ["active", "disabled", "revoked"] }
+      }
+    }
+  }
+}

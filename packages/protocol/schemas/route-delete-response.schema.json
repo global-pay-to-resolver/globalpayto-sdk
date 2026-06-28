@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/route-delete-response.schema.json",
+  "title": "RouteDeleteResponse",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "routeId"],
+      "properties": {
+        "status": { "const": "revoked" },
+        "routeId": { "type": "string", "minLength": 1 }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["no_route", "provider_unavailable"] }
+      }
+    }
+  ]
+}
