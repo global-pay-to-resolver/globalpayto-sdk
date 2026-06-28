@@ -540,7 +540,7 @@ Acceptance notes:
 
 ### GPTS-S7-T5 Align OpenAPI With Protocol Schemas And Fixtures
 
-Status: Todo
+Status: Complete
 Feature branch: codex/mypaytag-mvp-realignment-20260628
 Session log: agent-context/session-log/main.md#2026-06-28-gpts-s7-t5
 Depends on: mypaytag-sdk:GPTS-S7-T1, mypaytag-sdk:GPTS-S7-T2, mypaytag-sdk:GPTS-S7-T4

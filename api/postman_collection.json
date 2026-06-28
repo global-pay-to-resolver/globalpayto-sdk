@@ -1805,7 +1805,7 @@
             "method": "POST",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"event\": \"<string>\",\n  \"recipientDisplay\": \"<string>\",\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"resolverRequestId\": \"<string>\",\n  \"payingDappReference\": \"<string>\"\n}",
+              "raw": "{\n  \"eventType\": \"<string>\",\n  \"schema\": \"<string>\",\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"maskedDisplay\": \"<string>\"\n  },\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"references\": {\n    \"resolverReference\": \"<string>\",\n    \"providerReference\": \"<string>\",\n    \"payingDappReference\": \"<string>\"\n  },\n  \"action\": {\n    \"type\": \"<string>\"\n  }\n}",
               "options": {
                 "raw": {
                   "headerFamily": "json",
@@ -1850,7 +1850,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"event\": \"<string>\",\n  \"recipientDisplay\": \"<string>\",\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"resolverRequestId\": \"<string>\",\n  \"payingDappReference\": \"<string>\"\n}",
+                  "raw": "{\n  \"eventType\": \"<string>\",\n  \"schema\": \"<string>\",\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"maskedDisplay\": \"<string>\"\n  },\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"references\": {\n    \"resolverReference\": \"<string>\",\n    \"providerReference\": \"<string>\",\n    \"payingDappReference\": \"<string>\"\n  },\n  \"action\": {\n    \"type\": \"<string>\"\n  }\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",
@@ -1905,7 +1905,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"event\": \"<string>\",\n  \"recipientDisplay\": \"<string>\",\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"resolverRequestId\": \"<string>\",\n  \"payingDappReference\": \"<string>\"\n}",
+                  "raw": "{\n  \"eventType\": \"<string>\",\n  \"schema\": \"<string>\",\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"maskedDisplay\": \"<string>\"\n  },\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"references\": {\n    \"resolverReference\": \"<string>\",\n    \"providerReference\": \"<string>\",\n    \"payingDappReference\": \"<string>\"\n  },\n  \"action\": {\n    \"type\": \"<string>\"\n  }\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",
@@ -1960,7 +1960,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"event\": \"<string>\",\n  \"recipientDisplay\": \"<string>\",\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"resolverRequestId\": \"<string>\",\n  \"payingDappReference\": \"<string>\"\n}",
+                  "raw": "{\n  \"eventType\": \"<string>\",\n  \"schema\": \"<string>\",\n  \"recipient\": {\n    \"identifierType\": \"<string>\",\n    \"maskedDisplay\": \"<string>\"\n  },\n  \"amount\": {\n    \"value\": \"<string>\",\n    \"currency\": \"<string>\"\n  },\n  \"references\": {\n    \"resolverReference\": \"<string>\",\n    \"providerReference\": \"<string>\",\n    \"payingDappReference\": \"<string>\"\n  },\n  \"action\": {\n    \"type\": \"<string>\"\n  }\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",

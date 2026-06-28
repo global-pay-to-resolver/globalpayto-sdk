@@ -347,13 +347,20 @@ paths:
             examples:
               paymentIntentCreated:
                 value:
-                  event: payment_intent_created
-                  recipientDisplay: r***@example.com
+                  eventType: payment_intent_created
+                  schema: mypaytag.notification.v1
+                  recipient:
+                    identifierType: paytag
+                    maskedDisplay: r***@example.com
                   amount:
                     value: "25.00"
                     currency: USDC
-                  resolverRequestId: mpt_req_123
-                  payingDappReference: sender:payout_987
+                  references:
+                    resolverReference: mpt_req_123
+                    providerReference: provider_pi_456
+                    payingDappReference: sender:payout_987
+                  action:
+                    type: none
       responses:
         "202":
           description: Notification accepted for delivery.
@@ -382,6 +389,24 @@ webhooks:
           application/json:
             schema:
               $ref: "#/components/schemas/ProviderCallbackRequest"
+            examples:
+              providerCallback:
+                value:
+                  resolverRequestId: mpt_req_123
+                  recipient:
+                    identifierType: paytag
+                    paytagReference: paytag_ref_abc
+                  payingDappId: chaincrew
+                  payingDappReference: chaincrew:payout_987
+                  selectedPath:
+                    chain: base
+                    network: mainnet
+                    asset: USDC
+                  amount:
+                    value: "25.00"
+                    currency: USDC
+                  purpose: payout
+                  expiresAt: "2026-06-24T20:00:00Z"
       responses:
         "200":
           description: Provider intent response.
@@ -389,6 +414,29 @@ webhooks:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProviderResponse"
+              examples:
+                providerResponse:
+                  value:
+                    providerIntentId: st_pi_456
+                    status: ready
+                    paymentInstruction:
+                      type: provider_json
+                      provider: smartrust-wallet
+                      payload:
+                        providerIntentId: st_pi_456
+                        resolverReference: mpt_req_123
+                        payingDappId: chaincrew
+                        payingDappReference: chaincrew:payout_987
+                        chain: base
+                        network: mainnet
+                        asset: USDC
+                        destination:
+                          kind: blockchain_address
+                          recipientAddress: "0xabc0000000000000000000000000000000000000"
+                        amount: "25.00"
+                        purpose: payout
+                        reference: smartrust:st_pi_456
+                        expiresAt: "2026-06-24T20:00:00Z"
 components:
   responses:
     BadRequest:
@@ -1019,23 +1067,60 @@ components:
       type: object
       additionalProperties: false
       required:
-        - event
-        - recipientDisplay
+        - eventType
+        - schema
+        - recipient
         - amount
-        - resolverRequestId
-        - payingDappReference
+        - references
+        - action
       properties:
-        event:
+        eventType:
           type: string
           const: payment_intent_created
-        recipientDisplay:
+        schema:
           type: string
+          const: mypaytag.notification.v1
+        recipient:
+          type: object
+          additionalProperties: false
+          required:
+            - identifierType
+            - maskedDisplay
+          properties:
+            identifierType:
+              type: string
+              const: paytag
+            maskedDisplay:
+              type: string
+              minLength: 1
         amount:
           $ref: "#/components/schemas/Amount"
-        resolverRequestId:
-          type: string
-        payingDappReference:
-          type: string
+        references:
+          type: object
+          additionalProperties: false
+          required:
+            - resolverReference
+            - providerReference
+            - payingDappReference
+          properties:
+            resolverReference:
+              type: string
+              minLength: 1
+            providerReference:
+              type: string
+              minLength: 1
+            payingDappReference:
+              type: string
+              minLength: 1
+        action:
+          type: object
+          additionalProperties: false
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              const: none
     NotificationAccepted:
       type: object
       additionalProperties: false
@@ -1048,7 +1133,6 @@ components:
     SolverId:
       type: string
       enum:
-        - near_intents_1click
         - lifi
         - squid
         - zero_x_cross_chain

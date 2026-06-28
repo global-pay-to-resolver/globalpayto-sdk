@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { describe, expect, it } from "vitest";
+import { parse as parseYaml } from "yaml";
 
 import {
   validateMyPayTagIntent,
@@ -9,6 +10,7 @@ import {
   validateNotificationEvent,
   validateNearOneClickQuoteOption,
   validateNearOneClickQuoteSelectionRequest,
+  validateProviderCallbackRequest,
   validateProviderResponse,
   validateResolveRequest,
   validateResolveResponse,
@@ -402,35 +404,24 @@ describe("@mypaytag/protocol", () => {
     ).toThrow();
   });
 
-  it("keeps OpenAPI examples aligned with canonical intent and provider payload fields", () => {
-    const openApi = readFileSync(
+  it("validates OpenAPI examples against canonical protocol validators", () => {
+    const openApi = parseYaml(readFileSync(
       fileURLToPath(new URL("../../../api/openapi.yaml", import.meta.url)),
       "utf8",
-    );
+    )) as any;
 
-    for (const field of [
-      "id",
-      "schema",
-      "status",
-      "modality",
-      "recipient",
-      "selectedRoute",
-      "amount",
-      "expiresAt",
-      "singleUse",
-      "paymentInstruction",
-      "references",
-    ] as const) {
-      expect(openApi).toContain(`        - ${field}`);
-    }
+    const resolvedExample =
+      openApi.paths["/resolve"].post.responses["200"].content["application/json"].examples.resolved.value;
+    const notificationExample =
+      openApi.paths["/notifications"].post.requestBody.content["application/json"].examples.paymentIntentCreated.value;
+    const providerCallbackExample =
+      openApi.webhooks.providerPaymentIntent.post.requestBody.content["application/json"].examples.providerCallback.value;
+    const providerResponseExample =
+      openApi.webhooks.providerPaymentIntent.post.responses["200"].content["application/json"].examples.providerResponse.value;
 
-    for (const field of providerPayloadRequiredFields) {
-      expect(openApi).toContain(`        - ${field}`);
-      expect(openApi).toContain(`${field}:`);
-    }
-
-    expect(openApi).toContain("identifierType: paytag");
-    expect(openApi).toContain("schema: mypaytag.intent.v1");
-    expect(openApi).not.toContain("identifierType: verified_stamp");
+    expect(validateResolveResponse(resolvedExample)).toEqual(resolvedExample);
+    expect(validateNotificationEvent(notificationExample)).toEqual(notificationExample);
+    expect(validateProviderCallbackRequest(providerCallbackExample)).toEqual(providerCallbackExample);
+    expect(validateProviderResponse(providerResponseExample)).toEqual(providerResponseExample);
   });
 });
