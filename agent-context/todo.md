@@ -666,9 +666,9 @@ Acceptance notes:
 
 ### GPTS-S8-T2 Add Public NEAR 1Click Endpoint Client Helpers
 
-Status: Todo
+Status: Complete
 Feature branch: codex/mypaytag-mvp-code-gap-todos-20260629
-Session log: TBD
+Session log: agent-context/session-log/main.md#2026-06-29-gpts-s8-t2
 Depends on: mypaytag:GPTR-S8-T2, mypaytag-sdk:GPTS-S7-T1, mypaytag-sdk:GPTS-S7-T2
 
 Add SDK helpers for calling the backend NEAR 1Click MVP quote and selected-quote

@@ -26,7 +26,9 @@ import {
   isResolved,
   parseNotificationEvent,
   parseResolveResponse,
+  requestNearOneClickQuoteOptions,
   requestExecutionQuotes,
+  selectNearOneClickQuote,
   parseNearOneClickPayableInstruction,
   parseNearOneClickQuoteOption,
   type CryptoNativeExecutionSolverId,
@@ -156,6 +158,57 @@ describe("@mypaytag/sdk", () => {
     );
   });
 
+  it("calls NEAR 1Click quote and selected-quote backend endpoints", async () => {
+    const calls: Array<{ endpoint: string; body: unknown }> = [];
+    const fakeFetch: typeof fetch = async (input, init) => {
+      calls.push({
+        endpoint: String(input),
+        body: JSON.parse(String(init?.body)),
+      });
+      if (String(input).endsWith("/near-oneclick-quotes")) {
+        return jsonResponse({
+          status: "quoted",
+          adapter: "near_intents_1click",
+          resolverReference: validNearOneClickQuoteOption.resolverReference,
+          selectedRouteReference: validNearOneClickQuoteOption.selectedRouteReference,
+          quotes: [validNearOneClickQuoteOption],
+        });
+      }
+      return jsonResponse(validNearOneClickPayableInstruction);
+    };
+
+    const quotes = await requestNearOneClickQuoteOptions({
+      endpoint: "https://resolver.test/functions/v1/near-oneclick-quotes",
+      fetch: fakeFetch,
+      headers: { "x-mypaytag-dapp-id": "smartrust-wallet" },
+      request: {
+        sourceAsset: "near/mainnet/USDC",
+        sourceAmount: "25.18",
+        payorReference: "smartrust:send_001",
+        receiveRequirement: {
+          destinationAsset: "base/mainnet/USDC",
+          recipient: validNearOneClickQuoteOption.selectedRouteReference,
+          amount: "25.00",
+          expiresAt: validNearOneClickQuoteOption.expiresAt,
+          resolverReference: validNearOneClickQuoteOption.resolverReference,
+        },
+      },
+    });
+    const instruction = await selectNearOneClickQuote({
+      endpoint: "https://resolver.test/functions/v1/near-oneclick-selected-quote",
+      fetch: fakeFetch,
+      request: validNearOneClickQuoteSelectionRequest,
+    });
+
+    expect(quotes.quotes).toEqual([validNearOneClickQuoteOption]);
+    expect(instruction).toEqual(validNearOneClickPayableInstruction);
+    expect(calls.map((call) => call.endpoint)).toEqual([
+      "https://resolver.test/functions/v1/near-oneclick-quotes",
+      "https://resolver.test/functions/v1/near-oneclick-selected-quote",
+    ]);
+    expect(calls[1].body).toEqual(validNearOneClickQuoteSelectionRequest);
+  });
+
   it("requests Phase 2 extension quotes from every configured solver when none is preferred", async () => {
     const calls: CryptoNativeExecutionSolverId[] = [];
     const providers = [
@@ -245,4 +298,11 @@ function createQuoteProvider(
       };
     },
   };
+}
+
+function jsonResponse(body: unknown): Response {
+  return new Response(JSON.stringify(body), {
+    status: 200,
+    headers: { "content-type": "application/json" },
+  });
 }

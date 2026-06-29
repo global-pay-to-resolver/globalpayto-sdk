@@ -22,6 +22,37 @@ export type SupportedPath = ResolveRequest["supportedPaths"][number];
 export type ResolveAmount = ResolveRequest["amount"];
 export type PayorAmountExactness = "exact_send" | "exact_receive";
 
+export interface NearOneClickReceiveRequirement {
+  destinationAsset: string;
+  recipient: string;
+  amount: string;
+  expiresAt: string;
+  resolverReference: string;
+}
+
+export interface NearOneClickQuoteEndpointRequest {
+  schema?: "mypaytag.near_1click.quote_request.v1";
+  receiveRequirement: NearOneClickReceiveRequirement;
+  selectedRouteReference?: string;
+  sourceAsset: string;
+  sourceAmount: string;
+  payorReference: string;
+}
+
+export interface NearOneClickQuoteEndpointResponse {
+  status: "quoted";
+  adapter: "near_intents_1click";
+  resolverReference: string;
+  selectedRouteReference: string;
+  quotes: NearOneClickMvpQuoteOption[];
+}
+
+export interface MyPayTagEndpointCallOptions {
+  endpoint: string;
+  fetch?: typeof fetch;
+  headers?: Record<string, string>;
+}
+
 export interface PayorAppReferenceInput {
   payorAppId: string;
   reference: string;
@@ -176,6 +207,21 @@ export function parseNearOneClickPayableInstruction(
   return validateNearOneClickPayableInstruction(payload);
 }
 
+export async function requestNearOneClickQuoteOptions(
+  options: MyPayTagEndpointCallOptions & { request: NearOneClickQuoteEndpointRequest },
+): Promise<NearOneClickQuoteEndpointResponse> {
+  assertNearOneClickQuoteRequest(options.request);
+  const payload = await postJson(options.endpoint, options.request, options);
+  return parseNearOneClickQuoteEndpointResponse(payload);
+}
+
+export async function selectNearOneClickQuote(
+  options: MyPayTagEndpointCallOptions & { request: NearOneClickMvpQuoteSelectionRequest },
+): Promise<NearOneClickMvpPayableInstruction> {
+  const request = buildNearOneClickQuoteSelectionRequest(options.request);
+  return parseNearOneClickPayableInstruction(await postJson(options.endpoint, request, options));
+}
+
 export function isMyPayTagNotification(payload: unknown): payload is NotificationEvent {
   return isNotificationEvent(payload);
 }
@@ -216,6 +262,62 @@ function requireNonEmpty(value: string, fieldName: string): string {
     throw new Error(`${fieldName} must be a non-empty string`);
   }
   return trimmed;
+}
+
+function parseNearOneClickQuoteEndpointResponse(payload: unknown): NearOneClickQuoteEndpointResponse {
+  if (!payload || typeof payload !== "object") {
+    throw new Error("invalid_near_1click_quote_response");
+  }
+  const candidate = payload as NearOneClickQuoteEndpointResponse;
+  if (
+    candidate.status !== "quoted" ||
+    candidate.adapter !== "near_intents_1click" ||
+    !candidate.resolverReference ||
+    !candidate.selectedRouteReference ||
+    !Array.isArray(candidate.quotes)
+  ) {
+    throw new Error("invalid_near_1click_quote_response");
+  }
+
+  return {
+    ...candidate,
+    quotes: candidate.quotes.map(parseNearOneClickQuoteOption),
+  };
+}
+
+function assertNearOneClickQuoteRequest(request: NearOneClickQuoteEndpointRequest): void {
+  if (!request.sourceAsset || !request.sourceAmount || !request.payorReference) {
+    throw new Error("invalid_near_1click_quote_request");
+  }
+  if (
+    !request.receiveRequirement?.destinationAsset ||
+    !request.receiveRequirement.recipient ||
+    !request.receiveRequirement.amount ||
+    !request.receiveRequirement.expiresAt ||
+    !request.receiveRequirement.resolverReference
+  ) {
+    throw new Error("invalid_near_1click_quote_request");
+  }
+}
+
+async function postJson(
+  endpoint: string,
+  body: unknown,
+  options: Pick<MyPayTagEndpointCallOptions, "fetch" | "headers"> = {},
+): Promise<unknown> {
+  const requestFetch = options.fetch ?? globalThis.fetch;
+  const response = await requestFetch(endpoint, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      ...(options.headers ?? {}),
+    },
+    body: JSON.stringify(body),
+  });
+  if (!response.ok) {
+    throw new Error(`mypaytag_endpoint_error:${response.status}`);
+  }
+  return await response.json();
 }
 
 /**
