@@ -9,6 +9,8 @@ import {
   validResolvedResponse,
   validResolveRequest,
   validRouteSelectionResponse,
+  validProviderCallbackRequest,
+  validRouteRegistrationRequest,
 } from "@mypaytag/protocol";
 
 import {
@@ -34,6 +36,14 @@ import {
 describe("@mypaytag/sdk", () => {
   it("builds and validates resolve requests", () => {
     expect(buildResolveRequest(validResolveRequest)).toEqual(validResolveRequest);
+  });
+
+  it("keeps public MVP payloads on the paytag identifier contract", () => {
+    expect(validResolveRequest.recipient.identifierType).toBe("paytag");
+    expect(validResolvedResponse.intent.recipient.identifierType).toBe("paytag");
+    expect(validNotificationEvent.recipient.identifierType).toBe("paytag");
+    expect(validRouteRegistrationRequest.recipient.identifierType).toBe("paytag");
+    expect(validProviderCallbackRequest.recipient.identifierType).toBe("paytag");
   });
 
   it("builds generic payor-app resolve request inputs", () => {
