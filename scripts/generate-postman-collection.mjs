@@ -46,6 +46,8 @@ const normalizeJsonExample = (value) => {
   }
 
   if (!value || typeof value !== "object") {
+    if (typeof value === "number") return "<number>";
+    if (typeof value === "boolean") return "<boolean>";
     return typeof value === "string" ? "<string>" : value;
   }
 
