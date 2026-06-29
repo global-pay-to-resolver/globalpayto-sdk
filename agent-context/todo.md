@@ -638,3 +638,65 @@ Acceptance notes:
 - `pnpm validate` passes.
 - Public boundary scan passes and finds no private backend, Cubid internal, wallet graph, service-role, private storage, or deployment internals.
 - Staged smoke checklist references the corrected SDK contracts for Cubid SDK, MyPayTag backend, one test PayingDapp, one test PayToDapp, and SmarTrust swap/bridge NEAR 1Click.
+
+## Sprint 8: Code-Verified Backend Compatibility Closure
+
+### GPTS-S8-T1 Add Backend Compatibility Fixtures For Public Paytag Boundaries
+
+Status: Todo
+Feature branch: codex/mypaytag-mvp-code-gap-todos-20260629
+Session log: TBD
+Depends on: mypaytag:GPTR-S8-T1, smartrust-wallet:STW-S28-T1
+
+Add fixtures and conformance tests that prove the SDK's canonical
+`identifierType: "paytag"` resolve, route registration, provider callback,
+notification, and intent payloads are the payloads the backend accepts and
+returns.
+
+Acceptance notes:
+
+- Tests fail if SDK fixtures or generated types reintroduce public
+  `identifierType: "verified_stamp"`.
+- Fixtures include SmarTrust PayingDapp resolve and SmarTrust PayToDapp route
+  registration examples.
+- Backend response examples validate through SDK schemas without compatibility
+  casts.
+- The staged smoke checklist names this as the contract gate before hosted
+  staging smoke.
+
+### GPTS-S8-T2 Add Public NEAR 1Click Endpoint Client Helpers
+
+Status: Todo
+Feature branch: codex/mypaytag-mvp-code-gap-todos-20260629
+Session log: TBD
+Depends on: mypaytag:GPTR-S8-T2, mypaytag-sdk:GPTS-S7-T1, mypaytag-sdk:GPTS-S7-T2
+
+Add SDK helpers for calling the backend NEAR 1Click MVP quote and selected-quote
+payable-instruction endpoints once those endpoints are exposed.
+
+Acceptance notes:
+
+- Helpers build and validate quote requests, quote options, selected-quote
+  requests, and payable instructions using the existing NEAR schemas.
+- Helpers do not expose LI.FI, Squid, 0x, Across, LayerZero/Stargate, broad
+  fanout, or generic external adapter support as MVP dependencies.
+- Tests cover success and safe failure parsing for quote unavailable, quote
+  expired, route revoked, authorization required, and invalid response.
+
+### GPTS-S8-T3 Guard Phase 2 Solver Helpers Against MVP Import Drift
+
+Status: Todo
+Feature branch: codex/mypaytag-mvp-code-gap-todos-20260629
+Session log: TBD
+Depends on: mypaytag-sdk:GPTS-S8-T2
+
+Add a package-level guardrail proving MVP examples and helpers do not require
+the Phase 2 `requestExecutionQuotes` fanout helper.
+
+Acceptance notes:
+
+- MVP examples import resolve, provider callback, hosted action, route CRUD,
+  and NEAR 1Click helpers only.
+- Phase 2 solver helper tests remain labeled as non-MVP.
+- Validation fails if Phase 2 solver ids appear in MVP happy-path fixtures as
+  active execution requirements.
