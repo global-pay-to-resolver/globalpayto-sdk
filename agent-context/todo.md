@@ -685,9 +685,9 @@ Acceptance notes:
 
 ### GPTS-S8-T3 Guard Phase 2 Solver Helpers Against MVP Import Drift
 
-Status: Todo
+Status: Complete
 Feature branch: codex/mypaytag-mvp-code-gap-todos-20260629
-Session log: TBD
+Session log: agent-context/session-log/main.md#2026-06-29-gpts-s8-t3
 Depends on: mypaytag-sdk:GPTS-S8-T2
 
 Add a package-level guardrail proving MVP examples and helpers do not require

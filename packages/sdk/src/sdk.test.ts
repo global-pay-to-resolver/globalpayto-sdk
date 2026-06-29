@@ -20,6 +20,7 @@ import {
   buildPayorAppReference,
   buildPayorAppResolveRequest,
   buildSupportedPath,
+  cryptoNativeExecutionSolvers,
   getActionUrl,
   isActionRequired,
   isMyPayTagNotification,
@@ -207,6 +208,23 @@ describe("@mypaytag/sdk", () => {
       "https://resolver.test/functions/v1/near-oneclick-selected-quote",
     ]);
     expect(calls[1].body).toEqual(validNearOneClickQuoteSelectionRequest);
+  });
+
+  it("keeps Phase 2 solver ids out of MVP happy-path fixtures", () => {
+    const mvpFixtures = JSON.stringify([
+      validResolveRequest,
+      validResolvedResponse,
+      validRouteRegistrationRequest,
+      validProviderCallbackRequest,
+      validNearOneClickQuoteOption,
+      validNearOneClickQuoteSelectionRequest,
+      validNearOneClickPayableInstruction,
+    ]);
+
+    expect(validNearOneClickQuoteOption.adapter).toBe("near_intents_1click");
+    for (const solverId of cryptoNativeExecutionSolvers) {
+      expect(mvpFixtures).not.toContain(solverId);
+    }
   });
 
   it("requests Phase 2 extension quotes from every configured solver when none is preferred", async () => {
