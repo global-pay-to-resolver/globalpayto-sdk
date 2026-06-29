@@ -2,6 +2,9 @@ import { describe, expect, it } from "vitest";
 
 import {
   validNoRouteResponse,
+  validNearOneClickPayableInstruction,
+  validNearOneClickQuoteOption,
+  validNearOneClickQuoteSelectionRequest,
   validNotificationEvent,
   validResolvedResponse,
   validResolveRequest,
@@ -11,6 +14,7 @@ import {
 import {
   buildResolveRequest,
   buildAmountValue,
+  buildNearOneClickQuoteSelectionRequest,
   buildPayorAppReference,
   buildPayorAppResolveRequest,
   buildSupportedPath,
@@ -21,6 +25,8 @@ import {
   parseNotificationEvent,
   parseResolveResponse,
   requestExecutionQuotes,
+  parseNearOneClickPayableInstruction,
+  parseNearOneClickQuoteOption,
   type CryptoNativeExecutionSolverId,
   type ExecutionQuoteProvider,
 } from "./index.js";
@@ -42,7 +48,7 @@ describe("@mypaytag/sdk", () => {
     });
 
     const result = buildPayorAppResolveRequest({
-      recipientIdentifier: "email:noak@example.com",
+      recipientIdentifier: "abd123@cubid.mypaytag",
       supportedPaths: [supportedPath],
       amount,
       purpose: "wallet_send",
@@ -70,7 +76,7 @@ describe("@mypaytag/sdk", () => {
 
   it("defaults payor-app helper exactness to exact receive", () => {
     const result = buildPayorAppResolveRequest({
-      recipientIdentifier: "email:noak@example.com",
+      recipientIdentifier: "abd123@cubid.mypaytag",
       supportedPaths: validResolveRequest.supportedPaths,
       amount: validResolveRequest.amount,
       purpose: validResolveRequest.purpose,
@@ -83,7 +89,7 @@ describe("@mypaytag/sdk", () => {
   it("rejects empty payor-app request fields before schema validation", () => {
     expect(() =>
       buildPayorAppResolveRequest({
-        recipientIdentifier: "email:noak@example.com",
+        recipientIdentifier: "abd123@cubid.mypaytag",
         supportedPaths: [],
         amount: validResolveRequest.amount,
         purpose: validResolveRequest.purpose,
@@ -110,7 +116,7 @@ describe("@mypaytag/sdk", () => {
     const response = parseResolveResponse(validRouteSelectionResponse);
 
     expect(isActionRequired(response)).toBe(true);
-    expect(getActionUrl(response)).toBe("https://mypaytag.com/actions/route-selection/gptr_act_789");
+    expect(getActionUrl(response)).toBe("https://mypaytag.com/actions/route-selection/mpt_act_789");
   });
 
   it("treats no-route responses as status-only", () => {
@@ -125,12 +131,27 @@ describe("@mypaytag/sdk", () => {
     expect(parseNotificationEvent(validNotificationEvent)).toEqual(validNotificationEvent);
   });
 
-  it("requests execution quotes from every configured solver when none is preferred", async () => {
+  it("parses the Phase 1 NEAR 1Click MVP quote option", () => {
+    expect(parseNearOneClickQuoteOption(validNearOneClickQuoteOption)).toEqual(
+      validNearOneClickQuoteOption,
+    );
+  });
+
+  it("builds selected NEAR 1Click quote requests and parses payable instructions", () => {
+    expect(buildNearOneClickQuoteSelectionRequest(validNearOneClickQuoteSelectionRequest)).toEqual(
+      validNearOneClickQuoteSelectionRequest,
+    );
+    expect(parseNearOneClickPayableInstruction(validNearOneClickPayableInstruction)).toEqual(
+      validNearOneClickPayableInstruction,
+    );
+  });
+
+  it("requests Phase 2 extension quotes from every configured solver when none is preferred", async () => {
     const calls: CryptoNativeExecutionSolverId[] = [];
     const providers = [
-      createQuoteProvider("near_intents_1click", calls),
       createQuoteProvider("lifi", calls),
       createQuoteProvider("squid", calls),
+      createQuoteProvider("across", calls),
     ];
 
     const quotes = await requestExecutionQuotes({
@@ -138,16 +159,16 @@ describe("@mypaytag/sdk", () => {
       request: quoteRequest,
     });
 
-    expect(calls).toEqual(["near_intents_1click", "lifi", "squid"]);
-    expect(quotes.map((quote) => quote.solverId)).toEqual(["near_intents_1click", "lifi", "squid"]);
+    expect(calls).toEqual(["lifi", "squid", "across"]);
+    expect(quotes.map((quote) => quote.solverId)).toEqual(["lifi", "squid", "across"]);
   });
 
-  it("requests an execution quote only from the preferred solver when provided", async () => {
+  it("requests a Phase 2 extension quote only from the preferred solver when provided", async () => {
     const calls: CryptoNativeExecutionSolverId[] = [];
     const providers = [
-      createQuoteProvider("near_intents_1click", calls),
       createQuoteProvider("lifi", calls),
       createQuoteProvider("squid", calls),
+      createQuoteProvider("across", calls),
     ];
 
     const quotes = await requestExecutionQuotes({
@@ -160,10 +181,10 @@ describe("@mypaytag/sdk", () => {
     expect(quotes.map((quote) => quote.solverId)).toEqual(["lifi"]);
   });
 
-  it("returns successful quotes when some configured solvers fail", async () => {
+  it("returns successful Phase 2 extension quotes when some configured solvers fail", async () => {
     const calls: CryptoNativeExecutionSolverId[] = [];
     const providers = [
-      createQuoteProvider("near_intents_1click", calls, { fail: true }),
+      createQuoteProvider("zero_x_cross_chain", calls, { fail: true }),
       createQuoteProvider("lifi", calls),
       createQuoteProvider("squid", calls, { fail: true }),
     ];
@@ -173,14 +194,14 @@ describe("@mypaytag/sdk", () => {
       request: quoteRequest,
     });
 
-    expect(calls).toEqual(["near_intents_1click", "lifi", "squid"]);
+    expect(calls).toEqual(["zero_x_cross_chain", "lifi", "squid"]);
     expect(quotes.map((quote) => quote.solverId)).toEqual(["lifi"]);
   });
 
   it("throws when every configured quote provider fails", async () => {
     await expect(requestExecutionQuotes({
       providers: [
-        createQuoteProvider("near_intents_1click", [], { fail: true }),
+        createQuoteProvider("zero_x_cross_chain", [], { fail: true }),
         createQuoteProvider("lifi", [], { fail: true }),
       ],
       request: quoteRequest,

@@ -16,16 +16,16 @@ The contract intentionally covers only verified-stamp identity, Modality B route
 
 ```json
 {
-  "identifierType": "verified_stamp",
-  "identifier": "email:noak@example.com"
+  "identifierType": "paytag",
+  "identifier": "abd123@cubid.mypaytag"
 }
 ```
 
 Rules:
 
-- `identifierType` is `verified_stamp` for MVP.
+- `identifierType` is `paytag` for MVP public requests.
 - `identifier` is provided by the integrator request and is validated server-side through Cubid.
-- Responses must use hashes, masked displays, or Cubid aliases instead of exposing raw identifiers where possible.
+- Responses must use hashes, masked displays, or MyPayTag paytag references instead of exposing raw identifiers where possible.
 
 ### Route Or Path
 
@@ -73,7 +73,7 @@ Public statuses:
 | `provider_error` | Selected PayToDapp returned an invalid or failed response. | Show failure and retry only if user flow allows. |
 | `expired_authorization` | Required authorization has expired. | Send user through authorization again. |
 | `revoked_authorization` | User or system revoked authorization. | Do not retry without new authorization. |
-| `invalid_identifier` | Cubid validation rejected the pay-to identifier. | Ask for a different identifier. |
+| `invalid_identifier` | Cubid validation rejected the paytag identifier. | Ask for a different identifier. |
 | `invalid_request` | Request failed schema or policy validation. | Fix integrator request before retrying. |
 
 Private backend diagnostics must never appear as public statuses.
@@ -102,8 +102,8 @@ Create/update request:
 ```json
 {
   "recipient": {
-    "identifierType": "verified_stamp",
-    "identifier": "email:noak@example.com"
+    "identifierType": "paytag",
+    "identifier": "abd123@cubid.mypaytag"
   },
   "payToDappId": "smartrust-wallet",
   "supportedRoutes": [
@@ -113,7 +113,7 @@ Create/update request:
       "asset": "USDC"
     }
   ],
-  "consentToken": "cubid_consent_token"
+  "authorizationToken": "mpt_auth_123"
 }
 ```
 
@@ -124,7 +124,7 @@ Resolved registration response:
   "status": "resolved",
   "routes": [
     {
-      "id": "gptr_route_123",
+      "id": "mpt_route_123",
       "payToDappId": "smartrust-wallet",
       "chain": "base",
       "network": "mainnet",
@@ -135,6 +135,47 @@ Resolved registration response:
 }
 ```
 
+List/read/update responses are scoped envelopes:
+
+```json
+{
+  "status": "resolved",
+  "routes": [
+    {
+      "id": "mpt_route_123",
+      "payToDappId": "smartrust-wallet",
+      "chain": "base",
+      "network": "mainnet",
+      "asset": "USDC",
+      "state": "active"
+    }
+  ]
+}
+```
+
+```json
+{
+  "status": "resolved",
+  "route": {
+    "id": "mpt_route_123",
+    "payToDappId": "smartrust-wallet",
+    "chain": "base",
+    "network": "mainnet",
+    "asset": "USDC",
+    "state": "disabled"
+  }
+}
+```
+
+Route revocation response:
+
+```json
+{
+  "status": "revoked",
+  "routeId": "mpt_route_123"
+}
+```
+
 Route selection required response:
 
 ```json
@@ -142,7 +183,7 @@ Route selection required response:
   "status": "user_action_required",
   "action": {
     "type": "route_selection",
-    "url": "https://mypaytag.com/actions/route-selection/gptr_act_123",
+    "url": "https://mypaytag.com/actions/route-selection/mpt_act_123",
     "expiresAt": "2026-06-24T20:00:00Z"
   }
 }
@@ -152,7 +193,8 @@ Rules:
 
 - Requests with account/address/payment-instruction fields are `invalid_request`.
 - Overlapping routes can return `user_action_required` until the user confirms priority/default.
-- PayingDapps must not receive route preference details.
+- Route CRUD responses expose only PayToDapp-owned scoped route capability data.
+- PayingDapps must not receive route preference details, unrelated PayToDapps, wallet graphs, raw identifiers, or payment instructions.
 
 ## PayingDapp Resolve
 
@@ -167,8 +209,8 @@ Request:
 ```json
 {
   "recipient": {
-    "identifierType": "verified_stamp",
-    "identifier": "email:noak@example.com"
+    "identifierType": "paytag",
+    "identifier": "abd123@cubid.mypaytag"
   },
   "supportedPaths": [
     {
@@ -206,7 +248,7 @@ User action response:
   "status": "user_action_required",
   "action": {
     "type": "route_selection",
-    "url": "https://mypaytag.com/actions/route-selection/gptr_act_789",
+    "url": "https://mypaytag.com/actions/route-selection/mpt_act_789",
     "expiresAt": "2026-06-24T20:00:00Z"
   }
 }
@@ -223,6 +265,93 @@ Rules:
 - Action URLs must not embed recipient, route, provider, authorization, wallet, preference, or diagnostic data.
 - Unauthenticated action pages must remain safe even when opened by the wrong user, crawler, browser preview, or expired session.
 
+### Hosted Route Selection Action
+
+Hosted route-selection actions hydrate an action-scoped browser view only after validation and user context checks:
+
+```json
+{
+  "status": "ready",
+  "actionId": "mpt_act_789",
+  "actionType": "route_selection",
+  "expiresAt": "2026-06-24T20:00:00Z",
+  "options": [
+    {
+      "optionId": "mpt_route_option_123",
+      "chain": "base",
+      "network": "mainnet",
+      "asset": "USDC",
+      "payToDappId": "smartrust-wallet",
+      "displayName": "SmarTrust Wallet - Base USDC"
+    }
+  ]
+}
+```
+
+Decisions either select an action-scoped route option, leave the current choice unchanged, or deny the action:
+
+```json
+{
+  "decision": "select_route",
+  "selectedOptionId": "mpt_route_option_123"
+}
+```
+
+Completion states include `selected_route`, `unchanged`, `denied`, `completed`, `expired`, `invalid`, `replayed`, and `restart_required`.
+
+Hosted action payloads must not expose raw identifiers, wallet addresses, route preferences, unrelated PayToDapps, provider internals, wallet graphs, private diagnostics, or broader route inventory.
+
+### NEAR 1Click Quote Confirmation
+
+The MVP crypto-native execution contract is a NEAR Intents / 1Click quote flow. The resolver may return a `mypaytag.near_1click.quote_option.v1` object when a PayingDapp needs to confirm a concrete cross-chain execution route before receiving payable instructions.
+
+The PayingDapp confirms the selected option with `mypaytag.near_1click.quote_selection_request.v1`:
+
+```json
+{
+  "schema": "mypaytag.near_1click.quote_selection_request.v1",
+  "resolverReference": "mpt_req_123",
+  "quoteId": "near_1click_quote_123",
+  "selectedRouteReference": "mpt_route_123",
+  "payingDappReference": "chaincrew:payout_987",
+  "idempotencyKey": "mpt_idem_near_123",
+  "clientReference": "chaincrew:near_selection_123"
+}
+```
+
+The resolver responds with a `mypaytag.near_1click.payable_instruction.v1` payload:
+
+```json
+{
+  "schema": "mypaytag.near_1click.payable_instruction.v1",
+  "status": "ready",
+  "adapter": "near_intents_1click",
+  "resolverReference": "mpt_req_123",
+  "quoteId": "near_1click_quote_123",
+  "selectedRouteReference": "mpt_route_123",
+  "payingDappReference": "chaincrew:payout_987",
+  "expiresAt": "2026-06-24T20:00:00Z",
+  "instruction": {
+    "kind": "near_1click_payable",
+    "payload": {
+      "nearQuoteReference": "near_quote_ref_123",
+      "depositAddress": "near1click-deposit.testnet",
+      "depositAsset": "USDC",
+      "depositAmount": "25.18",
+      "recipientAsset": "USDC",
+      "recipientAmount": "25.00",
+      "deadline": "2026-06-24T20:00:00Z"
+    }
+  }
+}
+```
+
+Rules:
+
+- `adapter` is always `near_intents_1click` for the MVP execution flow.
+- The quote selection request carries an idempotency key so retries do not mint duplicate payable instructions.
+- Payable instructions expose only the selected quote and deposit terms. They must not expose PayToDapp route inventory, route preference data, wallet graphs, or receiver-charged fee structures.
+
 ## Provider Intent Callback
 
 Endpoint:
@@ -235,12 +364,13 @@ Request:
 
 ```json
 {
-  "resolverRequestId": "gptr_req_123",
+  "resolverRequestId": "mpt_req_123",
   "recipient": {
-    "identifierType": "verified_stamp",
-    "identifierAlias": "cubid_stamp_alias_abc"
+    "identifierType": "paytag",
+    "paytagReference": "paytag_ref_abc"
   },
   "payingDappId": "chaincrew",
+  "payingDappReference": "chaincrew:payout_987",
   "selectedPath": {
     "chain": "base",
     "network": "mainnet",
@@ -266,6 +396,9 @@ Expected provider response:
     "provider": "smartrust-wallet",
     "payload": {
       "providerIntentId": "st_pi_456",
+      "resolverReference": "mpt_req_123",
+      "payingDappId": "chaincrew",
+      "payingDappReference": "chaincrew:payout_987",
       "chain": "base",
       "network": "mainnet",
       "asset": "USDC",
@@ -274,6 +407,7 @@ Expected provider response:
         "recipientAddress": "0xabc..."
       },
       "amount": "25.00",
+      "purpose": "payout",
       "reference": "smartrust:st_pi_456",
       "expiresAt": "2026-06-24T20:00:00Z"
     }
@@ -287,6 +421,7 @@ Rules:
 - Public conformance requires signature or equivalent auth metadata, timestamp, nonce, request expiry, and `resolverRequestId`.
 - Providers must reject callbacks outside the allowed clock-skew window, repeated nonce/timestamp combinations, and expired requests.
 - Repeated callbacks with the same `resolverRequestId` must be handled idempotently.
+- Provider responses must bind back to the callback through resolver reference, PayingDapp id, PayingDapp reference, selected route, amount, purpose, expiry, and provider intent id.
 - Provider response payloads are preserved inside `paymentInstruction.payload`.
 - External payment protocol rendering is out of scope for MVP.
 
@@ -296,12 +431,12 @@ Rules:
 {
   "status": "resolved",
   "intent": {
-    "id": "gptr_pi_123",
+    "id": "mpt_pi_123",
     "schema": "mypaytag.intent.v1",
     "status": "ready",
     "modality": "provider_intent",
     "recipient": {
-      "identifierType": "verified_stamp",
+      "identifierType": "paytag",
       "identifierHash": "sha256:..."
     },
     "selectedRoute": {
@@ -321,6 +456,9 @@ Rules:
       "provider": "smartrust-wallet",
       "payload": {
         "providerIntentId": "st_pi_456",
+        "resolverReference": "mpt_req_123",
+        "payingDappId": "chaincrew",
+        "payingDappReference": "chaincrew:payout_987",
         "chain": "base",
         "network": "mainnet",
         "asset": "USDC",
@@ -329,12 +467,13 @@ Rules:
           "recipientAddress": "0xabc..."
         },
         "amount": "25.00",
+        "purpose": "payout",
         "reference": "smartrust:st_pi_456",
         "expiresAt": "2026-06-24T20:00:00Z"
       }
     },
     "references": {
-      "resolverReference": "gptr_pi_123",
+      "resolverReference": "mpt_pi_123",
       "providerReference": "st_pi_456",
       "payingDappReference": "chaincrew:payout_987"
     }
@@ -352,11 +491,15 @@ Rules:
 Required `provider_json.payload` keys:
 
 - `providerIntentId`
+- `resolverReference`
+- `payingDappId`
+- `payingDappReference`
 - `chain`
 - `network`
 - `asset`
 - `destination`
 - `amount`
+- `purpose`
 - `reference`
 - `expiresAt`
 
@@ -370,13 +513,13 @@ Matching rules:
 - Top-level `recipientAddress`, `address`, and `account` fields are rejected so integrators do not confuse route registration with provider-selected destinations.
 - Providers may add extension fields, but SDK validators must preserve unknown extension fields without allowing them to replace required keys.
 
-## Route Quote Preview
+## Future Extension: Route Quote Preview
 
-Payor-app route option and intent option flows may return quote previews before a final intent is selected. A quote preview describes one executable candidate without revealing recipient wallet inventory or unrelated PayToDapps.
+Payor-app route option and intent option flows are future extensions, not requirements for the MVP resolve path. They may return quote previews before a final intent is selected. A quote preview describes one executable candidate without revealing recipient wallet inventory or unrelated PayToDapps.
 
 ```json
 {
-  "id": "gptr_quote_123",
+  "id": "mpt_quote_123",
   "method": "cross_chain_intent",
   "methodLabel": "Cross-chain intent route",
   "send": {
@@ -401,7 +544,7 @@ Payor-app route option and intent option flows may return quote previews before 
     }
   ],
   "expiresAt": "2026-06-24T20:00:00Z",
-  "resolverReference": "gptr_req_123"
+  "resolverReference": "mpt_req_123"
 }
 ```
 
@@ -409,7 +552,7 @@ Rules:
 
 - `method` is one of `direct_transfer`, `provider_exchange`, `provider_intent`, `bridge`, or `cross_chain_intent`.
 - Fee `source` is one of `payor_app`, `provider`, or `resolver`.
-- MVP quote fees are charged to the sender.
+- Modeled quote fees are charged to the sender.
 - Quote previews must not include route preferences, unrelated PayToDapps, wallet addresses, or wallet graph details.
 
 ## Cubid Comms Notification Events
@@ -423,7 +566,7 @@ Common payload fields:
   "eventType": "payment_intent_created",
   "schema": "mypaytag.notification.v1",
   "recipient": {
-    "identifierType": "verified_stamp",
+    "identifierType": "paytag",
     "maskedDisplay": "n***@example.com"
   },
   "amount": {
@@ -431,7 +574,7 @@ Common payload fields:
     "currency": "USDC"
   },
   "references": {
-    "resolverReference": "gptr_pi_123",
+    "resolverReference": "mpt_pi_123",
     "providerReference": "st_pi_456",
     "payingDappReference": "chaincrew:payout_987"
   },

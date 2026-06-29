@@ -4,10 +4,11 @@
 export interface ProviderCallbackRequest {
   resolverRequestId: string;
   recipient: {
-    identifierType: "verified_stamp";
-    identifierAlias: string;
+    identifierType: "paytag";
+    paytagReference: string;
   };
   payingDappId: string;
+  payingDappReference: string;
   selectedPath: Path;
   amount: Amount;
   purpose: string;

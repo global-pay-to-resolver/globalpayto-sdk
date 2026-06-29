@@ -371,3 +371,270 @@ Acceptance notes:
 - Fixtures include SmarTrust-like examples without SmarTrust-specific exported type names.
 - Mock quote providers support preferred-solver and quote-fanout tests.
 - Fixtures remain public-safe and do not reference private backend implementation details.
+
+## Sprint 6: MyPayTag MVP Contract Realignment
+
+### GPTS-S6-T1 Rename Public GlobalPayTo Contract Surfaces To MyPayTag
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s6-t1
+Depends on: TBD
+
+Implement the public-contract rename requested in `agent-context/2026-06-28-mypaytag-mvp-realignment.md`.
+
+Acceptance notes:
+
+- Package metadata, schemas, generated types, examples, docs, OpenAPI, Postman collections, fixtures, tests, and published-contract names use `MyPayTag`, `mypaytag`, and `Paytag`.
+- Backwards-compatible aliases are retained only where needed and are explicitly documented as compatibility.
+- Examples present paytags as universal identifiers for PayingDapps while noting implementation may use PayToDapp-scoped aliases internally.
+- The other four realignment docs are checked before implementation.
+
+### GPTS-S6-T2 Make OpenAPI And Schemas Match The Canonical Intent Contract
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s6-t2
+Depends on: mypaytag-sdk:GPTS-S1-T5
+
+Align OpenAPI, JSON Schema, generated TypeScript, and examples around the MVP MyPayTag intent.
+
+Acceptance notes:
+
+- `api/openapi.yaml` requires the same intent fields as `packages/protocol/schemas/mypaytag-intent.schema.json`.
+- `provider_json` examples require provider intent id, chain, network, asset, destination, amount, reference, and expiry.
+- Weak examples that require only `destination` are removed or corrected.
+- OpenAPI examples, JSON Schemas, generated TypeScript types, and SDK fixtures agree.
+
+### GPTS-S6-T3 Keep Cubid Internals Out Of MyPayTag Public APIs
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s6-t3
+Depends on: cubid-sdk-v2:S18.1
+
+Ensure the SDK contract treats Cubid as an external identity and consent dependency only.
+
+Acceptance notes:
+
+- Public contracts accept a paytag or opaque paytag reference and rely on backend validation against Cubid.
+- Public SDK surfaces do not expose Cubid internal ids, raw Cubid user ids, Cubid grant internals, or Cubid stamp management APIs.
+- PayingDapp examples integrate with MyPayTag rather than directly probing Cubid.
+- MyPayTag route authorization remains separate from Cubid identity/paytag validation grants.
+
+### GPTS-S6-T4 Split MVP Helpers From Future Execution Helpers
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s6-t4
+Depends on: mypaytag-sdk:GPTS-S5-T1, mypaytag-sdk:GPTS-S5-T2
+
+Preserve future execution helper work while making it clearly non-MVP.
+
+Acceptance notes:
+
+- Resolve, route registration, provider callback, hosted route selection, and MyPayTag intent helpers are labeled MVP.
+- Solver quote helpers, preferred solver ids, bridge/swap/cross-chain quote previews, and execution fanout are labeled future or extension helpers.
+- Examples do not imply execution helpers are required for the core MyPayTag resolve flow.
+- Future helper docs avoid saying Cubid resolves payments or owns wallets/payment destinations.
+
+### GPTS-S6-T5 Add Paytag Availability And Privacy Fixtures
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s6-t5
+Depends on: mypaytag-sdk:GPTS-S2-T4
+
+Extend fixtures for opaque/default paytags, explicit raw paytags, uniqueness checks, and safe negative states.
+
+Acceptance notes:
+
+- Fixtures include opaque Cubid-backed paytags such as `abd123@cubid.mypaytag`.
+- Fixtures include raw stamp-based paytags such as `+1234569999@phone.cubid.mypaytag` only as explicit user-choice examples.
+- Fixtures cover paytag uniqueness and availability checks before issuance.
+- Negative-disclosure fixtures cover `no_route`, `authorization_required`, and `user_action_required`.
+
+### GPTS-S6-T6 Add Contract Tests And Cross-Repo Smoke Checklist
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s6-t6
+Depends on: mypaytag-sdk:GPTS-S6-T2, mypaytag-sdk:GPTS-S6-T3, mypaytag-sdk:GPTS-S6-T5
+
+Add acceptance coverage for the corrected MVP contract and document the staged integration smoke.
+
+Acceptance notes:
+
+- Tests reject route registration with wallet addresses or payment instructions.
+- Tests reject provider responses missing required `provider_json` fields.
+- Generated artifacts are refreshed only through repo scripts.
+- A staged smoke checklist pairs this SDK with Cubid SDK, MyPayTag backend, one test PayingDapp, and one test PayToDapp after local validation passes.
+
+## Sprint 7: MVP Gap Closure From SDK Review
+
+### GPTS-S7-T1 Add NEAR Intents / 1Click MVP Quote Contracts
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s7-t1
+Depends on: mypaytag:GPTR-S7-T7, smartrust-wallet:SMTW-MPT-02
+
+Define the public SDK/protocol contract for NEAR Intents / 1Click as the only Phase 1 swap/bridge execution adapter.
+
+Acceptance notes:
+
+- Add JSON Schemas, generated TypeScript types, validators, and fixtures for NEAR 1Click quote option responses.
+- Quote option responses include quote id, send amount, receive amount, source chain/network/asset, destination chain/network/asset, fees, expiry, resolver reference, and selected PayToDapp route reference.
+- Quote option responses do not expose unrelated PayToDapps, route preferences, wallet graph details, raw identifiers, Cubid internals, or private provider diagnostics.
+- SDK docs state that NEAR Intents / 1Click is Phase 1/MVP for SmarTrust swap/bridge paytag payments.
+- LI.FI, Squid, 0x, Across, LayerZero/Stargate, broad solver fanout, and generic external adapter support are labeled Phase 2.
+
+### GPTS-S7-T2 Add Selected Quote Confirmation And Payable Instruction Contracts
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s7-t2
+Depends on: mypaytag-sdk:GPTS-S7-T1, mypaytag:GPTR-S7-T7, smartrust-wallet:SMTW-MPT-02
+
+Define the public request and response shapes for a PayingDapp selecting a NEAR 1Click quote and receiving a payable instruction.
+
+Acceptance notes:
+
+- Add a selected quote confirmation request schema with resolver reference, quote id, paying dapp reference, and idempotency/reference fields.
+- Add a selected quote response schema for a normalized payable instruction or MyPayTag intent envelope.
+- Selected quote validation fixtures cover quote expiry, original resolver request binding, route reference binding, paytag/grant still active, and selected PayToDapp route still eligible.
+- Payable instruction fixtures cover NEAR 1Click response consistency and provider callback consistency.
+- Same-chain same-token behavior is documented as a PayingDapp choice; MyPayTag supports it when called but does not require the SDK helper path for local transfers.
+
+### GPTS-S7-T3 Move Generic Solver Fanout To Phase 2
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s7-t3
+Depends on: mypaytag-sdk:GPTS-S7-T1
+
+Keep the broader execution helper work, but stop presenting broad solver fanout as current MVP behavior.
+
+Acceptance notes:
+
+- `cryptoNativeExecutionSolvers` and `requestExecutionQuotes` are documented as Phase 2/future helpers unless explicitly scoped to NEAR 1Click MVP behavior.
+- Tests that currently require fanout across NEAR, LI.FI, Squid, and other providers are moved under Phase 2 wording or changed to prove they are non-MVP helpers.
+- Integration docs no longer tell MVP PayingDapps to configure broad solver providers.
+- `docs/engineering/protocol-and-sdk-architecture.md`, `docs/engineering/mvp-api-contracts.md`, `docs/integration/paying-dapps.md`, and examples all agree on NEAR 1Click as the only Phase 1 execution adapter.
+
+### GPTS-S7-T4 Complete Provider Callback Binding Contract
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s7-t4
+Depends on: mypaytag-sdk:GPTS-S6-T2, mypaytag:GPTR-S7-T5
+
+Align provider callback contracts with the MVP requirement that callbacks are bound to resolver request, selected route, amount, purpose, expiry, PayingDapp id, and PayingDapp reference.
+
+Acceptance notes:
+
+- `ProviderCallbackRequest` includes `payingDappReference`.
+- OpenAPI, JSON Schema, generated TypeScript, fixtures, provider SDK helpers, and conformance tests all include `purpose`, `expiresAt`, and `payingDappReference`.
+- Provider SDK matching helpers verify provider response path, amount, provider intent id, expiry, resolver reference, purpose, PayingDapp id, and PayingDapp reference where those fields are available.
+- Tests reject callbacks or provider responses with mismatched route, amount, reference, expiry, purpose, or PayingDapp reference.
+
+### GPTS-S7-T5 Align OpenAPI With Protocol Schemas And Fixtures
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s7-t5
+Depends on: mypaytag-sdk:GPTS-S7-T1, mypaytag-sdk:GPTS-S7-T2, mypaytag-sdk:GPTS-S7-T4
+
+Remove remaining drift between OpenAPI and canonical protocol schemas.
+
+Acceptance notes:
+
+- `NotificationEvent` OpenAPI uses `eventType`, `schema`, `recipient`, `amount`, `references`, and `action`, matching the protocol schema.
+- Provider callback OpenAPI matches the protocol schema and generated TypeScript exactly.
+- OpenAPI examples validate against protocol validators where practical, not only string-presence checks.
+- Postman generation is refreshed from the corrected OpenAPI source.
+- `pnpm api:validate`, protocol tests, provider SDK tests, and public boundary scan pass after regeneration.
+
+### GPTS-S7-T6 Add Route CRUD Protocol Schemas And SDK Helpers
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s7-t6
+Depends on: mypaytag:GPTR-S7-T1
+
+Make PayToDapp route CRUD a typed SDK/protocol surface rather than only an OpenAPI description.
+
+Acceptance notes:
+
+- Add schemas, generated types, validators, and fixtures for `PayToRoute`, route list/read responses, `RouteUpdateRequest`, and delete/revoke route responses.
+- Route CRUD shapes expose only PayToDapp-owned scoped route capability data.
+- Route CRUD shapes do not expose wallet addresses, account ids, payment instructions, route preferences, unrelated PayToDapps, raw identifiers, Cubid internals, or private diagnostics.
+- Provider SDK includes helpers for building route create/update requests and parsing route CRUD responses.
+- Tests cover create, list/read, patch, delete/revoke, forbidden address fields, and safe not-found/unavailable responses.
+
+### GPTS-S7-T7 Add Hosted Route-Selection Action Schemas
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s7-t7
+Depends on: mypaytag:GPTR-S7-T6, mypaytag-site:GPTW-S7-T6
+
+Add canonical protocol support for hosted route-selection action view, decision, and completion payloads.
+
+Acceptance notes:
+
+- Add schemas, generated types, validators, and fixtures for hosted action view, hosted action decision, and hosted action completion.
+- Hosted action view exposes only action-scoped route choices after user authentication.
+- Hosted action decision supports selecting a route or leaving the choice unchanged/denied according to the backend and site contract.
+- Invalid, expired, completed, replayed, and restart-required action states are represented without leaking private diagnostics.
+- Tests reject hosted action payloads that include raw identifiers, wallet addresses, route preferences, unrelated PayToDapps, provider internals, or private diagnostics.
+
+### GPTS-S7-T8 Decide And Document Paytag Availability Contract Placement
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s7-t8
+Depends on: cubid-monorepo:CUBID-PAYTAG-02, mypaytag:GPTR-S7-T4
+
+Clarify whether paytag availability and issuance are public SDK contracts or private MyPayTag/Cubid service contracts.
+
+Acceptance notes:
+
+- If public or shared, add schemas, generated types, validators, fixtures, and docs for paytag availability and issuance responses.
+- If private service-to-service only, document that the public SDK intentionally keeps availability out of integrator APIs and keeps only public-safe fixtures.
+- Availability fixtures cover available, unavailable, reserved namespace, idempotent retry, opaque default, raw-explicit, and revoked/expired reuse policy cases.
+- Docs state that Cubid owns identity and consent while MyPayTag owns uniqueness/availability checks and does not expose wallet/payment route data to Cubid.
+
+### GPTS-S7-T9 Expand MVP Happy-Path Fixtures And Examples
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s7-t9
+Depends on: mypaytag-sdk:GPTS-S7-T1, mypaytag-sdk:GPTS-S7-T2, mypaytag-sdk:GPTS-S7-T6, mypaytag-sdk:GPTS-S7-T7, mypaytag-sdk:GPTS-S7-T8
+
+Update fixtures and examples so SDK consumers can exercise the MVP happy paths without private backend knowledge.
+
+Acceptance notes:
+
+- PayingDapp example covers same-chain resolve and NEAR 1Click swap/bridge quote flow.
+- PayToDapp example covers route registration, route update, route deregistration, and provider callback response validation.
+- Testing package exposes fixtures for paytag availability, route registration, route deregistration, resolve, route selection, NEAR 1Click quote options, selected quote payable instruction, and safe negative statuses.
+- Examples do not probe Cubid directly from PayingDapps.
+- Examples do not require broad solver fanout, LI.FI, Squid, 0x, Across, LayerZero/Stargate, or generic external adapter support for MVP.
+
+### GPTS-S7-T10 Validate Regenerated SDK Contract Artifacts
+
+Status: Complete
+Feature branch: codex/mypaytag-mvp-realignment-20260628
+Session log: agent-context/session-log/main.md#2026-06-28-gpts-s7-t10
+Depends on: mypaytag-sdk:GPTS-S7-T1, mypaytag-sdk:GPTS-S7-T2, mypaytag-sdk:GPTS-S7-T3, mypaytag-sdk:GPTS-S7-T4, mypaytag-sdk:GPTS-S7-T5, mypaytag-sdk:GPTS-S7-T6, mypaytag-sdk:GPTS-S7-T7, mypaytag-sdk:GPTS-S7-T8, mypaytag-sdk:GPTS-S7-T9
+
+Refresh generated artifacts and prove the SDK contract is internally consistent after the MVP gap closure.
+
+Acceptance notes:
+
+- Generated TypeScript and schema exports are refreshed only through `pnpm generate`.
+- Postman collection is refreshed only through the repo script.
+- `pnpm validate` passes.
+- Public boundary scan passes and finds no private backend, Cubid internal, wallet graph, service-role, private storage, or deployment internals.
+- Staged smoke checklist references the corrected SDK contracts for Cubid SDK, MyPayTag backend, one test PayingDapp, one test PayToDapp, and SmarTrust swap/bridge NEAR 1Click.

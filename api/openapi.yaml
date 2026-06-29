@@ -4,7 +4,7 @@ info:
   version: 0.1.0
   summary: Public resolver contracts for sending apps and receiving apps.
   description: |
-    MyPayTag lets sending apps resolve a user pay-to tag into a one-time payment
+    MyPayTag lets sending apps resolve a user paytag into a one-time payment
     intent, while receiving apps register supported routes and create dynamic
     provider intents only after selection.
 
@@ -66,9 +66,9 @@ paths:
       tags:
         - Resolve
       operationId: resolvePayment
-      summary: Resolve a pay-to tag into a payment intent or safe next action.
+      summary: Resolve a paytag into a payment intent or safe next action.
       description: |
-        Sending apps submit a Cubid verified-stamp recipient, supported payment
+        Sending apps submit a paytag or opaque paytag reference, supported payment
         paths, amount, purpose, and reconciliation reference. The response is a
         resolved one-time MyPayTag intent, a hosted action, or a public safe
         status.
@@ -83,8 +83,8 @@ paths:
                 summary: Base USDC payout
                 value:
                   recipient:
-                    identifierType: verified_stamp
-                    identifier: email:recipient@example.com
+                    identifierType: paytag
+                    identifier: abd123@cubid.mypaytag
                   supportedPaths:
                     - chain: base
                       network: mainnet
@@ -108,21 +108,45 @@ paths:
                   value:
                     status: resolved
                     intent:
-                      type: mypaytag.intent.v1
-                      resolverRequestId: mpt_req_123
-                      selectedPath:
+                      id: mpt_pi_123
+                      schema: mypaytag.intent.v1
+                      status: ready
+                      modality: provider_intent
+                      recipient:
+                        identifierType: paytag
+                        identifierHash: sha256:example
+                      selectedRoute:
+                        payToDappId: example-wallet
                         chain: base
                         network: mainnet
                         asset: USDC
                       amount:
                         value: "25.00"
                         currency: USDC
+                      expiresAt: "2026-06-24T20:00:00Z"
+                      singleUse: true
                       paymentInstruction:
-                        kind: provider_json
+                        type: provider_json
+                        provider: example-wallet
                         payload:
+                          providerIntentId: provider_pi_456
+                          resolverReference: mpt_req_123
+                          payingDappId: sender
+                          payingDappReference: sender:payout_987
+                          chain: base
+                          network: mainnet
+                          asset: USDC
                           destination:
                             kind: blockchain_address
                             recipientAddress: "0xabc0000000000000000000000000000000000000"
+                          amount: "25.00"
+                          purpose: payout
+                          reference: example-wallet:provider_pi_456
+                          expiresAt: "2026-06-24T20:00:00Z"
+                      references:
+                        resolverReference: mpt_pi_123
+                        providerReference: provider_pi_456
+                        payingDappReference: sender:payout_987
                 actionRequired:
                   summary: User route selection required
                   value:
@@ -140,6 +164,31 @@ paths:
         "401":
           $ref: "#/components/responses/Unauthorized"
   /payto-routes:
+    get:
+      tags:
+        - Routes
+      operationId: listPayToRoutes
+      summary: List receiving-app routes scoped to the authenticated app.
+      responses:
+        "200":
+          description: Scoped route list.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RouteListResponse"
+              examples:
+                routes:
+                  value:
+                    status: resolved
+                    routes:
+                      - id: mpt_route_123
+                        payToDappId: example-wallet
+                        chain: base
+                        network: mainnet
+                        asset: USDC
+                        state: active
+        "401":
+          $ref: "#/components/responses/Unauthorized"
     post:
       tags:
         - Routes
@@ -160,14 +209,14 @@ paths:
                 summary: Register Base USDC support
                 value:
                   recipient:
-                    identifierType: verified_stamp
-                    identifier: email:recipient@example.com
+                    identifierType: paytag
+                    identifier: abd123@cubid.mypaytag
                   payToDappId: example-wallet
                   supportedRoutes:
                     - chain: base
                       network: mainnet
                       asset: USDC
-                  consentToken: cubid_consent_token
+                  authorizationToken: mpt_auth_123
       responses:
         "200":
           description: Route registration outcome.
@@ -211,7 +260,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PayToRoute"
+                $ref: "#/components/schemas/RouteReadResponse"
+              examples:
+                route:
+                  value:
+                    status: resolved
+                    route:
+                      id: mpt_route_123
+                      payToDappId: example-wallet
+                      chain: base
+                      network: mainnet
+                      asset: USDC
+                      state: active
         "404":
           $ref: "#/components/responses/NotFound"
     patch:
@@ -225,15 +285,30 @@ paths:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/RouteUpdateRequest"
+              schema:
+                $ref: "#/components/schemas/RouteUpdateRequest"
+              examples:
+                disableRoute:
+                  value:
+                    state: disabled
       responses:
         "200":
           description: Updated route.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PayToRoute"
+                $ref: "#/components/schemas/RouteReadResponse"
+              examples:
+                route:
+                  value:
+                    status: resolved
+                    route:
+                      id: mpt_route_123
+                      payToDappId: example-wallet
+                      chain: base
+                      network: mainnet
+                      asset: USDC
+                      state: disabled
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -253,7 +328,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DeleteRouteResponse"
+                $ref: "#/components/schemas/RouteDeleteResponse"
+              examples:
+                revoked:
+                  value:
+                    status: revoked
+                    routeId: mpt_route_123
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
@@ -276,6 +356,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HostedActionView"
+              examples:
+                readyRouteSelection:
+                  value:
+                    status: ready
+                    actionId: mpt_act_789
+                    actionType: route_selection
+                    expiresAt: "2026-06-24T20:00:00Z"
+                    options:
+                      - optionId: mpt_route_option_123
+                        chain: base
+                        network: mainnet
+                        asset: USDC
+                        payToDappId: smartrust-wallet
+                        displayName: SmarTrust Wallet - Base USDC
         "400":
           $ref: "#/components/responses/BadRequest"
         "404":
@@ -293,6 +387,11 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/HostedActionDecision"
+            examples:
+              selectRoute:
+                value:
+                  decision: select_route
+                  selectedOptionId: mpt_route_option_123
       responses:
         "200":
           description: Completion state.
@@ -300,6 +399,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HostedActionCompletion"
+              examples:
+                selectedRoute:
+                  value:
+                    status: selected_route
+                    actionId: mpt_act_789
+                    selectedOptionId: mpt_route_option_123
         "400":
           $ref: "#/components/responses/BadRequest"
         "404":
@@ -323,13 +428,20 @@ paths:
             examples:
               paymentIntentCreated:
                 value:
-                  event: payment_intent_created
-                  recipientDisplay: r***@example.com
+                  eventType: payment_intent_created
+                  schema: mypaytag.notification.v1
+                  recipient:
+                    identifierType: paytag
+                    maskedDisplay: r***@example.com
                   amount:
                     value: "25.00"
                     currency: USDC
-                  resolverRequestId: mpt_req_123
-                  payingDappReference: sender:payout_987
+                  references:
+                    resolverReference: mpt_req_123
+                    providerReference: provider_pi_456
+                    payingDappReference: sender:payout_987
+                  action:
+                    type: none
       responses:
         "202":
           description: Notification accepted for delivery.
@@ -358,6 +470,24 @@ webhooks:
           application/json:
             schema:
               $ref: "#/components/schemas/ProviderCallbackRequest"
+            examples:
+              providerCallback:
+                value:
+                  resolverRequestId: mpt_req_123
+                  recipient:
+                    identifierType: paytag
+                    paytagReference: paytag_ref_abc
+                  payingDappId: chaincrew
+                  payingDappReference: chaincrew:payout_987
+                  selectedPath:
+                    chain: base
+                    network: mainnet
+                    asset: USDC
+                  amount:
+                    value: "25.00"
+                    currency: USDC
+                  purpose: payout
+                  expiresAt: "2026-06-24T20:00:00Z"
       responses:
         "200":
           description: Provider intent response.
@@ -365,6 +495,29 @@ webhooks:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProviderResponse"
+              examples:
+                providerResponse:
+                  value:
+                    providerIntentId: st_pi_456
+                    status: ready
+                    paymentInstruction:
+                      type: provider_json
+                      provider: smartrust-wallet
+                      payload:
+                        providerIntentId: st_pi_456
+                        resolverReference: mpt_req_123
+                        payingDappId: chaincrew
+                        payingDappReference: chaincrew:payout_987
+                        chain: base
+                        network: mainnet
+                        asset: USDC
+                        destination:
+                          kind: blockchain_address
+                          recipientAddress: "0xabc0000000000000000000000000000000000000"
+                        amount: "25.00"
+                        purpose: payout
+                        reference: smartrust:st_pi_456
+                        expiresAt: "2026-06-24T20:00:00Z"
 components:
   responses:
     BadRequest:
@@ -459,24 +612,25 @@ components:
       properties:
         identifierType:
           type: string
-          const: verified_stamp
+          const: paytag
         identifier:
           type: string
           examples:
-            - email:recipient@example.com
+            - abd123@cubid.mypaytag
+            - "+1234569999@phone.cubid.mypaytag"
     RecipientAlias:
       type: object
       additionalProperties: false
       required:
         - identifierType
-        - identifierAlias
+        - paytagReference
       properties:
         identifierType:
           type: string
-          const: verified_stamp
-        identifierAlias:
+          const: paytag
+        paytagReference:
           type: string
-          description: Cubid alias or masked server-side recipient reference.
+          description: MyPayTag server-side paytag reference for the selected provider callback.
     RoutePath:
       type: object
       additionalProperties: false
@@ -548,7 +702,16 @@ components:
       oneOf:
         - $ref: "#/components/schemas/ResolvedIntentResponse"
         - $ref: "#/components/schemas/ActionRequiredResponse"
-        - $ref: "#/components/schemas/StatusOnlyResponse"
+        - type: object
+          additionalProperties: false
+          required:
+            - status
+          properties:
+            status:
+              type: string
+              enum:
+                - no_route
+                - provider_unavailable
     ResolvedIntentResponse:
       type: object
       additionalProperties: false
@@ -573,14 +736,6 @@ components:
           const: user_action_required
         action:
           $ref: "#/components/schemas/HostedAction"
-    StatusOnlyResponse:
-      type: object
-      additionalProperties: false
-      required:
-        - status
-      properties:
-        status:
-          $ref: "#/components/schemas/PublicStatus"
     HostedAction:
       type: object
       additionalProperties: false
@@ -599,44 +754,155 @@ components:
         expiresAt:
           type: string
           format: date-time
+        recipientAddress: false
+        address: false
+        account: false
     MyPayTagIntent:
       type: object
       additionalProperties: false
       required:
-        - type
-        - resolverRequestId
-        - selectedPath
+        - id
+        - schema
+        - status
+        - modality
+        - recipient
+        - selectedRoute
+        - amount
+        - expiresAt
+        - singleUse
         - paymentInstruction
+        - references
       properties:
-        type:
+        id:
+          type: string
+          minLength: 1
+        schema:
           type: string
           const: mypaytag.intent.v1
-        resolverRequestId:
+        status:
           type: string
-        selectedPath:
-          $ref: "#/components/schemas/RoutePath"
+          const: ready
+        modality:
+          type: string
+          const: provider_intent
+        recipient:
+          $ref: "#/components/schemas/IntentRecipient"
+        selectedRoute:
+          $ref: "#/components/schemas/SelectedRoute"
         amount:
           $ref: "#/components/schemas/Amount"
+        expiresAt:
+          type: string
+          format: date-time
+        singleUse:
+          type: boolean
+          const: true
         paymentInstruction:
           $ref: "#/components/schemas/PaymentInstruction"
+        references:
+          $ref: "#/components/schemas/IntentReferences"
+    IntentRecipient:
+      type: object
+      additionalProperties: false
+      required:
+        - identifierType
+        - identifierHash
+      properties:
+        identifierType:
+          type: string
+          const: paytag
+        identifierHash:
+          type: string
+          minLength: 1
+    SelectedRoute:
+      type: object
+      additionalProperties: false
+      required:
+        - payToDappId
+        - chain
+        - network
+        - asset
+      properties:
+        payToDappId:
+          type: string
+          minLength: 1
+        chain:
+          type: string
+          minLength: 1
+        network:
+          type: string
+          minLength: 1
+        asset:
+          type: string
+          minLength: 1
     PaymentInstruction:
       type: object
       additionalProperties: false
       required:
-        - kind
+        - type
+        - provider
         - payload
       properties:
-        kind:
+        type:
           type: string
           const: provider_json
+        provider:
+          type: string
+          minLength: 1
         payload:
-          type: object
-          additionalProperties: true
-          required:
-            - destination
-          properties:
-            destination:
-              $ref: "#/components/schemas/PaymentDestination"
+          $ref: "#/components/schemas/ProviderPayload"
+    ProviderPayload:
+      type: object
+      additionalProperties: true
+      required:
+        - providerIntentId
+        - resolverReference
+        - payingDappId
+        - payingDappReference
+        - chain
+        - network
+        - asset
+        - destination
+        - amount
+        - purpose
+        - reference
+        - expiresAt
+      properties:
+        providerIntentId:
+          type: string
+          minLength: 1
+        resolverReference:
+          type: string
+          minLength: 1
+        payingDappId:
+          type: string
+          minLength: 1
+        payingDappReference:
+          type: string
+          minLength: 1
+        chain:
+          type: string
+          minLength: 1
+        network:
+          type: string
+          minLength: 1
+        asset:
+          type: string
+          minLength: 1
+        destination:
+          $ref: "#/components/schemas/PaymentDestination"
+        amount:
+          type: string
+          pattern: "^[0-9]+(\\.[0-9]+)?$"
+        purpose:
+          type: string
+          minLength: 1
+        reference:
+          type: string
+          minLength: 1
+        expiresAt:
+          type: string
+          format: date-time
     PaymentDestination:
       type: object
       additionalProperties: false
@@ -649,6 +915,24 @@ components:
           const: blockchain_address
         recipientAddress:
           type: string
+          minLength: 1
+    IntentReferences:
+      type: object
+      additionalProperties: false
+      required:
+        - resolverReference
+        - providerReference
+        - payingDappReference
+      properties:
+        resolverReference:
+          type: string
+          minLength: 1
+        providerReference:
+          type: string
+          minLength: 1
+        payingDappReference:
+          type: string
+          minLength: 1
     RouteRegistrationRequest:
       type: object
       additionalProperties: false
@@ -656,7 +940,7 @@ components:
         - recipient
         - payToDappId
         - supportedRoutes
-        - consentToken
+        - authorizationToken
       properties:
         recipient:
           $ref: "#/components/schemas/Recipient"
@@ -667,7 +951,7 @@ components:
           minItems: 1
           items:
             $ref: "#/components/schemas/RoutePath"
-        consentToken:
+        authorizationToken:
           type: string
     RouteRegistrationResponse:
       oneOf:
@@ -685,7 +969,16 @@ components:
               items:
                 $ref: "#/components/schemas/PayToRoute"
         - $ref: "#/components/schemas/ActionRequiredResponse"
-        - $ref: "#/components/schemas/StatusOnlyResponse"
+        - type: object
+          additionalProperties: false
+          required:
+            - status
+          properties:
+            status:
+              type: string
+              enum:
+                - no_route
+                - provider_unavailable
     PayToRoute:
       type: object
       additionalProperties: false
@@ -699,45 +992,106 @@ components:
       properties:
         id:
           type: string
+          minLength: 1
         payToDappId:
           type: string
+          minLength: 1
         chain:
           type: string
+          minLength: 1
         network:
           type: string
+          minLength: 1
         asset:
           type: string
+          minLength: 1
         state:
           type: string
           enum:
             - active
+            - disabled
             - revoked
+    RouteListResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+        - routes
+      properties:
+        status:
+          type: string
+          const: resolved
+        routes:
+          type: array
+          items:
+            $ref: "#/components/schemas/PayToRoute"
+    RouteReadResponse:
+      oneOf:
+        - type: object
+          additionalProperties: false
+          required:
+            - status
+            - route
+          properties:
+            status:
+              type: string
+              const: resolved
+            route:
+              $ref: "#/components/schemas/PayToRoute"
+        - type: object
+          additionalProperties: false
+          required:
+            - status
+          properties:
+            status:
+              type: string
+              enum:
+                - no_route
+                - provider_unavailable
     RouteUpdateRequest:
       type: object
       additionalProperties: false
+      anyOf:
+        - required:
+            - state
+        - required:
+            - supportedRoutes
       properties:
         state:
           type: string
           enum:
             - active
+            - disabled
             - revoked
         supportedRoutes:
           type: array
           minItems: 1
           items:
             $ref: "#/components/schemas/RoutePath"
-    DeleteRouteResponse:
-      type: object
-      additionalProperties: false
-      required:
-        - status
-        - routeId
-      properties:
-        status:
-          type: string
-          const: revoked
-        routeId:
-          type: string
+    RouteDeleteResponse:
+      oneOf:
+        - type: object
+          additionalProperties: false
+          required:
+            - status
+            - routeId
+          properties:
+            status:
+              type: string
+              const: revoked
+            routeId:
+              type: string
+              minLength: 1
+        - type: object
+          additionalProperties: false
+          required:
+            - status
+          properties:
+            status:
+              type: string
+              enum:
+                - no_route
+                - provider_unavailable
     HostedActionView:
       type: object
       additionalProperties: false
@@ -753,13 +1107,18 @@ components:
             - expired
             - invalid
             - completed
+            - replayed
             - restart_required
         actionId:
           type: string
+          minLength: 1
         actionType:
           type: string
           enum:
             - route_selection
+        expiresAt:
+          type: string
+          format: date-time
         options:
           type: array
           items:
@@ -777,16 +1136,22 @@ components:
       properties:
         optionId:
           type: string
+          minLength: 1
         chain:
           type: string
+          minLength: 1
         network:
           type: string
+          minLength: 1
         asset:
           type: string
+          minLength: 1
         payToDappId:
           type: string
+          minLength: 1
         displayName:
           type: string
+          minLength: 1
     HostedActionDecision:
       type: object
       additionalProperties: false
@@ -796,25 +1161,36 @@ components:
         decision:
           type: string
           enum:
-            - approve
-            - deny
             - select_route
+            - leave_unchanged
+            - deny
         selectedOptionId:
           type: string
+          minLength: 1
     HostedActionCompletion:
       type: object
       additionalProperties: false
       required:
         - status
+        - actionId
       properties:
         status:
           type: string
           enum:
-            - approved
+            - unchanged
             - denied
             - selected_route
             - completed
+            - expired
+            - invalid
+            - replayed
             - restart_required
+        actionId:
+          type: string
+          minLength: 1
+        selectedOptionId:
+          type: string
+          minLength: 1
     ProviderCallbackRequest:
       type: object
       additionalProperties: false
@@ -822,8 +1198,11 @@ components:
         - resolverRequestId
         - recipient
         - payingDappId
+        - payingDappReference
         - selectedPath
         - amount
+        - purpose
+        - expiresAt
       properties:
         resolverRequestId:
           type: string
@@ -831,45 +1210,91 @@ components:
           $ref: "#/components/schemas/RecipientAlias"
         payingDappId:
           type: string
+        payingDappReference:
+          type: string
         selectedPath:
           $ref: "#/components/schemas/RoutePath"
         amount:
           $ref: "#/components/schemas/Amount"
+        purpose:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
     ProviderResponse:
       type: object
       additionalProperties: false
       required:
+        - providerIntentId
         - status
+        - paymentInstruction
       properties:
+        providerIntentId:
+          type: string
+          minLength: 1
         status:
           type: string
-          enum:
-            - ready
-            - unavailable
-            - rejected
-        provider_json:
+          const: ready
+        paymentInstruction:
           $ref: "#/components/schemas/PaymentInstruction"
     NotificationEvent:
       type: object
       additionalProperties: false
       required:
-        - event
-        - recipientDisplay
+        - eventType
+        - schema
+        - recipient
         - amount
-        - resolverRequestId
-        - payingDappReference
+        - references
+        - action
       properties:
-        event:
+        eventType:
           type: string
           const: payment_intent_created
-        recipientDisplay:
+        schema:
           type: string
+          const: mypaytag.notification.v1
+        recipient:
+          type: object
+          additionalProperties: false
+          required:
+            - identifierType
+            - maskedDisplay
+          properties:
+            identifierType:
+              type: string
+              const: paytag
+            maskedDisplay:
+              type: string
+              minLength: 1
         amount:
           $ref: "#/components/schemas/Amount"
-        resolverRequestId:
-          type: string
-        payingDappReference:
-          type: string
+        references:
+          type: object
+          additionalProperties: false
+          required:
+            - resolverReference
+            - providerReference
+            - payingDappReference
+          properties:
+            resolverReference:
+              type: string
+              minLength: 1
+            providerReference:
+              type: string
+              minLength: 1
+            payingDappReference:
+              type: string
+              minLength: 1
+        action:
+          type: object
+          additionalProperties: false
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              const: none
     NotificationAccepted:
       type: object
       additionalProperties: false
@@ -882,7 +1307,6 @@ components:
     SolverId:
       type: string
       enum:
-        - near_intents_1click
         - lifi
         - squid
         - zero_x_cross_chain

@@ -1,23 +1,58 @@
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
 import { describe, expect, it } from "vitest";
+import { parse as parseYaml } from "yaml";
 
 import {
+  denyHostedActionDecision,
+  expiredHostedActionView,
+  replayedHostedActionCompletion,
+  restartRequiredHostedActionCompletion,
+  validateHostedActionCompletion,
+  validateHostedActionDecision,
+  validateHostedActionView,
   validateMyPayTagIntent,
+  validateNearOneClickPayableInstruction,
   validateNotificationEvent,
+  validateNearOneClickQuoteOption,
+  validateNearOneClickQuoteSelectionRequest,
+  validatePayToRoute,
+  validateProviderCallbackRequest,
   validateProviderResponse,
+  validateRouteDeleteResponse,
+  validateRouteListResponse,
   validateResolveRequest,
   validateResolveResponse,
   validateRouteRegistrationRequest,
+  validateRouteRegistrationResponse,
+  validateRouteReadResponse,
   validateRouteQuotePreview,
+  validateRouteUpdateRequest,
   validateStatus,
+  validHostedActionCompletion,
+  validHostedActionDecision,
+  validHostedActionView,
   validMyPayTagIntent,
+  validNearOneClickPayableInstruction,
   validNoRouteResponse,
   validNotificationEvent,
+  validNearOneClickQuoteOption,
+  validNearOneClickQuoteSelectionRequest,
+  validProviderCallbackRequest,
   validProviderResponse,
+  validPayToRoute,
+  validRouteDeleteResponse,
+  validRouteListResponse,
+  validRouteNotFoundResponse,
   validResolveRequest,
   validResolvedResponse,
   validRouteRegistrationRequest,
   validRouteQuotePreview,
+  validRouteReadResponse,
   validRouteSelectionResponse,
+  validRouteUnavailableResponse,
+  validRouteUpdateRequest,
 } from "./index.js";
 
 const terminalStatusFixtures = [
@@ -36,6 +71,32 @@ const actionStatusFixtures = [
   validRouteSelectionResponse,
 ] as const;
 
+const providerPayloadRequiredFields = [
+  "providerIntentId",
+  "resolverReference",
+  "payingDappId",
+  "payingDappReference",
+  "chain",
+  "network",
+  "asset",
+  "destination",
+  "amount",
+  "purpose",
+  "reference",
+  "expiresAt",
+] as const;
+
+const providerCallbackRequiredFields = [
+  "resolverRequestId",
+  "recipient",
+  "payingDappId",
+  "payingDappReference",
+  "selectedPath",
+  "amount",
+  "purpose",
+  "expiresAt",
+] as const;
+
 describe("@mypaytag/protocol", () => {
   it("accepts valid MVP fixtures", () => {
     expect(validateRouteRegistrationRequest(validRouteRegistrationRequest)).toEqual(
@@ -47,10 +108,29 @@ describe("@mypaytag/protocol", () => {
     expect(validateResolveResponse(validRouteSelectionResponse)).toEqual(
       validRouteSelectionResponse,
     );
+    expect(validatePayToRoute(validPayToRoute)).toEqual(validPayToRoute);
+    expect(validateRouteListResponse(validRouteListResponse)).toEqual(validRouteListResponse);
+    expect(validateRouteReadResponse(validRouteReadResponse)).toEqual(validRouteReadResponse);
+    expect(validateRouteUpdateRequest(validRouteUpdateRequest)).toEqual(validRouteUpdateRequest);
+    expect(validateRouteDeleteResponse(validRouteDeleteResponse)).toEqual(validRouteDeleteResponse);
+    expect(validateHostedActionView(validHostedActionView)).toEqual(validHostedActionView);
+    expect(validateHostedActionDecision(validHostedActionDecision)).toEqual(validHostedActionDecision);
+    expect(validateHostedActionCompletion(validHostedActionCompletion)).toEqual(
+      validHostedActionCompletion,
+    );
     expect(validateProviderResponse(validProviderResponse)).toEqual(validProviderResponse);
     expect(validateMyPayTagIntent(validMyPayTagIntent)).toEqual(validMyPayTagIntent);
     expect(validateNotificationEvent(validNotificationEvent)).toEqual(validNotificationEvent);
     expect(validateRouteQuotePreview(validRouteQuotePreview)).toEqual(validRouteQuotePreview);
+    expect(validateNearOneClickQuoteOption(validNearOneClickQuoteOption)).toEqual(
+      validNearOneClickQuoteOption,
+    );
+    expect(validateNearOneClickQuoteSelectionRequest(validNearOneClickQuoteSelectionRequest)).toEqual(
+      validNearOneClickQuoteSelectionRequest,
+    );
+    expect(validateNearOneClickPayableInstruction(validNearOneClickPayableInstruction)).toEqual(
+      validNearOneClickPayableInstruction,
+    );
   });
 
   it("accepts every public status value and response shape", () => {
@@ -83,6 +163,113 @@ describe("@mypaytag/protocol", () => {
         }),
       ).toThrow();
     }
+  });
+
+  it("accepts route CRUD response and safe unavailable shapes", () => {
+    expect(validateRouteListResponse(validRouteListResponse)).toEqual(validRouteListResponse);
+    expect(validateRouteReadResponse(validRouteReadResponse)).toEqual(validRouteReadResponse);
+    expect(validateRouteReadResponse(validRouteNotFoundResponse)).toEqual(validRouteNotFoundResponse);
+    expect(validateRouteDeleteResponse(validRouteDeleteResponse)).toEqual(validRouteDeleteResponse);
+    expect(validateRouteDeleteResponse(validRouteUnavailableResponse)).toEqual(
+      validRouteUnavailableResponse,
+    );
+  });
+
+  it("rejects route CRUD payloads that expose private route or wallet data", () => {
+    for (const [field, value] of [
+      ["account", "acct_123"],
+      ["address", "0xabc123"],
+      ["recipientAddress", "0xabc123"],
+      ["paymentInstruction", validProviderResponse.paymentInstruction],
+      ["routePreference", "default"],
+      ["walletGraph", { connectedWallets: ["0xabc123"] }],
+    ] as const) {
+      expect(() =>
+        validatePayToRoute({
+          ...validPayToRoute,
+          [field]: value,
+        }),
+      ).toThrow();
+
+      expect(() =>
+        validateRouteUpdateRequest({
+          ...validRouteUpdateRequest,
+          [field]: value,
+        }),
+      ).toThrow();
+    }
+  });
+
+  it("accepts hosted route-selection action view, decision, and completion states", () => {
+    expect(validateHostedActionView(validHostedActionView)).toEqual(validHostedActionView);
+    expect(validateHostedActionView(expiredHostedActionView)).toEqual(expiredHostedActionView);
+    expect(validateHostedActionDecision(validHostedActionDecision)).toEqual(validHostedActionDecision);
+    expect(validateHostedActionDecision(denyHostedActionDecision)).toEqual(denyHostedActionDecision);
+    expect(validateHostedActionCompletion(validHostedActionCompletion)).toEqual(
+      validHostedActionCompletion,
+    );
+    expect(validateHostedActionCompletion(replayedHostedActionCompletion)).toEqual(
+      replayedHostedActionCompletion,
+    );
+    expect(validateHostedActionCompletion(restartRequiredHostedActionCompletion)).toEqual(
+      restartRequiredHostedActionCompletion,
+    );
+  });
+
+  it("rejects hosted action payloads with private route, wallet, provider, or diagnostic data", () => {
+    for (const [field, value] of [
+      ["address", "0xabc123"],
+      ["recipientAddress", "0xabc123"],
+      ["rawIdentifier", "abd123@cubid.mypaytag"],
+      ["routePreference", "default"],
+      ["unrelatedPayToDapps", ["other-wallet"]],
+      ["walletGraph", { connectedWallets: ["0xabc123"] }],
+      ["providerPayload", validProviderResponse.paymentInstruction.payload],
+      ["privateDiagnostics", { reason: "rls_miss" }],
+    ] as const) {
+      expect(() =>
+        validateHostedActionView({
+          ...validHostedActionView,
+          [field]: value,
+        }),
+      ).toThrow();
+
+      expect(() =>
+        validateHostedActionDecision({
+          ...validHostedActionDecision,
+          [field]: value,
+        }),
+      ).toThrow();
+
+      expect(() =>
+        validateHostedActionCompletion({
+          ...validHostedActionCompletion,
+          [field]: value,
+        }),
+      ).toThrow();
+    }
+  });
+
+  it("requires selected hosted route decisions and completions to name the selected option", () => {
+    expect(() =>
+      validateHostedActionDecision({
+        decision: "select_route",
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateHostedActionDecision({
+        decision: "deny",
+        selectedOptionId: "mpt_route_option_123",
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateHostedActionCompletion({
+        status: "selected_route",
+        actionId: "mpt_act_789",
+      }),
+    ).toThrow();
   });
 
   it("rejects paths that omit network", () => {
@@ -125,12 +312,12 @@ describe("@mypaytag/protocol", () => {
     for (const action of [
       {
         type: "setup",
-        url: "https://mypaytag.com/actions/setup/gptr_act_456",
+        url: "https://mypaytag.com/actions/setup/mpt_act_456",
         expiresAt: "2026-06-24T20:00:00Z",
       },
       {
         type: "authorization",
-        url: "https://mypaytag.com/actions/setup/gptr_act_auth",
+        url: "https://mypaytag.com/actions/setup/mpt_act_auth",
         expiresAt: "2026-06-24T20:00:00Z",
       },
     ] as const) {
@@ -156,6 +343,32 @@ describe("@mypaytag/protocol", () => {
         },
       }),
     ).toThrow();
+  });
+
+  it("rejects provider responses missing required provider_json payload fields", () => {
+    for (const field of providerPayloadRequiredFields) {
+      const payload = { ...validProviderResponse.paymentInstruction.payload };
+      delete payload[field];
+
+      expect(() =>
+        validateProviderResponse({
+          ...validProviderResponse,
+          paymentInstruction: {
+            ...validProviderResponse.paymentInstruction,
+            payload,
+          },
+        }),
+      ).toThrow();
+    }
+  });
+
+  it("rejects provider callbacks missing binding fields", () => {
+    for (const field of providerCallbackRequiredFields) {
+      const callback = { ...validProviderCallbackRequest };
+      delete callback[field];
+
+      expect(() => validateProviderCallbackRequest(callback)).toThrow();
+    }
   });
 
   it("rejects provider payloads that expose address-like fields inside MyPayTag intents", () => {
@@ -223,13 +436,99 @@ describe("@mypaytag/protocol", () => {
     ).toThrow();
   });
 
+  it("treats NEAR 1Click quote options as the only MVP execution quote contract", () => {
+    expect(() =>
+      validateNearOneClickQuoteOption({
+        ...validNearOneClickQuoteOption,
+        adapter: "lifi",
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateNearOneClickQuoteOption({
+        ...validNearOneClickQuoteOption,
+        payToDappOptions: ["smartrust-wallet", "other-wallet"],
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateNearOneClickQuoteOption({
+        ...validNearOneClickQuoteOption,
+        fees: [
+          {
+            ...validNearOneClickQuoteOption.fees[0],
+            chargedTo: "receiver",
+          },
+        ],
+      }),
+    ).toThrow();
+  });
+
+  it("accepts selected NEAR 1Click quotes and payable instructions", () => {
+    expect(validateNearOneClickQuoteSelectionRequest(validNearOneClickQuoteSelectionRequest)).toEqual(
+      validNearOneClickQuoteSelectionRequest,
+    );
+    expect(validateNearOneClickPayableInstruction(validNearOneClickPayableInstruction)).toEqual(
+      validNearOneClickPayableInstruction,
+    );
+  });
+
+  it("rejects unsafe NEAR 1Click quote selection and payable instruction payloads", () => {
+    expect(() =>
+      validateNearOneClickQuoteSelectionRequest({
+        ...validNearOneClickQuoteSelectionRequest,
+        idempotencyKey: "short",
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateNearOneClickQuoteSelectionRequest({
+        ...validNearOneClickQuoteSelectionRequest,
+        selectedRouteReference: "",
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateNearOneClickPayableInstruction({
+        ...validNearOneClickPayableInstruction,
+        adapter: "lifi",
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateNearOneClickPayableInstruction({
+        ...validNearOneClickPayableInstruction,
+        instruction: {
+          ...validNearOneClickPayableInstruction.instruction,
+          payload: {
+            ...validNearOneClickPayableInstruction.instruction.payload,
+            depositAmount: "twenty five",
+          },
+        },
+      }),
+    ).toThrow();
+
+    expect(() =>
+      validateNearOneClickPayableInstruction({
+        ...validNearOneClickPayableInstruction,
+        instruction: {
+          ...validNearOneClickPayableInstruction.instruction,
+          payload: {
+            ...validNearOneClickPayableInstruction.instruction.payload,
+            payToDappOptions: ["smartrust-wallet", "other-wallet"],
+          },
+        },
+      }),
+    ).toThrow();
+  });
+
   it("rejects notification payloads with provider receipt or action-link fields", () => {
     expect(() =>
       validateNotificationEvent({
         ...validNotificationEvent,
         action: {
           type: "setup",
-          url: "https://mypaytag.com/actions/setup/gptr_act_456",
+          url: "https://mypaytag.com/actions/setup/mpt_act_456",
           expiresAt: "2026-06-24T20:00:00Z",
         },
       }),
@@ -243,5 +542,64 @@ describe("@mypaytag/protocol", () => {
         },
       }),
     ).toThrow();
+  });
+
+  it("validates OpenAPI examples against canonical protocol validators", () => {
+    const openApi = parseYaml(readFileSync(
+      fileURLToPath(new URL("../../../api/openapi.yaml", import.meta.url)),
+      "utf8",
+    )) as any;
+
+    const resolvedExample =
+      openApi.paths["/resolve"].post.responses["200"].content["application/json"].examples.resolved.value;
+    const routeRegistrationRequestExample =
+      openApi.paths["/payto-routes"].post.requestBody.content["application/json"].examples.smartrustBaseUsdc.value;
+    const routeRegistrationResponseExample =
+      openApi.paths["/payto-routes"].post.responses["200"].content["application/json"].examples.registered.value;
+    const routeListResponseExample =
+      openApi.paths["/payto-routes"].get.responses["200"].content["application/json"].examples.routes.value;
+    const routeReadResponseExample =
+      openApi.paths["/payto-routes/{routeId}"].get.responses["200"].content["application/json"].examples.route.value;
+    const routeUpdateRequestExample =
+      openApi.paths["/payto-routes/{routeId}"].patch.requestBody.content["application/json"].examples.disableRoute.value;
+    const routeUpdateResponseExample =
+      openApi.paths["/payto-routes/{routeId}"].patch.responses["200"].content["application/json"].examples.route.value;
+    const routeDeleteResponseExample =
+      openApi.paths["/payto-routes/{routeId}"].delete.responses["200"].content["application/json"].examples.revoked.value;
+    const hostedActionViewExample =
+      openApi.paths["/hosted-actions/{actionId}"].get.responses["200"].content["application/json"].examples.readyRouteSelection.value;
+    const hostedActionDecisionExample =
+      openApi.paths["/hosted-actions/{actionId}"].post.requestBody.content["application/json"].examples.selectRoute.value;
+    const hostedActionCompletionExample =
+      openApi.paths["/hosted-actions/{actionId}"].post.responses["200"].content["application/json"].examples.selectedRoute.value;
+    const notificationExample =
+      openApi.paths["/notifications"].post.requestBody.content["application/json"].examples.paymentIntentCreated.value;
+    const providerCallbackExample =
+      openApi.webhooks.providerPaymentIntent.post.requestBody.content["application/json"].examples.providerCallback.value;
+    const providerResponseExample =
+      openApi.webhooks.providerPaymentIntent.post.responses["200"].content["application/json"].examples.providerResponse.value;
+
+    expect(validateResolveResponse(resolvedExample)).toEqual(resolvedExample);
+    expect(validateRouteRegistrationRequest(routeRegistrationRequestExample)).toEqual(
+      routeRegistrationRequestExample,
+    );
+    expect(validateRouteRegistrationResponse(routeRegistrationResponseExample)).toEqual(
+      routeRegistrationResponseExample,
+    );
+    expect(validateRouteListResponse(routeListResponseExample)).toEqual(routeListResponseExample);
+    expect(validateRouteReadResponse(routeReadResponseExample)).toEqual(routeReadResponseExample);
+    expect(validateRouteUpdateRequest(routeUpdateRequestExample)).toEqual(routeUpdateRequestExample);
+    expect(validateRouteReadResponse(routeUpdateResponseExample)).toEqual(routeUpdateResponseExample);
+    expect(validateRouteDeleteResponse(routeDeleteResponseExample)).toEqual(routeDeleteResponseExample);
+    expect(validateHostedActionView(hostedActionViewExample)).toEqual(hostedActionViewExample);
+    expect(validateHostedActionDecision(hostedActionDecisionExample)).toEqual(
+      hostedActionDecisionExample,
+    );
+    expect(validateHostedActionCompletion(hostedActionCompletionExample)).toEqual(
+      hostedActionCompletionExample,
+    );
+    expect(validateNotificationEvent(notificationExample)).toEqual(notificationExample);
+    expect(validateProviderCallbackRequest(providerCallbackExample)).toEqual(providerCallbackExample);
+    expect(validateProviderResponse(providerResponseExample)).toEqual(providerResponseExample);
   });
 });

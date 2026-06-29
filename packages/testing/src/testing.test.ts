@@ -5,7 +5,7 @@ import {
 } from "@mypaytag/sdk";
 
 import {
-  createMockCubidValidator,
+  createMockPaytagValidator,
   createMockExecutionQuoteProvider,
   createMockPayToDapp,
   createMockResolver,
@@ -15,11 +15,49 @@ import {
 
 describe("@mypaytag/testing", () => {
   it("exports reusable MVP fixtures", () => {
+    expect(myPayTagFixtures.paytags.opaqueDefault).toMatchObject({
+      paytag: "abd123@cubid.mypaytag",
+      exposure: "opaque_default",
+      userChoiceRequired: false,
+    });
+    expect(myPayTagFixtures.paytags.rawExplicit).toMatchObject({
+      paytag: "+1234569999@phone.cubid.mypaytag",
+      exposure: "raw_stamp_explicit",
+      userChoiceRequired: true,
+    });
+    expect(myPayTagFixtures.paytags.availability.available.canIssue).toBe(true);
+    expect(myPayTagFixtures.paytags.availability.unavailable.publicReason).toBe("already_taken");
+    expect(myPayTagFixtures.paytags.availability.reserved.publicReason).toBe("reserved_namespace");
+    expect(myPayTagFixtures.paytags.availability.idempotentRetry).toMatchObject({
+      status: "idempotent_retry",
+      canIssue: true,
+    });
+    expect(myPayTagFixtures.paytags.availability.revokedReuseBlocked.publicReason).toBe(
+      "revoked_recently",
+    );
+    expect(myPayTagFixtures.paytags.availability.expiredReuseBlocked.publicReason).toBe(
+      "expired_recently",
+    );
+    expect(myPayTagFixtures.paytags.negativeDisclosure.noRoute).toEqual({ status: "no_route" });
+    expect(myPayTagFixtures.paytags.negativeDisclosure.authorizationRequired).toEqual({
+      status: "authorization_required",
+    });
+    expect(myPayTagFixtures.paytags.negativeDisclosure.userActionRequired.status).toBe(
+      "user_action_required",
+    );
     expect(myPayTagFixtures.resolve.request.intentMode).toBe("one_time");
     expect(myPayTagFixtures.notifications.paymentIntentCreated.eventType).toBe(
       "payment_intent_created",
     );
     expect(myPayTagFixtures.routeRegistration.forbiddenAddress).toHaveProperty("address");
+    expect(myPayTagFixtures.routeCrud.update.state).toBe("disabled");
+    expect(myPayTagFixtures.routeCrud.delete.status).toBe("revoked");
+    expect(myPayTagFixtures.hostedActions.view.actionType).toBe("route_selection");
+    expect(myPayTagFixtures.hostedActions.decision.decision).toBe("select_route");
+    expect(myPayTagFixtures.nearOneClick.quoteOption.adapter).toBe("near_intents_1click");
+    expect(myPayTagFixtures.nearOneClick.payableInstruction.instruction.kind).toBe(
+      "near_1click_payable",
+    );
     expect(myPayTagFixtures.routeOptions.directTransfer.method).toBe("direct_transfer");
     expect(myPayTagFixtures.routeOptions.sameChainExchange.method).toBe("provider_exchange");
     expect(myPayTagFixtures.routeOptions.bridge.method).toBe("bridge");
@@ -40,11 +78,11 @@ describe("@mypaytag/testing", () => {
     );
   });
 
-  it("provides a mock Cubid validator", async () => {
-    const validator = createMockCubidValidator();
+  it("provides a mock paytag validator", async () => {
+    const validator = createMockPaytagValidator();
 
-    await expect(validator.validateStamp("email:noak@example.com")).resolves.toMatchObject({
-      alias: "cubid_stamp_alias_abc",
+    await expect(validator.validatePaytag("abd123@cubid.mypaytag")).resolves.toMatchObject({
+      paytagReference: "paytag_ref_abc",
       valid: true,
     });
   });
@@ -65,11 +103,11 @@ describe("@mypaytag/testing", () => {
     expect(createPaymentIntentCreatedNotification().eventType).toBe("payment_intent_created");
   });
 
-  it("provides mock quote providers for preferred-solver and fanout tests", async () => {
+  it("provides Phase 2 mock quote providers for preferred-solver and fanout tests", async () => {
     const providers = [
-      createMockExecutionQuoteProvider({ solverId: "near_intents_1click" }),
       createMockExecutionQuoteProvider({ solverId: "lifi" }),
       createMockExecutionQuoteProvider({ solverId: "squid", failWith: "provider_unavailable" }),
+      createMockExecutionQuoteProvider({ solverId: "across" }),
     ];
 
     await expect(requestExecutionQuotes({
@@ -87,10 +125,10 @@ describe("@mypaytag/testing", () => {
       request: myPayTagFixtures.executionQuotes.exactSendRequest,
     })).resolves.toMatchObject([
       {
-        solverId: "near_intents_1click",
+        solverId: "lifi",
       },
       {
-        solverId: "lifi",
+        solverId: "across",
       },
     ]);
   });
@@ -99,7 +137,7 @@ describe("@mypaytag/testing", () => {
     await expect(requestExecutionQuotes({
       providers: [
         createMockExecutionQuoteProvider({
-          solverId: "near_intents_1click",
+          solverId: "zero_x_cross_chain",
           failWith: "provider_unavailable",
         }),
         createMockExecutionQuoteProvider({

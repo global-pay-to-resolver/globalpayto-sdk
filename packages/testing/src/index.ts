@@ -1,23 +1,47 @@
 import {
+  denyHostedActionDecision,
+  expiredHostedActionView,
+  replayedHostedActionCompletion,
+  restartRequiredHostedActionCompletion,
+  validHostedActionCompletion,
+  validHostedActionDecision,
+  validHostedActionView,
   validMyPayTagIntent,
+  validNearOneClickPayableInstruction,
+  validNearOneClickQuoteOption,
+  validNearOneClickQuoteSelectionRequest,
   validNoRouteResponse,
   validNotificationEvent,
   validProviderCallbackRequest,
   validProviderResponse,
+  validRouteDeleteResponse,
+  validRouteListResponse,
+  validRouteReadResponse,
   validResolvedResponse,
   validResolveRequest,
   validRouteRegistrationRequest,
   validRouteRegistrationResponse,
   validRouteSelectionResponse,
+  validRouteUpdateRequest,
+  type HostedActionCompletion,
+  type HostedActionDecision,
+  type HostedActionView,
   type MyPayTagIntent,
+  type NearOneClickPayableInstruction,
+  type NearOneClickQuoteOption,
+  type NearOneClickQuoteSelectionRequest,
   type NotificationEvent,
   type ProviderCallbackRequest,
   type ProviderResponse,
+  type RouteDeleteResponse,
+  type RouteListResponse,
   type ResolveRequest,
   type ResolveResponse,
   type RouteQuotePreview,
+  type RouteReadResponse,
   type RouteRegistrationRequest,
   type RouteRegistrationResponse,
+  type RouteUpdateRequest,
   validateNotificationEvent,
   validateResolveRequest,
   validateRouteRegistrationRequest,
@@ -30,10 +54,47 @@ import type {
 } from "@mypaytag/sdk";
 
 export interface MyPayTagFixtures {
+  paytags: {
+    opaqueDefault: PaytagExampleFixture;
+    rawExplicit: PaytagExampleFixture;
+    availability: {
+      available: PaytagAvailabilityFixture;
+      unavailable: PaytagAvailabilityFixture;
+      reserved: PaytagAvailabilityFixture;
+      idempotentRetry: PaytagAvailabilityFixture;
+      revokedReuseBlocked: PaytagAvailabilityFixture;
+      expiredReuseBlocked: PaytagAvailabilityFixture;
+    };
+    negativeDisclosure: {
+      noRoute: ResolveResponse;
+      authorizationRequired: ResolveResponse;
+      userActionRequired: ResolveResponse;
+    };
+  };
   routeRegistration: {
     valid: RouteRegistrationRequest;
     forbiddenAddress: RouteRegistrationRequest & { address: string };
     response: RouteRegistrationResponse;
+  };
+  routeCrud: {
+    list: RouteListResponse;
+    read: RouteReadResponse;
+    update: RouteUpdateRequest;
+    delete: RouteDeleteResponse;
+  };
+  hostedActions: {
+    view: HostedActionView;
+    expiredView: HostedActionView;
+    decision: HostedActionDecision;
+    denyDecision: HostedActionDecision;
+    completion: HostedActionCompletion;
+    replayedCompletion: HostedActionCompletion;
+    restartRequiredCompletion: HostedActionCompletion;
+  };
+  nearOneClick: {
+    quoteOption: NearOneClickQuoteOption;
+    quoteSelectionRequest: NearOneClickQuoteSelectionRequest;
+    payableInstruction: NearOneClickPayableInstruction;
   };
   resolve: {
     request: ResolveRequest;
@@ -63,13 +124,96 @@ export interface MyPayTagFixtures {
   executionQuotes: {
     exactSendRequest: ExecutionQuoteRequest;
     exactReceiveRequest: ExecutionQuoteRequest;
-    near: ExecutionQuote;
     lifi: ExecutionQuote;
+    squid: ExecutionQuote;
   };
   intent: MyPayTagIntent;
 }
 
+export interface PaytagExampleFixture {
+  paytag: string;
+  exposure: "opaque_default" | "raw_stamp_explicit";
+  identityProvider: "cubid";
+  userChoiceRequired: boolean;
+}
+
+export interface PaytagAvailabilityFixture {
+  paytag: string;
+  status:
+    | "available"
+    | "unavailable"
+    | "reserved"
+    | "idempotent_retry"
+    | "revoked_reuse_blocked"
+    | "expired_reuse_blocked";
+  canIssue: boolean;
+  publicReason?:
+    | "already_taken"
+    | "reserved_namespace"
+    | "same_request_replay"
+    | "revoked_recently"
+    | "expired_recently";
+}
+
 export const myPayTagFixtures: MyPayTagFixtures = {
+  paytags: {
+    opaqueDefault: {
+      paytag: "abd123@cubid.mypaytag",
+      exposure: "opaque_default",
+      identityProvider: "cubid",
+      userChoiceRequired: false,
+    },
+    rawExplicit: {
+      paytag: "+1234569999@phone.cubid.mypaytag",
+      exposure: "raw_stamp_explicit",
+      identityProvider: "cubid",
+      userChoiceRequired: true,
+    },
+    availability: {
+      available: {
+        paytag: "new456@cubid.mypaytag",
+        status: "available",
+        canIssue: true,
+      },
+      unavailable: {
+        paytag: "abd123@cubid.mypaytag",
+        status: "unavailable",
+        canIssue: false,
+        publicReason: "already_taken",
+      },
+      reserved: {
+        paytag: "support@mypaytag",
+        status: "reserved",
+        canIssue: false,
+        publicReason: "reserved_namespace",
+      },
+      idempotentRetry: {
+        paytag: "new456@cubid.mypaytag",
+        status: "idempotent_retry",
+        canIssue: true,
+        publicReason: "same_request_replay",
+      },
+      revokedReuseBlocked: {
+        paytag: "revoked789@cubid.mypaytag",
+        status: "revoked_reuse_blocked",
+        canIssue: false,
+        publicReason: "revoked_recently",
+      },
+      expiredReuseBlocked: {
+        paytag: "expired789@cubid.mypaytag",
+        status: "expired_reuse_blocked",
+        canIssue: false,
+        publicReason: "expired_recently",
+      },
+    },
+    negativeDisclosure: {
+      noRoute: validNoRouteResponse,
+      authorizationRequired: {
+        status: "authorization_required",
+      } satisfies ResolveResponse,
+      userActionRequired: validRouteSelectionResponse,
+    },
+  },
   routeRegistration: {
     valid: validRouteRegistrationRequest,
     forbiddenAddress: {
@@ -77,6 +221,26 @@ export const myPayTagFixtures: MyPayTagFixtures = {
       address: "0xabc123",
     },
     response: validRouteRegistrationResponse,
+  },
+  routeCrud: {
+    list: validRouteListResponse,
+    read: validRouteReadResponse,
+    update: validRouteUpdateRequest,
+    delete: validRouteDeleteResponse,
+  },
+  hostedActions: {
+    view: validHostedActionView,
+    expiredView: expiredHostedActionView,
+    decision: validHostedActionDecision,
+    denyDecision: denyHostedActionDecision,
+    completion: validHostedActionCompletion,
+    replayedCompletion: replayedHostedActionCompletion,
+    restartRequiredCompletion: restartRequiredHostedActionCompletion,
+  },
+  nearOneClick: {
+    quoteOption: validNearOneClickQuoteOption,
+    quoteSelectionRequest: validNearOneClickQuoteSelectionRequest,
+    payableInstruction: validNearOneClickPayableInstruction,
   },
   resolve: {
     request: validResolveRequest,
@@ -99,28 +263,28 @@ export const myPayTagFixtures: MyPayTagFixtures = {
   },
   routeOptions: {
     directTransfer: buildQuotePreview({
-      id: "gptr_quote_direct",
+      id: "mpt_quote_direct",
       method: "direct_transfer",
       methodLabel: "Direct transfer",
       send: { chain: "eip155", network: "8453", asset: "USDC", amount: "25.00" },
       receive: { chain: "eip155", network: "8453", asset: "USDC", amount: "25.00" },
     }),
     sameChainExchange: buildQuotePreview({
-      id: "gptr_quote_exchange",
+      id: "mpt_quote_exchange",
       method: "provider_exchange",
       methodLabel: "Same-chain exchange",
       send: { chain: "eip155", network: "8453", asset: "ETH", amount: "0.008" },
       receive: { chain: "eip155", network: "8453", asset: "USDC", amount: "25.00" },
     }),
     bridge: buildQuotePreview({
-      id: "gptr_quote_bridge",
+      id: "mpt_quote_bridge",
       method: "bridge",
       methodLabel: "Bridge transfer",
       send: { chain: "eip155", network: "1", asset: "USDC", amount: "25.12" },
       receive: { chain: "eip155", network: "8453", asset: "USDC", amount: "25.00" },
     }),
     crossChainIntent: buildQuotePreview({
-      id: "gptr_quote_cross_chain_intent",
+      id: "mpt_quote_cross_chain_intent",
       method: "cross_chain_intent",
       methodLabel: "Cross-chain intent",
       send: { chain: "solana", network: "mainnet-beta", asset: "USDC", amount: "25.18" },
@@ -150,13 +314,6 @@ export const myPayTagFixtures: MyPayTagFixtures = {
       recipient: "eip155:8453:0x0000000000000000000000000000000000000001",
       reference: "example-payor:exact-receive",
     },
-    near: {
-      solverId: "near_intents_1click",
-      quoteId: "quote_near_fixture",
-      sendAmount: "25.18",
-      receiveAmount: "25.00",
-      estimatedDurationSeconds: 20,
-    },
     lifi: {
       solverId: "lifi",
       quoteId: "quote_lifi_fixture",
@@ -168,26 +325,33 @@ export const myPayTagFixtures: MyPayTagFixtures = {
         data: "0x",
       },
     },
+    squid: {
+      solverId: "squid",
+      quoteId: "quote_squid_fixture",
+      sendAmount: "25.22",
+      receiveAmount: "25.00",
+      estimatedDurationSeconds: 60,
+    },
   },
   intent: validMyPayTagIntent,
 };
 
-export interface MockCubidValidator {
-  validateStamp(identifier: string): Promise<{
-    alias: string;
+export interface MockPaytagValidator {
+  validatePaytag(identifier: string): Promise<{
+    paytagReference: string;
     hash: string;
     maskedDisplay: string;
     valid: boolean;
   }>;
 }
 
-export function createMockCubidValidator(): MockCubidValidator {
+export function createMockPaytagValidator(): MockPaytagValidator {
   return {
-    async validateStamp(identifier: string) {
+    async validatePaytag(identifier: string) {
       return {
-        alias: "cubid_stamp_alias_abc",
+        paytagReference: "paytag_ref_abc",
         hash: `sha256:${identifier}`,
-        maskedDisplay: "n***@example.com",
+        maskedDisplay: "a***@cubid.mypaytag",
         valid: identifier.length > 0,
       };
     },
@@ -278,7 +442,7 @@ function buildQuotePreview(input: Omit<RouteQuotePreview, "fees" | "expiresAt" |
       },
     ],
     expiresAt: "2026-06-24T20:00:00Z",
-    resolverReference: "gptr_req_fixture",
+    resolverReference: "mpt_req_fixture",
   };
 }
 

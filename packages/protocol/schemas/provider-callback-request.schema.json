@@ -4,19 +4,20 @@
   "title": "ProviderCallbackRequest",
   "type": "object",
   "additionalProperties": false,
-  "required": ["resolverRequestId", "recipient", "payingDappId", "selectedPath", "amount", "purpose", "expiresAt"],
+  "required": ["resolverRequestId", "recipient", "payingDappId", "payingDappReference", "selectedPath", "amount", "purpose", "expiresAt"],
   "properties": {
     "resolverRequestId": { "type": "string", "minLength": 1 },
     "recipient": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["identifierType", "identifierAlias"],
+      "required": ["identifierType", "paytagReference"],
       "properties": {
-        "identifierType": { "const": "verified_stamp" },
-        "identifierAlias": { "type": "string", "minLength": 1 }
+        "identifierType": { "const": "paytag" },
+        "paytagReference": { "type": "string", "minLength": 1 }
       }
     },
     "payingDappId": { "type": "string", "minLength": 1 },
+    "payingDappReference": { "type": "string", "minLength": 1 },
     "selectedPath": { "$ref": "#/$defs/path" },
     "amount": { "$ref": "#/$defs/amount" },
     "purpose": { "type": "string", "minLength": 1 },

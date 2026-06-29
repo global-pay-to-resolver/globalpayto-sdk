@@ -174,7 +174,7 @@ follow-ups: Continue SDK Sprint 4 with PayToDapp provider conformance tests for 
 agent: Codex
 branch: main
 head: 90432f6
-summary: Completed GPTS-S4-T2 by adding PayToDapp provider conformance tests for valid callback handling, Cubid alias-only callbacks, auth freshness and replay expectations, provider error status rejection, malformed provider payload rejection, callback/response matching, and MyPayTag intent-envelope containment.
+summary: Completed GPTS-S4-T2 by adding PayToDapp provider conformance tests for valid callback handling, MyPayTag paytag reference-only callbacks, auth freshness and replay expectations, provider error status rejection, malformed provider payload rejection, callback/response matching, and MyPayTag intent-envelope containment.
 validation: Ran pnpm --filter @mypaytag/provider-sdk test, typecheck, and build; provider conformance added seven passing cases and the filtered run covered 32 passing workspace tests.
 follow-ups: Continue SDK Sprint 4 with package build and publish workflow scaffolding.
 
@@ -248,3 +248,179 @@ todo: mypaytag-sdk:GPTS-S5-T4
 summary: Extended the public testing package with generic route option fixtures, direct/exchange/bridge/cross-chain quote previews, exact-send and exact-receive execution quote requests, and reusable mock execution quote providers for preferred-solver and fanout tests.
 validation: Ran pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/sdk build, pnpm install, pnpm --filter @mypaytag/testing typecheck, and pnpm --filter @mypaytag/testing test; testing package coverage now passes 44 workspace tests.
 follow-ups: Continue with the public site solver-adapter content and checks.
+
+---
+
+## 2026-06-28-gpts-s6-t1
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S6-T1
+summary: Renamed public contract fixture IDs, action IDs, docs, OpenAPI copy, and regenerated Postman examples from old gptr/pay-to-tag wording to MyPayTag mpt/paytag terminology while preserving PayToDapp compatibility terms.
+validation: Ran pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/sdk test, and pnpm scan:public-boundary; focused tests passed with 44 workspace cases and the public-boundary scan passed.
+follow-ups: Continue Sprint 6 by aligning OpenAPI intent schemas with the canonical JSON Schema contract.
+
+---
+
+## 2026-06-28-gpts-s6-t2
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S6-T2
+summary: Updated OpenAPI resolved-intent and provider-response components to match the canonical MyPayTag intent schema, including required envelope fields, selected route, references, provider_json metadata, and full provider payload requirements.
+validation: Ran pnpm api:postman and pnpm api:validate; Postman was regenerated from api/openapi.yaml and Redocly lint passed without warnings.
+follow-ups: Continue Sprint 6 by checking the public SDK contract for Cubid-internal leakage and direct Cubid probing examples.
+
+---
+
+## 2026-06-28-gpts-s6-t3
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S6-T3
+summary: Reframed public request, callback, intent, notification, fixture, OpenAPI, docs, and testing surfaces around MyPayTag paytag references and generic authorization tokens instead of Cubid verified-stamp fields, Cubid aliases, or Cubid consent-token fields.
+validation: Ran pnpm generate, pnpm api:postman, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/sdk typecheck, pnpm --filter @mypaytag/sdk test, pnpm --filter @mypaytag/provider-sdk test, pnpm --filter @mypaytag/testing test, and pnpm api:validate; focused tests passed with 44 workspace cases and OpenAPI lint passed.
+follow-ups: Continue Sprint 6 by labeling execution quote helpers and solver surfaces as future/non-MVP extensions.
+
+---
+
+## 2026-06-28-gpts-s6-t4
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S6-T4
+summary: Labeled crypto-native solver ids, execution quote helpers, route quote previews, bridge/swap language, and fanout behavior as future/non-MVP extensions while keeping core resolve, route registration, provider callback, hosted route selection, and intent helpers as the MVP path.
+validation: Ran pnpm --filter @mypaytag/sdk typecheck, pnpm --filter @mypaytag/sdk test, and pnpm scan:public-boundary; SDK typecheck passed, focused tests passed with 44 workspace cases, and the public-boundary scan passed.
+follow-ups: Continue Sprint 6 by adding paytag availability, opaque paytag, raw-explicit paytag, and negative-disclosure fixtures.
+
+---
+
+## 2026-06-28-gpts-s6-t5
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S6-T5
+summary: Added reusable testing fixtures for opaque default paytags, explicit raw-stamp paytags, availability/unavailable/reserved issuance checks, and negative-disclosure responses for no_route, authorization_required, and user_action_required.
+validation: Ran pnpm --filter @mypaytag/testing typecheck, pnpm --filter @mypaytag/testing test, and pnpm --filter @mypaytag/protocol test; typecheck passed and focused tests passed with 44 workspace cases.
+follow-ups: Complete Sprint 6 with contract tests for OpenAPI/schema parity, forbidden route registration fields, provider payload requirements, and staged smoke documentation.
+
+---
+
+## 2026-06-28-gpts-s6-t6
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S6-T6
+summary: Added protocol acceptance tests for required provider_json payload fields and OpenAPI/canonical intent parity, plus a staged smoke checklist linking SDK validation to Cubid SDK, MyPayTag backend, one test PayingDapp, and one test PayToDapp.
+validation: Ran pnpm --filter @mypaytag/protocol typecheck, pnpm --filter @mypaytag/protocol test, and pnpm run validate; full validation regenerated types, linted OpenAPI, built and typechecked packages, passed tests with 46 workspace cases, passed the public-boundary scan, cleaned, and rebuilt.
+follow-ups: Sprint 6 is complete; use the staged smoke checklist only after local SDK validation remains green.
+
+---
+
+## 2026-06-28-gpts-s7-t1
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T1
+summary: Added the Phase 1 NEAR Intents / 1Click quote-option protocol contract, fixture, validator, SDK parser export, and tests while documenting broad solver fanout as Phase 2.
+validation: Ran pnpm generate, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/sdk test, pnpm --filter @mypaytag/sdk typecheck, and pnpm scan:public-boundary; focused tests passed with 48 workspace cases and the public-boundary scan passed.
+follow-ups: Add selected quote confirmation and payable instruction contracts.
+
+---
+
+## 2026-06-28-gpts-s7-t2
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T2
+summary: Added NEAR 1Click quote selection and payable instruction schemas, generated protocol exports, fixtures, validators, negative tests, and PayingDapp SDK builder/parser helpers.
+validation: Ran pnpm generate, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/sdk test, pnpm --filter @mypaytag/sdk typecheck, and pnpm scan:public-boundary; focused tests passed with 51 workspace cases and the public-boundary scan passed.
+follow-ups: Continue Sprint 7 by moving generic solver fanout wording and tests under Phase 2/non-MVP positioning.
+
+---
+
+## 2026-06-28-gpts-s7-t3
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T3
+summary: Moved generic execution quote fanout to Phase 2 by removing NEAR 1Click from the generic solver id list, keeping NEAR on the dedicated MVP quote/selection/payable contracts, and updating tests, fixtures, and docs to describe fanout as non-MVP extension behavior.
+validation: Ran pnpm --filter @mypaytag/sdk typecheck, pnpm --filter @mypaytag/sdk test, pnpm --filter @mypaytag/testing typecheck, pnpm --filter @mypaytag/testing test, and pnpm scan:public-boundary; focused tests passed with 51 workspace cases and the public-boundary scan passed.
+follow-ups: Continue Sprint 7 by completing provider callback binding fields and conformance checks.
+
+---
+
+## 2026-06-28-gpts-s7-t4
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T4
+summary: Added PayingDapp reference to provider callbacks, added resolver/purpose/PayingDapp binding fields to provider payloads, tightened provider SDK response matching, refreshed OpenAPI/Postman surfaces, and expanded protocol/provider conformance tests for required fields and mismatch rejection.
+validation: Ran pnpm generate, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/provider-sdk typecheck, pnpm --filter @mypaytag/provider-sdk test, pnpm --filter @mypaytag/protocol test, pnpm api:validate, pnpm scan:public-boundary, and pnpm api:postman; focused tests passed with 53 workspace cases and OpenAPI/public-boundary checks passed.
+follow-ups: Continue Sprint 7 by closing the remaining OpenAPI/protocol fixture drift, especially notification event schema parity.
+
+---
+
+## 2026-06-28-gpts-s7-t5
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T5
+summary: Aligned OpenAPI notification events with protocol `eventType`/`schema`/`recipient`/`references`/`action` shape, added provider callback/response examples, removed NEAR from the generic SolverId enum, and replaced the brittle OpenAPI string-presence test with validator-backed example checks.
+validation: Ran pnpm api:validate, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/provider-sdk test, pnpm api:postman, and pnpm scan:public-boundary; focused tests passed with 53 workspace cases and OpenAPI/Postman/public-boundary checks passed.
+follow-ups: Continue Sprint 7 by adding route CRUD protocol schemas and SDK helpers.
+
+---
+
+## 2026-06-28-gpts-s7-t6
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T6
+summary: Added canonical PayToRoute, route list/read, route update, and route delete schemas with generated exports, fixtures, validators, OpenAPI route CRUD envelopes/examples, provider SDK helpers, and tests for scoped route data plus forbidden wallet/private fields.
+validation: Ran pnpm generate, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm --filter @mypaytag/provider-sdk typecheck, pnpm --filter @mypaytag/provider-sdk test, pnpm api:validate, pnpm api:postman, and pnpm scan:public-boundary; focused tests passed with 56 workspace cases and OpenAPI/Postman/public-boundary checks passed.
+follow-ups: Continue Sprint 7 by adding hosted route-selection action schemas.
+
+---
+
+## 2026-06-28-gpts-s7-t7
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T7
+summary: Added hosted route-selection action view, decision, and completion protocol schemas with generated exports, fixtures, validators, OpenAPI examples/components, and privacy/decision-state tests.
+validation: Ran pnpm generate, pnpm --filter @mypaytag/protocol build, pnpm --filter @mypaytag/protocol test, pnpm api:validate, pnpm api:postman, and pnpm scan:public-boundary; focused tests passed with 59 workspace cases and OpenAPI/Postman/public-boundary checks passed.
+follow-ups: Continue Sprint 7 by deciding/documenting public placement for paytag availability contracts.
+
+---
+
+## 2026-06-28-gpts-s7-t8
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T8
+summary: Documented paytag availability and issuance as a private MyPayTag/Cubid service-boundary contract rather than a public integrator SDK schema, and expanded public-safe testing fixtures for idempotent retry plus revoked/expired reuse policy cases.
+validation: Ran pnpm --filter @mypaytag/testing typecheck, pnpm --filter @mypaytag/testing test, and pnpm scan:public-boundary; focused tests passed with 59 workspace cases and the public-boundary scan passed.
+follow-ups: Continue Sprint 7 by expanding MVP happy-path fixtures and examples.
+
+---
+
+## 2026-06-28-gpts-s7-t9
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T9
+summary: Expanded public-safe testing fixtures for route CRUD, hosted route selection, and NEAR 1Click quote selection/payable instructions; updated PayingDapp and PayToDapp examples to exercise same-chain resolve, NEAR 1Click, route update/delete, and provider response validation without direct Cubid probing or broad solver fanout.
+validation: Ran pnpm build, pnpm --filter @mypaytag/testing test, pnpm example:paying-dapp, pnpm example:payto-dapp, and pnpm scan:public-boundary; examples executed successfully and focused tests passed with 59 workspace cases.
+follow-ups: Complete Sprint 7 with regenerated artifact validation.
+
+---
+
+## 2026-06-28-gpts-s7-t10
+
+agent: Codex
+branch: codex/mypaytag-mvp-realignment-20260628
+todo: mypaytag-sdk:GPTS-S7-T10
+summary: Refreshed generated protocol artifacts through `pnpm generate`, refreshed Postman through the repo script, updated the staged smoke checklist for Cubid SDK, MyPayTag backend, test PayingDapp, test PayToDapp, and SmarTrust NEAR 1Click coverage, and ran the full workspace validation gate.
+validation: Ran pnpm generate, pnpm api:postman, and pnpm validate; full validation regenerated types, linted OpenAPI without warnings, built/typechecked all packages, passed tests with 59 workspace cases, passed the public-boundary scan, cleaned, and rebuilt.
+follow-ups: Sprint 7 is complete.

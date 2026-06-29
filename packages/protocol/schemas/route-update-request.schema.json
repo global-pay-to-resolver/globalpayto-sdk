@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/route-update-request.schema.json",
+  "title": "RouteUpdateRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "anyOf": [
+    { "required": ["state"] },
+    { "required": ["supportedRoutes"] }
+  ],
+  "properties": {
+    "state": { "enum": ["active", "disabled", "revoked"] },
+    "supportedRoutes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/route" }
+    }
+  },
+  "not": {
+    "anyOf": [
+      { "required": ["account"] },
+      { "required": ["address"] },
+      { "required": ["recipientAddress"] },
+      { "required": ["memo"] },
+      { "required": ["paymentInstruction"] },
+      { "required": ["paymentLink"] },
+      { "required": ["routePreference"] },
+      { "required": ["walletGraph"] }
+    ]
+  },
+  "$defs": {
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chain", "network", "asset"],
+      "properties": {
+        "chain": { "type": "string", "minLength": 1 },
+        "network": { "type": "string", "minLength": 1 },
+        "asset": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

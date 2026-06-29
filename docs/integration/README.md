@@ -6,6 +6,7 @@ Use these guides with the SDK packages and runnable examples:
 - [PayToDapp Modality B integration](./payto-dapps.md)
 - [Status and hosted-action handling](./statuses-and-actions.md)
 - [Notifications and test fixtures](./notifications-and-fixtures.md)
+- [Staged smoke checklist](./staged-smoke-checklist.md)
 
 These docs describe public MVP integration behavior only. Private resolver
 storage, deployment wiring, service-role access, audit internals, and admin

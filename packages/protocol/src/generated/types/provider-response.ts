@@ -12,6 +12,9 @@ export interface ProviderResponse {
 }
 export interface ProviderPayload {
   providerIntentId: string;
+  resolverReference: string;
+  payingDappId: string;
+  payingDappReference: string;
   chain: string;
   network: string;
   asset: string;
@@ -20,6 +23,7 @@ export interface ProviderPayload {
     recipientAddress: string;
   };
   amount: string;
+  purpose: string;
   reference: string;
   expiresAt: string;
   [k: string]: unknown;

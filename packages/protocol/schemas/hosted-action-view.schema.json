@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.mypaytag.com/hosted-action-view.schema.json",
+  "title": "HostedActionView",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "actionId", "actionType"],
+  "properties": {
+    "status": { "enum": ["ready", "expired", "invalid", "completed", "replayed", "restart_required"] },
+    "actionId": { "type": "string", "minLength": 1 },
+    "actionType": { "const": "route_selection" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "options": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/routeOption" }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "status": { "const": "ready" } },
+        "required": ["status"]
+      },
+      "then": {
+        "required": ["expiresAt", "options"],
+        "properties": {
+          "options": { "minItems": 1 }
+        }
+      }
+    }
+  ],
+  "not": {
+    "anyOf": [
+      { "required": ["account"] },
+      { "required": ["address"] },
+      { "required": ["recipientAddress"] },
+      { "required": ["rawIdentifier"] },
+      { "required": ["routePreference"] },
+      { "required": ["unrelatedPayToDapps"] },
+      { "required": ["walletGraph"] },
+      { "required": ["providerPayload"] },
+      { "required": ["privateDiagnostics"] }
+    ]
+  },
+  "$defs": {
+    "routeOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["optionId", "chain", "network", "asset", "payToDappId", "displayName"],
+      "properties": {
+        "optionId": { "type": "string", "minLength": 1 },
+        "chain": { "type": "string", "minLength": 1 },
+        "network": { "type": "string", "minLength": 1 },
+        "asset": { "type": "string", "minLength": 1 },
+        "payToDappId": { "type": "string", "minLength": 1 },
+        "displayName": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

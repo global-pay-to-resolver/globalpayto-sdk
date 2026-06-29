@@ -1,14 +1,23 @@
 import {
+  validateNearOneClickPayableInstruction,
+  validateNearOneClickQuoteOption,
+  validateNearOneClickQuoteSelectionRequest,
   isNotificationEvent,
   validateNotificationEvent,
   validateResolveRequest,
   validateResolveResponse,
   type NotificationEvent,
+  type NearOneClickPayableInstruction,
+  type NearOneClickQuoteOption,
+  type NearOneClickQuoteSelectionRequest,
   type ResolveRequest,
   type ResolveResponse,
 } from "@mypaytag/protocol";
 
 export type ResolveRequestInput = ResolveRequest;
+export type NearOneClickMvpQuoteOption = NearOneClickQuoteOption;
+export type NearOneClickMvpQuoteSelectionRequest = NearOneClickQuoteSelectionRequest;
+export type NearOneClickMvpPayableInstruction = NearOneClickPayableInstruction;
 export type SupportedPath = ResolveRequest["supportedPaths"][number];
 export type ResolveAmount = ResolveRequest["amount"];
 export type PayorAmountExactness = "exact_send" | "exact_receive";
@@ -35,8 +44,11 @@ export interface ExactnessAwareResolveRequest {
 export type ActionRequiredStatus = "user_action_required";
 export type ActionRequiredResponse = Extract<ResolveResponse, { action: unknown }>;
 
+/**
+ * Phase 2 extension solver ids. NEAR Intents / 1Click has a dedicated Phase 1
+ * MVP quote-option contract exported as NearOneClickMvpQuoteOption.
+ */
 export const cryptoNativeExecutionSolvers = [
-  "near_intents_1click",
   "lifi",
   "squid",
   "zero_x_cross_chain",
@@ -46,6 +58,12 @@ export const cryptoNativeExecutionSolvers = [
 
 export type CryptoNativeExecutionSolverId = (typeof cryptoNativeExecutionSolvers)[number];
 
+/**
+ * Phase 2 extension quote request consumed by app-configured execution adapters.
+ * The Phase 1 NEAR Intents / 1Click path uses the dedicated
+ * NearOneClickMvpQuoteOption, NearOneClickMvpQuoteSelectionRequest, and
+ * NearOneClickMvpPayableInstruction contracts instead of this fanout helper.
+ */
 export interface ExecutionQuoteRequest {
   amount: {
     value: string;
@@ -118,7 +136,7 @@ export function buildPayorAppResolveRequest(input: PayorAppResolveRequestInput):
 
   const request = buildResolveRequest({
     recipient: {
-      identifierType: "verified_stamp",
+      identifierType: "paytag",
       identifier: requireNonEmpty(input.recipientIdentifier, "recipientIdentifier"),
     },
     supportedPaths: [firstPath, ...remainingPaths],
@@ -140,6 +158,22 @@ export function parseResolveResponse(payload: unknown): ResolveResponse {
 
 export function parseNotificationEvent(payload: unknown): NotificationEvent {
   return validateNotificationEvent(payload);
+}
+
+export function parseNearOneClickQuoteOption(payload: unknown): NearOneClickMvpQuoteOption {
+  return validateNearOneClickQuoteOption(payload);
+}
+
+export function buildNearOneClickQuoteSelectionRequest(
+  input: NearOneClickMvpQuoteSelectionRequest,
+): NearOneClickMvpQuoteSelectionRequest {
+  return validateNearOneClickQuoteSelectionRequest(input);
+}
+
+export function parseNearOneClickPayableInstruction(
+  payload: unknown,
+): NearOneClickMvpPayableInstruction {
+  return validateNearOneClickPayableInstruction(payload);
 }
 
 export function isMyPayTagNotification(payload: unknown): payload is NotificationEvent {
@@ -184,6 +218,12 @@ function requireNonEmpty(value: string, fieldName: string): string {
   return trimmed;
 }
 
+/**
+ * Requests Phase 2 non-MVP execution quotes from caller-provided providers.
+ * Core MyPayTag MVP integrations can resolve paytags, parse NEAR 1Click quote
+ * options, confirm selected quotes, and handle provider callbacks without
+ * calling this helper.
+ */
 export async function requestExecutionQuotes({
   preferredSolverId,
   providers,

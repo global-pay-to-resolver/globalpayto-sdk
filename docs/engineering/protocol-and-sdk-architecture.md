@@ -19,7 +19,7 @@ Planned packages:
 - `@mypaytag/protocol`: schemas, TypeScript types, enums, OpenAPI source, error/status codes, and test vectors.
 - `@mypaytag/sdk`: client helpers for PayingDapp and resolver integrations.
 - `@mypaytag/provider-sdk`: helpers for PayToDapp route registration and Modality B intent callbacks.
-- `@mypaytag/testing`: mock resolver, mock Cubid validator, mock PayToDapp, fixtures, and conformance test vectors.
+- `@mypaytag/testing`: mock resolver, mock paytag validator, mock PayToDapp, fixtures, and conformance test vectors.
 - Notification-related public event types belong in `@mypaytag/protocol`; delivery uses Cubid comms rather than a MyPayTag notification provider SDK.
 
 The public protocol package should be importable by both integrators and the private resolver backend.
@@ -28,7 +28,7 @@ The public protocol package should be importable by both integrators and the pri
 
 The MVP protocol supports:
 
-- verified Cubid stamps as pay-to identifiers,
+- paytags as MyPayTag payment identifiers backed by external identity and consent providers,
 - PayToDapp route registration using supported routes only,
 - PayingDapp resolution requests,
 - resolver-to-PayToDapp Modality B payment-intent callback schemas,
@@ -41,37 +41,42 @@ The MVP protocol does not support:
 - wallet graph lookup,
 - direct address/account registration,
 - resolver-built Modality A intents,
-- swaps, bridges, streams, recurring payments, refunds, or settlement guarantees,
+- generic swaps, generic bridges, streams, recurring payments, refunds, or settlement guarantees outside the dedicated MVP NEAR 1Click contract,
 - ERC-681, Solana Pay, WalletConnect Pay, ENS, FIO, Request Network, Stripe, Circle, Coinbase Commerce, or hosted payment link rendering,
 - public profile or directory APIs,
 - notification inbox APIs, marketing notification APIs, or non-Cubid notification provider APIs.
 
-## Crypto-Native Execution Solvers
+## MVP NEAR 1Click Execution
 
-Future payor-app helpers should support crypto-native execution adapters alongside the selected PayToDapp intent flow. These adapters consume a resolved receive requirement and produce quotes or transaction requests; they do not decide which PayToDapp the recipient prefers.
+NEAR Intents / 1Click is the Phase 1/MVP execution adapter for SmarTrust swap/bridge Paytag payments. It consumes a resolved receive requirement and returns a NEAR 1Click quote option scoped to the selected PayToDapp route. It does not decide which PayToDapp the recipient prefers.
 
-Short list for SDK adapter support:
+The MVP SDK surface for this path is the dedicated `NearOneClickMvpQuoteOption`, `NearOneClickMvpQuoteSelectionRequest`, and `NearOneClickMvpPayableInstruction` contract family. MVP PayingDapps should not use generic quote fanout to obtain NEAR 1Click payable instructions.
+
+## Future Extension: Crypto-Native Execution Solvers
+
+LI.FI, Squid, 0x, Across, LayerZero/Stargate, broad solver fanout, and generic external adapter support are Phase 2 extensions. They remain useful architecture context, but they are not required for the MVP resolve path.
+
+Short list for Phase 2 SDK adapter support:
 
 | Solver/router | Best fit |
 | --- | --- |
-| NEAR Intents / 1Click | Crypto-to-crypto cross-chain swaps, stablecoin delivery, distribution-channel fees, and default solver-style execution. |
 | LI.FI | EVM and Solana cross-chain routing, wallet-controlled execution, bridge/DEX aggregation, and quote responses with wallet-ready transaction requests. |
 | Squid | Broad chain coverage, cross-chain swaps, bridges, contract calls, and Cosmos/Axelar-style routing. |
 | 0x Cross-Chain API | Cross-chain payments, EVM/Solana routing, stablecoin settlement, fast quote responses, fallback paths, and progress tracking. |
 | Across | Fast bridge-focused EVM/L2 stablecoin transfers where supported. |
 | LayerZero Value Transfer API / Stargate | Cross-chain token transfer for OFT, LayerZero ecosystem assets, and routes where Stargate coverage is strong. |
 
-`@mypaytag/sdk` should expose a provider interface for these quote sources. When a payor-app passes a preferred solver id, the SDK asks only that quote provider. When no preferred solver id is selected, the SDK fans out quote requests to every configured quote provider and returns the successful quotes for app-side display or resolver-side selection.
+`@mypaytag/sdk` exposes a provider interface for these quote sources as non-MVP extension helpers. When a payor-app passes a preferred solver id, the SDK asks only that quote provider. When no preferred solver id is selected, the SDK fans out quote requests to every configured quote provider and returns the successful quotes for app-side display or future extension selection.
 
-## Route Query And Quote Contracts
+## Future Extension: Route Query And Quote Contracts
 
-Generic payor-app flows distinguish three stages:
+Generic payor-app extension flows can distinguish three stages:
 
-- route availability query: the app asks what safe receive options can be considered for a pay-to tag and sender-supported path set;
-- payment intent option query: the app includes amount and exactness context so the resolver can return executable or selectable quote previews;
+- route availability query: the app asks what safe receive options can be considered for a paytag and sender-supported path set;
+- payment intent option query: the app includes amount and exactness context so MyPayTag or a future extension can return executable or selectable quote previews;
 - final resolved intent: the app receives one `mypaytag.intent.v1` instruction for execution or handoff.
 
-Route quote previews are public contract objects with method, send amount, receive amount, fee rows, expiry, and resolver reference. Fee rows identify whether the source is the payor app, provider, or resolver, and all MVP fees are charged to the sender. Quote previews must not include recipient wallet inventory, route preferences, unrelated PayToDapps, or wallet graph details.
+Route quote previews are public future-extension contract objects with method, send amount, receive amount, fee rows, expiry, and resolver reference. Fee rows identify whether the source is the payor app, provider, or resolver, and all modeled fees are charged to the sender. Quote previews must not include recipient wallet inventory, route preferences, unrelated PayToDapps, or wallet graph details.
 
 ## Public API Shapes
 
@@ -91,8 +96,8 @@ Route registration request:
 ```json
 {
   "recipient": {
-    "identifierType": "verified_stamp",
-    "identifier": "email:noak@example.com"
+    "identifierType": "paytag",
+    "identifier": "abd123@cubid.mypaytag"
   },
   "payToDappId": "smartrust-wallet",
   "supportedRoutes": [
@@ -102,11 +107,34 @@ Route registration request:
       "asset": "USDC"
     }
   ],
-  "consentToken": "cubid_consent_token"
+  "authorizationToken": "mpt_auth_123"
 }
 ```
 
 The schema must reject account, address, and chain-specific payment instruction fields. Dynamic addresses belong only in a provider intent response.
+
+Route CRUD responses expose only PayToDapp-owned scoped route capability data.
+List/read/update responses use `status: resolved` envelopes, deletion uses
+`status: revoked`, and safe unavailable cases use public status-only shapes such
+as `no_route` or `provider_unavailable`. They must not expose route
+preferences, unrelated PayToDapps, wallet graphs, raw identifiers, or payment
+instructions.
+
+Hosted route-selection action contracts expose only action-scoped route options
+after validation and user context checks. Decisions can select an option, leave
+the choice unchanged, or deny the action. Completion states include expired,
+invalid, replayed, and restart-required outcomes without private diagnostics.
+
+### Paytag Availability Boundary
+
+Paytag availability and issuance are intentionally not public integrator API
+contracts in the MVP SDK. They belong to the private MyPayTag/Cubid service
+boundary: Cubid owns identity evidence and consent, while MyPayTag owns paytag
+uniqueness and availability policy.
+
+The public SDK keeps public-safe availability fixtures only. No availability
+boundary should expose wallet addresses, payment route data, route preferences,
+wallet graphs, provider payloads, or payment instructions to Cubid.
 
 ### PayingDapp Resolve
 
@@ -119,8 +147,8 @@ Resolve request:
 ```json
 {
   "recipient": {
-    "identifierType": "verified_stamp",
-    "identifier": "email:noak@example.com"
+    "identifierType": "paytag",
+    "identifier": "abd123@cubid.mypaytag"
   },
   "supportedPaths": [
     {
@@ -149,12 +177,13 @@ Callback request:
 
 ```json
 {
-  "resolverRequestId": "gptr_req_123",
+  "resolverRequestId": "mpt_req_123",
   "recipient": {
-    "identifierType": "verified_stamp",
-    "identifierAlias": "cubid_stamp_alias_abc"
+    "identifierType": "paytag",
+    "paytagReference": "paytag_ref_abc"
   },
   "payingDappId": "chaincrew",
+  "payingDappReference": "chaincrew:payout_987",
   "selectedPath": {
     "chain": "base",
     "network": "mainnet",
@@ -181,12 +210,12 @@ Resolved response shape:
 {
   "status": "resolved",
   "intent": {
-    "id": "gptr_pi_123",
+    "id": "mpt_pi_123",
     "schema": "mypaytag.intent.v1",
     "status": "ready",
     "modality": "provider_intent",
     "recipient": {
-      "identifierType": "verified_stamp",
+      "identifierType": "paytag",
       "identifierHash": "sha256:..."
     },
     "selectedRoute": {
@@ -206,6 +235,9 @@ Resolved response shape:
       "provider": "smartrust-wallet",
       "payload": {
         "providerIntentId": "st_pi_456",
+        "resolverReference": "mpt_req_123",
+        "payingDappId": "chaincrew",
+        "payingDappReference": "chaincrew:payout_987",
         "chain": "base",
         "network": "mainnet",
         "asset": "USDC",
@@ -214,12 +246,13 @@ Resolved response shape:
           "recipientAddress": "0xabc..."
         },
         "amount": "25.00",
+        "purpose": "payout",
         "reference": "smartrust:st_pi_456",
         "expiresAt": "2026-06-24T20:00:00Z"
       }
     },
     "references": {
-      "resolverReference": "gptr_pi_123",
+      "resolverReference": "mpt_pi_123",
       "providerReference": "st_pi_456",
       "payingDappReference": "chaincrew:payout_987"
     }
@@ -227,7 +260,7 @@ Resolved response shape:
 }
 ```
 
-The protocol validates the MyPayTag envelope and the required `provider_json.payload` keys defined in `mvp-api-contracts.md`, including `providerIntentId`, `chain`, `network`, `asset`, `destination`, `amount`, `reference`, and `expiresAt`. MVP provider destinations use `destination.kind = "blockchain_address"` with a nested `recipientAddress`; top-level address fields are rejected. The protocol does not render external protocol formats in the MVP.
+The protocol validates the MyPayTag envelope and the required `provider_json.payload` keys defined in `mvp-api-contracts.md`, including `providerIntentId`, `resolverReference`, `payingDappId`, `payingDappReference`, `chain`, `network`, `asset`, `destination`, `amount`, `purpose`, `reference`, and `expiresAt`. MVP provider destinations use `destination.kind = "blockchain_address"` with a nested `recipientAddress`; top-level address fields are rejected. The protocol does not render external protocol formats in the MVP.
 
 ## Status Values
 
@@ -262,7 +295,7 @@ Notification payloads must use masked display values, public references, and act
 `@mypaytag/sdk` should provide:
 
 - request builders for PayingDapp resolution,
-- quote helpers for crypto-native execution solvers,
+- non-MVP quote helpers for crypto-native execution solver extensions,
 - schema validation for responses,
 - status narrowing helpers,
 - notification event type guards for Cubid comms payloads,

@@ -1,13 +1,11 @@
 # PayingDapp Integration
 
-PayingDapps ask MyPayTag to resolve a Cubid verified-stamp recipient into a
+PayingDapps ask MyPayTag to resolve a paytag recipient into a
 one-time MyPayTag JSON intent.
 
 ## Use The SDK
 
 - Build resolve requests with `buildResolveRequest`.
-- Request crypto-native execution quotes with `requestExecutionQuotes` when your
-  app needs solver/router options for a resolved receive requirement.
 - Parse resolver responses with `parseResolveResponse`.
 - Branch with `isResolved`, `isActionRequired`, `isRetryable`, and
   `isInvalidForRetry`.
@@ -20,7 +18,7 @@ Runnable example: `examples/paying-dapp-basic`.
 
 PayingDapps provide:
 
-- a Cubid verified-stamp recipient,
+- a paytag recipient,
 - supported paths containing `chain`, `network`, and `asset`,
 - a one-time amount,
 - a purpose,
@@ -48,13 +46,24 @@ MVP payment instructions use `provider_json` with a typed provider destination:
 Do not infer reusable wallet details from this destination. It belongs to the
 selected one-time provider intent.
 
-## Crypto-Native Execution Quotes
+## MVP NEAR 1Click Quote Flow
 
-When a PayingDapp supports execution adapters, configure quote providers for the
-solver/router surfaces the app can use. The initial MyPayTag SDK solver ids
-are:
+The MVP resolve flow can return a NEAR Intents / 1Click quote option for
+SmarTrust swap/bridge paytag payments. PayingDapps parse that quote with
+`parseNearOneClickQuoteOption`, confirm the selected route with
+`buildNearOneClickQuoteSelectionRequest`, and parse the returned payable
+instruction with `parseNearOneClickPayableInstruction`.
 
-- `near_intents_1click`
+This MVP path is not generic solver fanout. PayingDapps do not need to
+configure LI.FI, Squid, 0x, Across, LayerZero/Stargate, or other broad
+execution providers to support the Phase 1 NEAR 1Click flow.
+
+## Future Extension: Crypto-Native Execution Quotes
+
+Broad execution quote fanout is Phase 2. When a PayingDapp supports future
+execution adapters, configure quote providers for the solver/router surfaces
+the app can use. The Phase 2 MyPayTag SDK solver ids are:
+
 - `lifi`
 - `squid`
 - `zero_x_cross_chain`

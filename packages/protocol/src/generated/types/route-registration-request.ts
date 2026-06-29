@@ -8,10 +8,10 @@ export interface RouteRegistrationRequest {
    * @minItems 1
    */
   supportedRoutes: [Route, ...Route[]];
-  consentToken: string;
+  authorizationToken: string;
 }
 export interface Recipient {
-  identifierType: "verified_stamp";
+  identifierType: "paytag";
   identifier: string;
 }
 export interface Route {
