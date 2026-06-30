@@ -9,6 +9,8 @@ import {
   validResolvedResponse,
   validResolveRequest,
   validRouteSelectionResponse,
+  validProviderCallbackRequest,
+  validRouteRegistrationRequest,
 } from "@mypaytag/protocol";
 
 import {
@@ -18,13 +20,16 @@ import {
   buildPayorAppReference,
   buildPayorAppResolveRequest,
   buildSupportedPath,
+  cryptoNativeExecutionSolvers,
   getActionUrl,
   isActionRequired,
   isMyPayTagNotification,
   isResolved,
   parseNotificationEvent,
   parseResolveResponse,
+  requestNearOneClickQuoteOptions,
   requestExecutionQuotes,
+  selectNearOneClickQuote,
   parseNearOneClickPayableInstruction,
   parseNearOneClickQuoteOption,
   type CryptoNativeExecutionSolverId,
@@ -34,6 +39,14 @@ import {
 describe("@mypaytag/sdk", () => {
   it("builds and validates resolve requests", () => {
     expect(buildResolveRequest(validResolveRequest)).toEqual(validResolveRequest);
+  });
+
+  it("keeps public MVP payloads on the paytag identifier contract", () => {
+    expect(validResolveRequest.recipient.identifierType).toBe("paytag");
+    expect(validResolvedResponse.intent.recipient.identifierType).toBe("paytag");
+    expect(validNotificationEvent.recipient.identifierType).toBe("paytag");
+    expect(validRouteRegistrationRequest.recipient.identifierType).toBe("paytag");
+    expect(validProviderCallbackRequest.recipient.identifierType).toBe("paytag");
   });
 
   it("builds generic payor-app resolve request inputs", () => {
@@ -146,6 +159,74 @@ describe("@mypaytag/sdk", () => {
     );
   });
 
+  it("calls NEAR 1Click quote and selected-quote backend endpoints", async () => {
+    const calls: Array<{ endpoint: string; body: unknown }> = [];
+    const fakeFetch: typeof fetch = async (input, init) => {
+      calls.push({
+        endpoint: String(input),
+        body: JSON.parse(String(init?.body)),
+      });
+      if (String(input).endsWith("/near-oneclick-quotes")) {
+        return jsonResponse({
+          status: "quoted",
+          adapter: "near_intents_1click",
+          resolverReference: validNearOneClickQuoteOption.resolverReference,
+          selectedRouteReference: validNearOneClickQuoteOption.selectedRouteReference,
+          quotes: [validNearOneClickQuoteOption],
+        });
+      }
+      return jsonResponse(validNearOneClickPayableInstruction);
+    };
+
+    const quotes = await requestNearOneClickQuoteOptions({
+      endpoint: "https://resolver.test/functions/v1/near-oneclick-quotes",
+      fetch: fakeFetch,
+      headers: { "x-mypaytag-dapp-id": "smartrust-wallet" },
+      request: {
+        sourceAsset: "near/mainnet/USDC",
+        sourceAmount: "25.18",
+        payorReference: "smartrust:send_001",
+        receiveRequirement: {
+          destinationAsset: "base/mainnet/USDC",
+          recipient: validNearOneClickQuoteOption.selectedRouteReference,
+          amount: "25.00",
+          expiresAt: validNearOneClickQuoteOption.expiresAt,
+          resolverReference: validNearOneClickQuoteOption.resolverReference,
+        },
+      },
+    });
+    const instruction = await selectNearOneClickQuote({
+      endpoint: "https://resolver.test/functions/v1/near-oneclick-selected-quote",
+      fetch: fakeFetch,
+      request: validNearOneClickQuoteSelectionRequest,
+    });
+
+    expect(quotes.quotes).toEqual([validNearOneClickQuoteOption]);
+    expect(instruction).toEqual(validNearOneClickPayableInstruction);
+    expect(calls.map((call) => call.endpoint)).toEqual([
+      "https://resolver.test/functions/v1/near-oneclick-quotes",
+      "https://resolver.test/functions/v1/near-oneclick-selected-quote",
+    ]);
+    expect(calls[1].body).toEqual(validNearOneClickQuoteSelectionRequest);
+  });
+
+  it("keeps Phase 2 solver ids out of MVP happy-path fixtures", () => {
+    const mvpFixtures = JSON.stringify([
+      validResolveRequest,
+      validResolvedResponse,
+      validRouteRegistrationRequest,
+      validProviderCallbackRequest,
+      validNearOneClickQuoteOption,
+      validNearOneClickQuoteSelectionRequest,
+      validNearOneClickPayableInstruction,
+    ]);
+
+    expect(validNearOneClickQuoteOption.adapter).toBe("near_intents_1click");
+    for (const solverId of cryptoNativeExecutionSolvers) {
+      expect(mvpFixtures).not.toContain(solverId);
+    }
+  });
+
   it("requests Phase 2 extension quotes from every configured solver when none is preferred", async () => {
     const calls: CryptoNativeExecutionSolverId[] = [];
     const providers = [
@@ -235,4 +316,11 @@ function createQuoteProvider(
       };
     },
   };
+}
+
+function jsonResponse(body: unknown): Response {
+  return new Response(JSON.stringify(body), {
+    status: 200,
+    headers: { "content-type": "application/json" },
+  });
 }
